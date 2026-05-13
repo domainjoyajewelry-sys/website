@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { Shield, Truck, RefreshCw, Award, ArrowRight } from 'lucide-react';
+import { Shield, Truck, RefreshCw, Award, ArrowRight, Instagram } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '../services/api';
 import PiercingBooking from '../components/PiercingBooking';
@@ -34,156 +34,187 @@ const Home: React.FC = () => {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  const { data: allProducts = [], isLoading } = useQuery({
+  const { data: allProducts = [] } = useQuery({
     queryKey: ['products'],
     queryFn: getProducts,
   });
 
   const featuredProducts = allProducts.filter((p: any) => p.featured).slice(0, 3);
 
+  const testimonials = [
+    { name: 'מיכל כהן', text: 'התכשיטים הכי יפים שקניתי! השירות היה מדהים והאיכות פשוט פרימיום.', location: 'תל אביב' },
+    { name: 'רוני לוי', text: 'עשיתי פירסינג בקריון והיה פשוט מושלם. מקצועי, נקי ומהיר.', location: 'חיפה' },
+    { name: 'שירז אברהם', text: 'השרשרת הגיעה תוך יומיים באריזה יוקרתית. מומלץ בחום!', location: 'רמת גן' },
+  ];
+
+  const piercingGallery = [
+    'https://images.unsplash.com/photo-1596944229530-0f2c45339396?q=80&w=2000',
+    'https://images.unsplash.com/photo-1610636257321-df62a63273e9?q=80&w=2000',
+    'https://images.unsplash.com/photo-1582234032483-20f443588960?q=80&w=2000',
+    'https://images.unsplash.com/photo-1596633605700-1fdc94300bf1?q=80&w=2000',
+  ];
+
   return (
     <div className="bg-white">
       <Toaster position="top-center" />
       
-      {/* Cinematic Hero */}
-      <section ref={heroRef} className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
+      {/* Redesigned Premium Hero */}
+      <section ref={heroRef} className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <motion.div style={{ y, opacity }} className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2940&auto=format&fit=crop" 
-            className="w-full h-full object-cover opacity-60 scale-110"
-            alt="Hero"
+            className="w-full h-full object-cover"
+            alt="JOYA Hero"
           />
+          <div className="absolute inset-0 bg-black/40"></div>
         </motion.div>
         
-        <div className="relative z-10 text-center px-4">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="text-6xl md:text-9xl font-serif text-white italic mb-8 tracking-tighter"
-          >
-            {t('app.title')}
-          </motion.h1>
+        <div className="relative z-10 text-center px-6">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col items-center"
           >
-            <PiercingBooking 
-              trigger={
-                <Button className="bg-white text-black hover:bg-zinc-200 rounded-none px-12 py-8 text-lg uppercase tracking-widest transition-all">
-                  {t('home.bookNow')}
+            <span className="text-white text-xs md:text-sm uppercase tracking-[0.8em] mb-8 font-light block">
+              Luxury Jewelry House
+            </span>
+            <h1 className="text-7xl md:text-[12rem] font-serif text-white italic leading-none mb-4 tracking-tighter">
+              ג'ויה
+            </h1>
+            <p className="text-white text-lg md:text-3xl font-serif italic mb-12 opacity-80 max-w-2xl">
+              {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Link to="/products">
+                <Button className="bg-white text-black hover:bg-zinc-200 rounded-none px-16 py-8 text-xs uppercase tracking-[0.4em] font-bold transition-all border-none">
+                  {language === 'he' ? 'לקולקציה החדשה' : 'Shop Collection'}
                 </Button>
-              }
-            />
+              </Link>
+              <PiercingBooking 
+                trigger={
+                  <Button variant="outline" className="border-white text-white hover:bg-white/10 rounded-none px-16 py-8 text-xs uppercase tracking-[0.4em] font-bold transition-all">
+                    {t('home.bookNow')}
+                  </Button>
+                }
+              />
+            </div>
           </motion.div>
         </div>
 
         <motion.div 
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/40 flex flex-col items-center gap-2"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/40 flex flex-col items-center gap-4"
         >
-          <span className="text-[10px] uppercase tracking-[0.4em]">Scroll</span>
-          <div className="w-[1px] h-12 bg-white/20"></div>
+          <div className="w-[1px] h-20 bg-gradient-to-b from-white to-transparent"></div>
         </motion.div>
       </section>
 
+      {/* Moving Piercing Gallery */}
+      <section className="py-32 bg-zinc-50 overflow-hidden">
+        <div className="container mx-auto px-6 mb-20 text-center">
+          <span className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 block mb-6">Explore Our Studio</span>
+          <h2 className="text-5xl md:text-7xl font-serif italic text-black">{language === 'he' ? 'פירסינג כדרך חיים' : 'Piercing as an Art'}</h2>
+        </div>
+        
+        <div className="flex gap-8 px-8 whitespace-nowrap overflow-hidden">
+           <motion.div 
+             animate={{ x: [0, -1000] }}
+             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+             className="flex gap-8 flex-nowrap"
+           >
+             {[...piercingGallery, ...piercingGallery].map((img, i) => (
+               <div key={i} className="w-[400px] h-[500px] bg-zinc-200 flex-shrink-0 relative group">
+                  <img src={img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Piercing" />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                     <Instagram className="text-white w-8 h-8" />
+                  </div>
+               </div>
+             ))}
+           </motion.div>
+        </div>
+      </section>
+
       {/* Philosophy Section */}
-      <ScrollSection className="py-32 px-6 bg-zinc-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs uppercase tracking-[0.5em] text-zinc-400 mb-8 block">Our Philosophy</span>
-          <h2 className="text-4xl md:text-6xl font-serif italic mb-12 leading-tight text-black">
-            {language === 'he' ? 'אומנות פוגשת אלגנטיות בכל פרט קטן. אנחנו יוצרים תכשיטים שנשארים איתך לנצח.' : 'Where craftsmanship meets timeless elegance. We create pieces that stay with you forever.'}
+      <ScrollSection className="py-40 px-6 bg-white border-y border-zinc-100">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-5xl md:text-8xl font-serif italic mb-16 leading-tight text-black tracking-tight">
+            {language === 'he' ? 'דיוק בכל חיתוך, תשוקה בכל עיצוב.' : 'Precision in every cut, passion in every design.'}
           </h2>
-          <Link to="/products" className="inline-flex items-center gap-4 text-black font-medium group uppercase text-xs tracking-[0.3em]">
+          <Link to="/products" className="inline-flex items-center gap-6 text-black font-bold uppercase text-[10px] tracking-[0.5em] group">
             {t('home.viewAll')}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
+            <div className="w-12 h-[1px] bg-black transition-all group-hover:w-20"></div>
           </Link>
         </div>
       </ScrollSection>
 
-      {/* Featured Collection - Popping Images */}
-      <section className="py-32 px-6 max-w-screen-2xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
+      {/* Featured Collection */}
+      <section className="py-40 px-6 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-24 md:gap-16">
           {featuredProducts.length > 0 ? featuredProducts.map((product: any, i: number) => (
             <motion.div 
               key={product._id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: i * 0.2 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: i * 0.2 }}
               viewport={{ once: true }}
               className="flex flex-col group"
             >
-              <Link to={`/products/${product._id}`} className="overflow-hidden aspect-[4/5] bg-zinc-100 mb-8">
+              <Link to={`/product/${product._id}`} className="overflow-hidden aspect-[4/5] bg-zinc-50 mb-10 relative">
                 <img 
                   src={product.images[0]} 
                   alt={getLocalizedField(product, 'name')}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 border border-black/0 group-hover:border-black/5 transition-all m-4"></div>
               </Link>
-              <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">{getLocalizedField(product.category, 'name')}</span>
-              <h3 className="text-2xl font-serif italic mb-4">{getLocalizedField(product, 'name')}</h3>
-              <p className="text-xl font-light">₪{product.price.toLocaleString()}</p>
+              <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-400 mb-4">{getLocalizedField(product.category, 'name')}</span>
+              <h3 className="text-3xl font-serif italic mb-4">{getLocalizedField(product, 'name')}</h3>
+              <p className="text-xl font-light tracking-widest text-zinc-600">₪{product.price.toLocaleString()}</p>
             </motion.div>
           )) : (
-            <div className="col-span-3 text-center py-20 text-zinc-400 italic font-serif text-2xl">
-              Curating elegance...
+            <div className="col-span-3 text-center py-20 text-zinc-300 italic font-serif text-3xl">
+              Curating our latest creations...
             </div>
           )}
         </div>
       </section>
 
-      {/* Full Width Image Section */}
-      <section className="relative h-[80vh] w-full overflow-hidden">
-        <motion.div 
-          initial={{ scale: 1.2 }}
-          whileInView={{ scale: 1 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0"
-        >
-          <img 
-            src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2940" 
-            className="w-full h-full object-cover"
-            alt="Craftsmanship"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-           <div className="text-center text-white px-6 max-w-3xl">
-              <ScrollSection>
-                <h2 className="text-5xl md:text-7xl font-serif italic mb-8 tracking-tight">
-                  {language === 'he' ? 'דיוק בכל חיתוך' : 'Precision in every cut'}
-                </h2>
-                <p className="text-lg md:text-xl font-light opacity-90 leading-relaxed mb-12">
-                   {language === 'he' ? 'היהלומים שלנו נבחרים בקפידה ומעובדים בעבודת יד כדי להבטיח נצנוץ מושלם שנמשך דורות.' : 'Our diamonds are carefully selected and hand-crafted to ensure a perfect sparkle that lasts generations.'}
-                </p>
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black rounded-none px-12 py-8 uppercase tracking-widest">
-                  {t('home.discoverMore')}
-                </Button>
+      {/* Testimonials Section */}
+      <section className="py-40 bg-black text-white px-6">
+        <div className="max-w-6xl mx-auto">
+          <span className="text-[10px] uppercase tracking-[0.6em] text-zinc-500 block mb-12 text-center">{t('home.testimonials')}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
+            {testimonials.map((item, i) => (
+              <ScrollSection key={i} className="flex flex-col items-center text-center">
+                <p className="text-2xl font-serif italic mb-8 leading-relaxed">"{item.text}"</p>
+                <span className="text-xs uppercase tracking-widest font-bold">{item.name}</span>
+                <span className="text-[10px] text-zinc-500 uppercase tracking-widest mt-2">{item.location}</span>
               </ScrollSection>
-           </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="py-32 px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+      <section className="py-40 px-6 bg-white">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-20 max-w-screen-2xl mx-auto">
           {[
             { icon: Truck, title: 'service.freeShipping' },
             { icon: RefreshCw, title: 'service.30DayReturns' },
             { icon: Shield, title: 'service.lifetimeCare' },
             { icon: Award, title: 'service.certifiedQuality' }
           ].map((service, i) => (
-            <ScrollSection key={i} className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-full border border-zinc-200 flex items-center justify-center mb-6 text-black">
+            <ScrollSection key={i} className="flex flex-col items-center text-center group">
+              <div className="w-20 h-20 rounded-full border border-zinc-100 flex items-center justify-center mb-10 text-black transition-colors group-hover:bg-black group-hover:text-white">
                 <service.icon className="w-6 h-6" />
               </div>
-              <h4 className="text-lg font-serif italic mb-2">{t(service.title)}</h4>
-              <p className="text-xs text-zinc-500 uppercase tracking-widest leading-loose">
+              <h4 className="text-xl font-serif italic mb-4">{t(service.title)}</h4>
+              <p className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] leading-loose max-w-[200px]">
                 {t(service.title + 'Description')}
               </p>
             </ScrollSection>
@@ -192,8 +223,11 @@ const Home: React.FC = () => {
       </section>
 
       {/* Footer Copyright */}
-      <footer className="py-20 border-t border-zinc-100 text-center">
-         <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400">
+      <footer className="py-24 border-t border-zinc-100 text-center bg-zinc-50">
+         <div className="mb-12">
+           <Link to="/" className="text-4xl font-serif font-bold uppercase tracking-[0.5em] text-black">JOYA</Link>
+         </div>
+         <p className="text-[10px] uppercase tracking-[0.6em] text-zinc-400">
            {t('footer.copyright')}
          </p>
       </footer>

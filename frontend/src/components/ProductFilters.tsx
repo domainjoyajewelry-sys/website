@@ -31,6 +31,19 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
     queryFn: getCategories,
   });
 
+  const materials = [
+    { id: 'metal.gold', value: '18K Gold' },
+    { id: 'metal.silver', value: 'Sterling Silver' },
+    { id: 'metal.roseGold', value: 'Rose Gold' }
+  ];
+
+  const gemstones = [
+    { id: 'gemstone.diamond', value: 'Diamond' },
+    { id: 'gemstone.ruby', value: 'Ruby' },
+    { id: 'gemstone.emerald', value: 'Emerald' },
+    { id: 'gemstone.sapphire', value: 'Sapphire' }
+  ];
+
   const handlePriceChange = (value: number[]) => {
     setFilters((prev) => ({ ...prev, priceRange: [value[0], value[1]] }));
   };
@@ -67,24 +80,24 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      <h3 className="text-xl font-serif text-stone-900 mb-6">{t('products.filters')}</h3>
+    <div className="flex flex-col gap-10">
+      <h3 className="text-2xl font-serif italic text-black border-b border-zinc-200 pb-4">{t('products.filters')}</h3>
 
       {/* Category Filter */}
-      <div className="mb-8">
-        <Label className="text-lg font-semibold mb-3 block">{t('products.category')}</Label>
+      <div className="space-y-4">
+        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.category')}</Label>
         {isLoadingCategories ? (
-          <div>Loading categories...</div>
+          <div className="animate-pulse text-xs uppercase tracking-widest">Loading...</div>
         ) : (
-          <RadioGroup value={filters.category} onValueChange={handleCategoryChange}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="all" id="cat-all" />
-              <Label htmlFor="cat-all">{t('products.allJewelry')}</Label>
+          <RadioGroup value={filters.category} onValueChange={handleCategoryChange} className="space-y-3">
+            <div className="flex items-center gap-3">
+              <RadioGroupItem value="all" id="cat-all" className="border-zinc-300" />
+              <Label htmlFor="cat-all" className="text-xs uppercase tracking-widest font-medium cursor-pointer">{t('products.allJewelry')}</Label>
             </div>
             {categories.map((cat: any) => (
-              <div key={cat._id} className="flex items-center space-x-2">
-                <RadioGroupItem value={cat._id} id={`cat-${cat._id}`} />
-                <Label htmlFor={`cat-${cat._id}`}>{getLocalizedField(cat, 'name')}</Label>
+              <div key={cat._id} className="flex items-center gap-3">
+                <RadioGroupItem value={cat._id} id={`cat-${cat._id}`} className="border-zinc-300" />
+                <Label htmlFor={`cat-${cat._id}`} className="text-xs uppercase tracking-widest font-medium cursor-pointer">{getLocalizedField(cat, 'name')}</Label>
               </div>
             ))}
           </RadioGroup>
@@ -92,34 +105,35 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       </div>
 
       {/* Price Range Filter */}
-      <div className="mb-8">
-        <Label className="text-lg font-semibold mb-4 block">{t('products.priceRange')}</Label>
+      <div className="space-y-6">
+        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.priceRange')}</Label>
         <Slider
           defaultValue={[filters.priceRange[0], filters.priceRange[1]]}
           max={10000}
           step={100}
           onValueChange={handlePriceChange}
-          className="w-[90%]"
+          className="w-full"
         />
-        <div className="flex justify-between text-sm text-stone-600 mt-2">
+        <div className="flex justify-between text-[10px] font-bold tracking-widest text-black">
           <span>₪{filters.priceRange[0]}</span>
           <span>₪{filters.priceRange[1]}</span>
         </div>
       </div>
 
       {/* Materials Filter */}
-      <div className="mb-8">
-        <Label className="text-lg font-semibold mb-3 block">{t('products.materials')}</Label>
-        <div className="space-y-2">
-          {['18K Gold', 'Sterling Silver', 'Rose Gold'].map((material, index) => (
-            <div key={index} className="flex items-center space-x-2">
+      <div className="space-y-4">
+        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.materials')}</Label>
+        <div className="space-y-3">
+          {materials.map((m, index) => (
+            <div key={index} className="flex items-center gap-3">
               <Checkbox
                 id={`material-${index}`}
-                checked={filters.materials.includes(material)}
-                onCheckedChange={(checked: boolean) => handleMaterialChange(material, checked)}
+                checked={filters.materials.includes(m.value)}
+                onCheckedChange={(checked: boolean) => handleMaterialChange(m.value, checked)}
+                className="border-zinc-300 rounded-none"
               />
-              <label htmlFor={`material-${index}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                {material}
+              <label htmlFor={`material-${index}`} className="text-xs uppercase tracking-widest font-medium cursor-pointer">
+                {t(m.id)}
               </label>
             </div>
           ))}
@@ -127,25 +141,26 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       </div>
 
       {/* Gemstones Filter */}
-      <div className="mb-8">
-        <Label className="text-lg font-semibold mb-3 block">{t('products.gemstones')}</Label>
-        <div className="space-y-2">
-          {['Diamond', 'Ruby', 'Emerald', 'Sapphire'].map((gemstone, index) => (
-            <div key={index} className="flex items-center space-x-2">
+      <div className="space-y-4">
+        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.gemstones')}</Label>
+        <div className="space-y-3">
+          {gemstones.map((g, index) => (
+            <div key={index} className="flex items-center gap-3">
               <Checkbox
                 id={`gemstone-${index}`}
-                checked={filters.gemstones.includes(gemstone)}
-                onCheckedChange={(checked: boolean) => handleGemstoneChange(gemstone, checked)}
+                checked={filters.gemstones.includes(g.value)}
+                onCheckedChange={(checked: boolean) => handleGemstoneChange(g.value, checked)}
+                className="border-zinc-300 rounded-none"
               />
-              <label htmlFor={`gemstone-${index}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                {gemstone}
+              <label htmlFor={`gemstone-${index}`} className="text-xs uppercase tracking-widest font-medium cursor-pointer">
+                {t(g.id)}
               </label>
             </div>
           ))}
         </div>
       </div>
 
-      <Button variant="outline" className="w-full" onClick={clearAllFilters}>
+      <Button variant="ghost" className="w-full text-zinc-400 uppercase text-[10px] tracking-[0.3em] font-bold hover:bg-zinc-100 rounded-none py-6" onClick={clearAllFilters}>
         {t('products.clearAll')}
       </Button>
     </div>

@@ -43,7 +43,7 @@ const allTranslations: Translations = {
   "footer.sizeGuide": { en: "Size Guide", he: "מדריך מידות" },
   "footer.care": { en: "Jewelry Care", he: "טיפול בתכשיטים" },
   "footer.warranty": { en: "Warranty", he: "אחריות" },
-  "footer.copyright": { en: "© 2023 Joya. All rights reserved.", he: "© 2023 ג'ויה. כל הזכויות שמורות." },
+  "footer.copyright": { en: "© 2026 Joya. All rights reserved.", he: "© 2026 ג'ויה. כל הזכויות שמורות." },
   "home.featuredPieces": { en: "Featured Pieces", he: "פריטים נבחרים" },
   "home.viewAll": { en: "View All", he: "צפו בכולם" },
   "home.discoverMore": { en: "Discover More", he: "גלו עוד" },
@@ -168,7 +168,7 @@ const allTranslations: Translations = {
   "admin.update": { en: "Update", he: "עדכן" },
   "admin.description": { en: "Description", he: "תיאור" },
   "admin.materials": { en: "Materials", he: "חומרים" },
-  "admin.gemstones": { en: "אבני חן", he: "אבני חן" },
+  "admin.gemstones": { en: "Gemstones", he: "אבני חן" },
   "admin.imageUrls": { en: "Image URLs (comma-separated)", he: "כתובות תמונה (מופרדות בפסיק)" },
   "admin.nameEn": { en: "Name (EN)", he: "שם (אנגלית)" },
   "admin.nameHe": { en: "Name (HE)", he: "שם (עברית)" },
@@ -222,7 +222,19 @@ const allTranslations: Translations = {
   "booking.date": { en: "Preferred Date", he: "תאריך מועדף" },
   "booking.time": { en: "Preferred Time", he: "שעה מועדפת" },
   "booking.submit": { en: "Confirm Booking", he: "אשר הזמנה" },
-  "booking.success": { en: "Thank you! We will contact you shortly to confirm your appointment.", he: "תודה! ניצור איתך קשר בהקדם לאישור התור." }
+  "booking.success": { en: "Thank you! We will contact you shortly to confirm your appointment.", he: "תודה! ניצור איתך קשר בהקדם לאישור התור." },
+  // Metal & Gemstone translations
+  "metal.gold": { en: "Gold", he: "זהב" },
+  "metal.silver": { en: "Silver", he: "כסף" },
+  "metal.whiteGold": { en: "White Gold", he: "זהב לבן" },
+  "metal.roseGold": { en: "Rose Gold", he: "רוז גולד" },
+  "metal.platinum": { en: "Platinum", he: "פלטינה" },
+  "gemstone.diamond": { en: "Diamond", he: "יהלום" },
+  "gemstone.pearl": { en: "Pearl", he: "פנינה" },
+  "gemstone.sapphire": { en: "Sapphire", he: "ספיר" },
+  "gemstone.emerald": { en: "Emerald", he: "אמרלד" },
+  "gemstone.ruby": { en: "Ruby", he: "רובי" },
+  "gemstone.none": { en: "No Gemstone", he: "ללא אבני חן" }
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
