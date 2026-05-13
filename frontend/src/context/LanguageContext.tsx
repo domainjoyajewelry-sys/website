@@ -227,11 +227,11 @@ const allTranslations: Translations = {
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<'en' | 'he'>(() => {
-    // Initialize language from localStorage or default to 'en'
+    // Initialize language from localStorage or default to 'he'
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem('language') as 'en' | 'he') || 'en';
+      return (localStorage.getItem('language') as 'en' | 'he') || 'he';
     }
-    return 'en';
+    return 'he';
   });
 
   useEffect(() => {

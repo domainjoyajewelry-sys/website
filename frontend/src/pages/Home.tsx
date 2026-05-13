@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../components/ui/carousel';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
-import { Shield, Truck, RefreshCw, Certificate } from 'lucide-react';
+import { Shield, Truck, RefreshCw, Award } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getAdBanners, getProducts } from '../services/api';
 import PiercingBooking from '../components/PiercingBooking';
@@ -49,25 +49,25 @@ const Home: React.FC = () => {
     {
       name_en: 'Rings',
       name_he: 'טבעות',
-      image: 'https://images.unsplash.com/photo-1598910404395-6d60a5e2f7f9?q=80&w=2940&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2940&auto=format&fit=crop',
       link: '/products?category=rings',
     },
     {
       name_en: 'Necklaces',
       name_he: 'שרשראות',
-      image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=2940&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2940&auto=format&fit=crop',
       link: '/products?category=necklaces',
     },
     {
       name_en: 'Earrings',
       name_he: 'עגילים',
-      image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=2940&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1630019051930-47382dbdb588?q=80&w=2940&auto=format&fit=crop',
       link: '/products?category=earrings',
     },
     {
       name_en: 'Bracelets',
       name_he: 'צמידים',
-      image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=2940&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2940&auto=format&fit=crop',
       link: '/products?category=bracelets',
     },
   ];
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
               <CarouselItem className="h-full">
                  <div
                     className="relative h-full w-full bg-cover bg-center flex items-center justify-center text-white"
-                    style={{ backgroundImage: `url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2940&auto=format&fit=crop')` }}
+                    style={{ backgroundImage: `url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2940&auto=format&fit=crop')` }}
                   >
                     <div className="absolute inset-0 bg-black/40"></div>
                     <motion.div
@@ -204,7 +204,7 @@ const Home: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-amber-500">
-                    <Certificate className="w-6 h-6" />
+                    <Award className="w-6 h-6" />
                   </div>
                   <div>
                     <h4 className="font-semibold">{language === 'en' ? 'Expert Piercers' : 'פירסרים מומחים'}</h4>
@@ -404,7 +404,7 @@ const Home: React.FC = () => {
               { icon: Truck, title: 'service.freeShipping', desc: 'service.freeShippingDescription' },
               { icon: RefreshCw, title: 'service.30DayReturns', desc: 'service.30DayReturnsDescription' },
               { icon: Shield, title: 'service.lifetimeCare', desc: 'service.lifetimeCareDescription' },
-              { icon: Certificate, title: 'service.certifiedQuality', desc: 'service.certifiedQualityDescription' }
+              { icon: Award, title: 'service.certifiedQuality', desc: 'service.certifiedQualityDescription' }
             ].map((service, i) => (
               <div key={i} className="flex flex-col items-center text-center group">
                 <div className="mb-6 p-5 bg-white rounded-full shadow-sm group-hover:bg-amber-50 transition-colors duration-300">
