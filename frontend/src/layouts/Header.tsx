@@ -15,53 +15,34 @@ const Header: React.FC = () => {
   const { language, toggleLanguage, t } = useLanguage();
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm transition-all duration-300">
+    <header className="sticky top-0 z-50 bg-white border-b border-zinc-100 transition-all duration-300">
       {/* Top Banner */}
-      <div className="bg-stone-100 text-center py-2 text-sm text-stone-600">
+      <div className="bg-black text-white text-center py-2 text-xs uppercase tracking-[0.2em]">
         {t('header.topBanner')}
       </div>
 
-      <div className="container mx-auto flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="container mx-auto flex items-center justify-between py-6 px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Mobile Menu */}
         <div className="lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
+                <Menu className="h-6 w-6 text-black" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64">
-              <div className="flex flex-col gap-4 pt-6">
-                <Link to="/" className="text-lg font-semibold text-stone-900">
+            <SheetContent side="left" className="w-64 bg-white">
+              <div className="flex flex-col gap-6 pt-10">
+                <Link to="/" className="text-xl font-serif italic text-black border-b pb-2">
                   {t('nav.newArrivals')}
                 </Link>
-                {/* Collections Dropdown for Mobile */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="justify-start text-lg font-semibold text-stone-900">
-                      {t('nav.collections')}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Link to="/products?category=rings">{t('nav.rings')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/products?category=necklaces">{t('nav.necklaces')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/products?category=earrings">{t('nav.earrings')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link to="/products?category=bracelets">{t('nav.bracelets')}</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Link to="/" className="text-lg font-semibold text-stone-900">
+                <Link to="/products" className="text-xl font-serif italic text-black border-b pb-2">
+                  {t('nav.collections')}
+                </Link>
+                <Link to="/" className="text-xl font-serif italic text-black border-b pb-2">
                   {t('nav.more')}
                 </Link>
                 {/* Language Toggle for Mobile */}
-                <Button variant="ghost" onClick={toggleLanguage} className="justify-start">
+                <Button variant="outline" onClick={toggleLanguage} className="justify-center border-black rounded-none">
                   {language === 'en' ? 'עברית' : 'English'}
                 </Button>
               </div>
@@ -70,76 +51,54 @@ const Header: React.FC = () => {
         </div>
 
         {/* Logo */}
-        <Link to="/" className="text-2xl font-serif font-bold uppercase tracking-widest text-stone-900">
-          {t('app.Joya')}
+        <Link to="/" className="text-3xl font-serif font-bold uppercase tracking-[0.3em] text-black">
+          JOYA
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-6">
-          <Link to="/" className="text-stone-900 hover:text-amber-700 transition-colors">
+        <nav className="hidden lg:flex items-center space-x-12 rtl:space-x-reverse">
+          <Link to="/" className="text-black hover:text-zinc-500 transition-colors uppercase text-xs tracking-widest font-medium">
             {t('nav.newArrivals')}
           </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-stone-900 hover:text-amber-700 transition-colors">
-                {t('nav.collections')}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Link to="/products?category=rings">{t('nav.rings')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/products?category=necklaces">{t('nav.necklaces')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/products?category=earrings">{t('nav.earrings')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/products?category=bracelets">{t('nav.bracelets')}</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Link to="/" className="text-stone-900 hover:text-amber-700 transition-colors">
+          <Link to="/products" className="text-black hover:text-zinc-500 transition-colors uppercase text-xs tracking-widest font-medium">
+            {t('nav.collections')}
+          </Link>
+          <Link to="/" className="text-black hover:text-zinc-500 transition-colors uppercase text-xs tracking-widest font-medium">
             {t('nav.more')}
           </Link>
         </nav>
 
         {/* Right Actions */}
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+        <div className="flex items-center space-x-6 rtl:space-x-reverse">
+          <Button variant="ghost" className="text-xs font-bold hover:bg-transparent p-0" onClick={toggleLanguage}>
             {language === 'en' ? 'HE' : 'EN'}
           </Button>
-          <Button variant="ghost" size="icon">
-            <Search className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="hover:bg-transparent">
+            <Search className="h-5 w-5 text-black" />
           </Button>
+          <Link to="/cart">
+            <Button variant="ghost" size="icon" className="hover:bg-transparent relative">
+              <ShoppingCart className="h-5 w-5 text-black" />
+            </Button>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="hover:bg-transparent">
+                <User className="h-5 w-5 text-black" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Link to="/profile">{t('profile.personalInfo')}</Link>
+            <DropdownMenuContent className="bg-white border-zinc-200">
+              <DropdownMenuItem className="hover:bg-zinc-50">
+                <Link to="/profile" className="w-full">{t('profile.personalInfo')}</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/orders">{t('orders.myOrders')}</Link>
+              <DropdownMenuItem className="hover:bg-zinc-50">
+                <Link to="/orders" className="w-full">{t('orders.myOrders')}</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/admin">{t('admin.dashboard')}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                {t('admin.signOut')}
+              <DropdownMenuItem className="hover:bg-zinc-50">
+                <Link to="/admin" className="w-full text-zinc-400">Admin</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="ghost" size="icon">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="absolute top-2 right-2 inline-flex items-center justify-center h-4 w-4 rounded-full bg-amber-400 text-xs text-white">
-              0
-            </span>
-          </Button>
         </div>
       </div>
     </header>

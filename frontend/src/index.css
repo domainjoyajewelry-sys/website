@@ -4,9 +4,32 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Inter', 'Assistant', sans-serif;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
+
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Inter', 'Assistant', sans-serif;
+  }
 }
 
 [dir="rtl"] {
@@ -16,13 +39,42 @@
 html {
   font-family: var(--font-sans);
   scroll-behavior: smooth;
+  background-color: white;
+  color: black;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
   font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
-.hebrew-text {
-  font-family: 'Assistant', sans-serif;
+/* Classic Black & White Effects */
+.bg-classic {
+  background-color: #ffffff;
+}
+
+.text-classic {
+  color: #000000;
+}
+
+.border-classic {
+  border-color: #000000;
+}
+
+.hover-effect:hover {
+  background-color: #000000;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.dialog-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+  background-color: white;
+  color: black;
+  border: 1px solid #e5e7eb;
 }
