@@ -35,7 +35,7 @@ const PiercingBooking: React.FC<{ trigger?: React.ReactNode }> = ({ trigger }) =
   };
 
   const openWhatsApp = () => {
-    const phoneNumber = "972500000000"; // Replace with actual business number
+    const phoneNumber = "972512345678"; // Replace with actual business number
     const message = encodeURIComponent(language === 'he' ? "היי, אשמח לתאם תור לפירסינג" : "Hi, I'd like to book a piercing appointment");
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };

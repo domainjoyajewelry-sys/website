@@ -56,6 +56,18 @@ const productSchema = mongoose.Schema(
     gemstones_he: {
       type: String,
     },
+    colors: {
+      type: String,
+    },
+    colors_he: {
+      type: String,
+    },
+    bodyPart: {
+      type: String,
+    },
+    bodyPart_he: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -14,12 +14,16 @@ interface ProductFiltersProps {
     priceRange: [number, number];
     materials: string[];
     gemstones: string[];
+    colors: string[];
+    bodyParts: string[];
   };
   setFilters: React.Dispatch<React.SetStateAction<{
     category: string;
     priceRange: [number, number];
     materials: string[];
     gemstones: string[];
+    colors: string[];
+    bodyParts: string[];
   }>>;
 }
 
@@ -34,7 +38,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
   const materials = [
     { id: 'metal.gold', value: '18K Gold' },
     { id: 'metal.silver', value: 'Sterling Silver' },
-    { id: 'metal.roseGold', value: 'Rose Gold' }
+    { id: 'metal.roseGold', value: 'Rose Gold' },
+    { id: 'metal.whiteGold', value: 'White Gold' }
   ];
 
   const gemstones = [
@@ -42,6 +47,22 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
     { id: 'gemstone.ruby', value: 'Ruby' },
     { id: 'gemstone.emerald', value: 'Emerald' },
     { id: 'gemstone.sapphire', value: 'Sapphire' }
+  ];
+
+  const colors = [
+    { id: 'metal.gold', value: 'Gold' },
+    { id: 'metal.silver', value: 'Silver' },
+    { id: 'metal.roseGold', value: 'Rose Gold' },
+    { id: 'metal.whiteGold', value: 'White Gold' }
+  ];
+
+  const bodyParts = [
+    { id: 'bodyPart.ear', value: 'Ear' },
+    { id: 'bodyPart.nose', value: 'Nose' },
+    { id: 'bodyPart.lip', value: 'Lip' },
+    { id: 'bodyPart.belly', value: 'Belly' },
+    { id: 'bodyPart.eyebrow', value: 'Eyebrow' },
+    { id: 'bodyPart.tongue', value: 'Tongue' }
   ];
 
   const handlePriceChange = (value: number[]) => {
@@ -66,6 +87,24 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
     });
   };
 
+  const handleColorChange = (color: string, checked: boolean) => {
+    setFilters((prev) => {
+      const newColors = checked
+        ? [...prev.colors, color]
+        : prev.colors.filter((c) => c !== color);
+      return { ...prev, colors: newColors };
+    });
+  };
+
+  const handleBodyPartChange = (bodyPart: string, checked: boolean) => {
+    setFilters((prev) => {
+      const newBodyParts = checked
+        ? [...prev.bodyParts, bodyPart]
+        : prev.bodyParts.filter((b) => b !== bodyPart);
+      return { ...prev, bodyParts: newBodyParts };
+    });
+  };
+
   const handleCategoryChange = (catId: string) => {
     setFilters((prev) => ({ ...prev, category: catId }));
   };
@@ -76,28 +115,28 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       priceRange: [0, 10000],
       materials: [],
       gemstones: [],
+      colors: [],
+      bodyParts: [],
     });
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <h3 className="text-2xl font-serif italic text-black border-b border-zinc-200 pb-4">{t('products.filters')}</h3>
-
+    <div className="flex flex-col gap-12">
       {/* Category Filter */}
-      <div className="space-y-4">
-        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.category')}</Label>
+      <div className="space-y-6">
+        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.category')}</Label>
         {isLoadingCategories ? (
-          <div className="animate-pulse text-xs uppercase tracking-widest">Loading...</div>
+          <div className="animate-pulse text-[10px] uppercase tracking-widest">Loading...</div>
         ) : (
-          <RadioGroup value={filters.category} onValueChange={handleCategoryChange} className="space-y-3">
-            <div className="flex items-center gap-3">
-              <RadioGroupItem value="all" id="cat-all" className="border-zinc-300" />
-              <Label htmlFor="cat-all" className="text-xs uppercase tracking-widest font-medium cursor-pointer">{t('products.allJewelry')}</Label>
+          <RadioGroup value={filters.category} onValueChange={handleCategoryChange} className="space-y-4">
+            <div className="flex items-center gap-4 group">
+              <RadioGroupItem value="all" id="cat-all" className="border-zinc-300 w-3 h-3" />
+              <Label htmlFor="cat-all" className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{t('products.allJewelry')}</Label>
             </div>
             {categories.map((cat: any) => (
-              <div key={cat._id} className="flex items-center gap-3">
-                <RadioGroupItem value={cat._id} id={`cat-${cat._id}`} className="border-zinc-300" />
-                <Label htmlFor={`cat-${cat._id}`} className="text-xs uppercase tracking-widest font-medium cursor-pointer">{getLocalizedField(cat, 'name')}</Label>
+              <div key={cat._id} className="flex items-center gap-4 group">
+                <RadioGroupItem value={cat._id} id={`cat-${cat._id}`} className="border-zinc-300 w-3 h-3" />
+                <Label htmlFor={`cat-${cat._id}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{getLocalizedField(cat, 'name')}</Label>
               </div>
             ))}
           </RadioGroup>
@@ -105,34 +144,76 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       </div>
 
       {/* Price Range Filter */}
+      <div className="space-y-8">
+        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.priceRange')}</Label>
+        <div className="px-2">
+          <Slider
+            defaultValue={[filters.priceRange[0], filters.priceRange[1]]}
+            max={10000}
+            step={100}
+            onValueChange={handlePriceChange}
+            className="w-full"
+          />
+        </div>
+        <div className="flex justify-between text-[10px] font-bold tracking-[0.3em] text-black uppercase">
+          <span>₪{filters.priceRange[0].toLocaleString()}</span>
+          <span>₪{filters.priceRange[1].toLocaleString()}</span>
+        </div>
+      </div>
+
+      {/* Body Part Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.priceRange')}</Label>
-        <Slider
-          defaultValue={[filters.priceRange[0], filters.priceRange[1]]}
-          max={10000}
-          step={100}
-          onValueChange={handlePriceChange}
-          className="w-full"
-        />
-        <div className="flex justify-between text-[10px] font-bold tracking-widest text-black">
-          <span>₪{filters.priceRange[0]}</span>
-          <span>₪{filters.priceRange[1]}</span>
+        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.bodyPart')}</Label>
+        <div className="grid grid-cols-1 gap-4">
+          {bodyParts.map((b, index) => (
+            <div key={index} className="flex items-center gap-4 group">
+              <Checkbox
+                id={`bodypart-${index}`}
+                checked={filters.bodyParts.includes(b.value)}
+                onCheckedChange={(checked: boolean) => handleBodyPartChange(b.value, checked)}
+                className="border-zinc-300 rounded-none w-3 h-3"
+              />
+              <label htmlFor={`bodypart-${index}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
+                {t(b.id)}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Color Filter */}
+      <div className="space-y-6">
+        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.color')}</Label>
+        <div className="space-y-4">
+          {colors.map((c, index) => (
+            <div key={index} className="flex items-center gap-4 group">
+              <Checkbox
+                id={`color-${index}`}
+                checked={filters.colors.includes(c.value)}
+                onCheckedChange={(checked: boolean) => handleColorChange(c.value, checked)}
+                className="border-zinc-300 rounded-none w-3 h-3"
+              />
+              <label htmlFor={`color-${index}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
+                {t(c.id)}
+              </label>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Materials Filter */}
-      <div className="space-y-4">
-        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.materials')}</Label>
-        <div className="space-y-3">
+      <div className="space-y-6">
+        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.materials')}</Label>
+        <div className="space-y-4">
           {materials.map((m, index) => (
-            <div key={index} className="flex items-center gap-3">
+            <div key={index} className="flex items-center gap-4 group">
               <Checkbox
                 id={`material-${index}`}
                 checked={filters.materials.includes(m.value)}
                 onCheckedChange={(checked: boolean) => handleMaterialChange(m.value, checked)}
-                className="border-zinc-300 rounded-none"
+                className="border-zinc-300 rounded-none w-3 h-3"
               />
-              <label htmlFor={`material-${index}`} className="text-xs uppercase tracking-widest font-medium cursor-pointer">
+              <label htmlFor={`material-${index}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
                 {t(m.id)}
               </label>
             </div>
@@ -140,27 +221,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
         </div>
       </div>
 
-      {/* Gemstones Filter */}
-      <div className="space-y-4">
-        <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">{t('products.gemstones')}</Label>
-        <div className="space-y-3">
-          {gemstones.map((g, index) => (
-            <div key={index} className="flex items-center gap-3">
-              <Checkbox
-                id={`gemstone-${index}`}
-                checked={filters.gemstones.includes(g.value)}
-                onCheckedChange={(checked: boolean) => handleGemstoneChange(g.value, checked)}
-                className="border-zinc-300 rounded-none"
-              />
-              <label htmlFor={`gemstone-${index}`} className="text-xs uppercase tracking-widest font-medium cursor-pointer">
-                {t(g.id)}
-              </label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <Button variant="ghost" className="w-full text-zinc-400 uppercase text-[10px] tracking-[0.3em] font-bold hover:bg-zinc-100 rounded-none py-6" onClick={clearAllFilters}>
+      <Button variant="ghost" className="w-full text-zinc-300 hover:text-black uppercase text-[10px] tracking-[0.5em] font-bold hover:bg-transparent rounded-none py-8 border-t border-zinc-100 transition-all" onClick={clearAllFilters}>
         {t('products.clearAll')}
       </Button>
     </div>

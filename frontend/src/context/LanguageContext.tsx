@@ -198,6 +198,8 @@ const allTranslations: Translations = {
   "products.sortBy": { en: "Sort By", he: "מיין לפי" },
   "products.noProductsFound": { en: "No products found matching your criteria.", he: "לא נמצאו מוצרים התואמים לקריטריונים שלך." },
   "products.clearAllFilters": { en: "Clear All Filters", he: "נקה את כל הסינונים" },
+  "products.color": { en: "Color", he: "צבע" },
+  "products.bodyPart": { en: "Body Part", he: "מיקום בגוף" },
   "cart.orderSummary": { en: "Order Summary", he: "סיכום הזמנה" },
   "cart.freeShippingProgress": { en: "You're ₪{amount} away from free shipping!", he: "חסרים לך ₪{amount} למשלוח חינם!" },
   "checkout.checkout": { en: "Checkout", he: "קופה" },
@@ -234,7 +236,13 @@ const allTranslations: Translations = {
   "gemstone.sapphire": { en: "Sapphire", he: "ספיר" },
   "gemstone.emerald": { en: "Emerald", he: "אמרלד" },
   "gemstone.ruby": { en: "Ruby", he: "רובי" },
-  "gemstone.none": { en: "No Gemstone", he: "ללא אבני חן" }
+  "gemstone.none": { en: "No Gemstone", he: "ללא אבני חן" },
+  "bodyPart.ear": { en: "Ear", he: "אוזן" },
+  "bodyPart.nose": { en: "Nose", he: "אף" },
+  "bodyPart.lip": { en: "Lip", he: "שפה" },
+  "bodyPart.belly": { en: "Belly", he: "טבור" },
+  "bodyPart.eyebrow": { en: "Eyebrow", he: "גבה" },
+  "bodyPart.tongue": { en: "Tongue", he: "לשון" },
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
@@ -268,6 +276,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getLocalizedField = <T extends { [key: string]: any }>(obj: T, field: string): string => {
+    if (!obj || typeof obj !== 'object') return '';
     const localizedField = `${field}_${language}`;
     if (localizedField in obj && obj[localizedField] !== null && obj[localizedField] !== undefined) {
       return obj[localizedField];
