@@ -127,9 +127,6 @@ const Home: React.FC = () => {
             <span className="text-white text-[9px] uppercase tracking-[1.2em] mb-10 font-light block opacity-90">
               {language === 'he' ? 'בית תכשיטי יוקרה' : 'Luxury Jewelry House'}
             </span>
-            <h1 className="text-6xl md:text-[7rem] font-serif text-white leading-none mb-10 tracking-[0.1em] uppercase font-medium">
-              {language === 'he' ? "ג'ויה" : "Joya"}
-            </h1>
             <p className="text-white text-base md:text-xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest">
               {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
             </p>

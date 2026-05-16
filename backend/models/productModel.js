@@ -42,6 +42,11 @@ const productSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    isNewArrival: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     materials: {
       type: String,
       required: true,

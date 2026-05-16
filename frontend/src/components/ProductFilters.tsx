@@ -124,19 +124,19 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
     <div className="flex flex-col gap-12">
       {/* Category Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.category')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.category')}</Label>
         {isLoadingCategories ? (
-          <div className="animate-pulse text-[10px] uppercase tracking-widest">Loading...</div>
+          <div className="animate-pulse text-[12px] uppercase tracking-widest">Loading...</div>
         ) : (
           <RadioGroup value={filters.category} onValueChange={handleCategoryChange} className="space-y-4">
             <div className="flex items-center gap-4 group">
               <RadioGroupItem value="all" id="cat-all" className="border-zinc-300 w-3 h-3" />
-              <Label htmlFor="cat-all" className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{t('products.allJewelry')}</Label>
+              <Label htmlFor="cat-all" className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{t('products.allJewelry')}</Label>
             </div>
             {categories.map((cat: any) => (
               <div key={cat._id} className="flex items-center gap-4 group">
                 <RadioGroupItem value={cat._id} id={`cat-${cat._id}`} className="border-zinc-300 w-3 h-3" />
-                <Label htmlFor={`cat-${cat._id}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{getLocalizedField(cat, 'name')}</Label>
+                <Label htmlFor={`cat-${cat._id}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{getLocalizedField(cat, 'name')}</Label>
               </div>
             ))}
           </RadioGroup>
@@ -145,7 +145,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
 
       {/* Price Range Filter */}
       <div className="space-y-8">
-        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.priceRange')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.priceRange')}</Label>
         <div className="px-2">
           <Slider
             defaultValue={[filters.priceRange[0], filters.priceRange[1]]}
@@ -155,7 +155,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
             className="w-full"
           />
         </div>
-        <div className="flex justify-between text-[10px] font-bold tracking-[0.3em] text-black uppercase">
+        <div className="flex justify-between text-[12px] font-bold tracking-[0.3em] text-black uppercase">
           <span>₪{filters.priceRange[0].toLocaleString()}</span>
           <span>₪{filters.priceRange[1].toLocaleString()}</span>
         </div>
@@ -163,7 +163,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
 
       {/* Body Part Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.bodyPart')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.bodyPart')}</Label>
         <div className="grid grid-cols-1 gap-4">
           {bodyParts.map((b, index) => (
             <div key={index} className="flex items-center gap-4 group">
@@ -173,7 +173,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
                 onCheckedChange={(checked: boolean) => handleBodyPartChange(b.value, checked)}
                 className="border-zinc-300 rounded-none w-3 h-3"
               />
-              <label htmlFor={`bodypart-${index}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
+              <label htmlFor={`bodypart-${index}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
                 {t(b.id)}
               </label>
             </div>
@@ -183,7 +183,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
 
       {/* Color Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.color')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.color')}</Label>
         <div className="space-y-4">
           {colors.map((c, index) => (
             <div key={index} className="flex items-center gap-4 group">
@@ -193,7 +193,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
                 onCheckedChange={(checked: boolean) => handleColorChange(c.value, checked)}
                 className="border-zinc-300 rounded-none w-3 h-3"
               />
-              <label htmlFor={`color-${index}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
+              <label htmlFor={`color-${index}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
                 {t(c.id)}
               </label>
             </div>
@@ -203,7 +203,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
 
       {/* Materials Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[10px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.materials')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.materials')}</Label>
         <div className="space-y-4">
           {materials.map((m, index) => (
             <div key={index} className="flex items-center gap-4 group">
@@ -213,7 +213,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
                 onCheckedChange={(checked: boolean) => handleMaterialChange(m.value, checked)}
                 className="border-zinc-300 rounded-none w-3 h-3"
               />
-              <label htmlFor={`material-${index}`} className="text-[10px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
+              <label htmlFor={`material-${index}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
                 {t(m.id)}
               </label>
             </div>
@@ -221,7 +221,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
         </div>
       </div>
 
-      <Button variant="ghost" className="w-full text-zinc-300 hover:text-black uppercase text-[10px] tracking-[0.5em] font-bold hover:bg-transparent rounded-none py-8 border-t border-zinc-100 transition-all" onClick={clearAllFilters}>
+      <Button variant="ghost" className="w-full text-zinc-300 hover:text-black uppercase text-[12px] tracking-[0.5em] font-bold hover:bg-transparent rounded-none py-8 border-t border-zinc-100 transition-all" onClick={clearAllFilters}>
         {t('products.clearAll')}
       </Button>
     </div>

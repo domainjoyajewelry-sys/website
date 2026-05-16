@@ -21,17 +21,19 @@ const Products: React.FC = () => {
     gemstones: [],
     colors: [],
     bodyParts: [],
+    isNewArrival: false,
   });
   const [sortOrder, setSortOrder] = useState('featured');
 
   useEffect(() => {
     const colorParam = searchParams.get('color');
-    if (colorParam) {
-      setFilters(prev => ({
-        ...prev,
-        colors: [colorParam]
-      }));
-    }
+    const newParam = searchParams.get('new');
+    
+    setFilters(prev => ({
+      ...prev,
+      colors: colorParam ? [colorParam] : prev.colors,
+      isNewArrival: newParam === 'true'
+    }));
   }, [searchParams]);
 
   const { data: products = [], isLoading: isLoadingProducts } = useQuery({
@@ -55,7 +57,9 @@ const Products: React.FC = () => {
     const bodyPartMatch = filters.bodyParts.length === 0 || 
       filters.bodyParts.some(bp => product.bodyParts?.includes(bp) || product.bodyPart === bp);
 
-    return priceMatch && categoryMatch && materialMatch && gemstoneMatch && colorMatch && bodyPartMatch;
+    const newArrivalMatch = !filters.isNewArrival || product.isNewArrival;
+
+    return priceMatch && categoryMatch && materialMatch && gemstoneMatch && colorMatch && bodyPartMatch && newArrivalMatch;
   });
 
   const sortedProducts = [...filteredProducts].sort((a: any, b: any) => {

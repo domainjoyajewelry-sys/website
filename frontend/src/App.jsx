@@ -8,6 +8,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import Profile from './pages/Profile';
+import Login from './pages/Login'; // Import Login component
 import Admin from './pages/admin/Admin'; // Import Admin component
 import AdminLayout from './layouts/AdminLayout'; // Import AdminLayout
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
@@ -22,7 +23,7 @@ function App() {
       <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
       <Route path="/orders" element={<Layout><Orders /></Layout>} />
       <Route path="/profile" element={<Layout><Profile /></Layout>} />
-      <Route path="/login" element={<Layout><div>Login Page</div></Layout>} /> {/* Placeholder Login Page */}
+      <Route path="/login" element={<Layout><Login /></Layout>} />
       <Route path="/unauthorized" element={<Layout><div>Unauthorized</div></Layout>} /> {/* Placeholder Unauthorized Page */}
 
       {/* Admin Routes */}
