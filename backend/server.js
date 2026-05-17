@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
@@ -14,6 +15,7 @@ connectDB();
 
 const app = express();
 
+app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Enable body parser
 
 app.get('/', (req, res) => {
