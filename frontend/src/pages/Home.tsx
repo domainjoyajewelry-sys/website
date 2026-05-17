@@ -56,14 +56,9 @@ const Home: React.FC = () => {
   // Logic to randomize "Featured" products each time
   const featuredProducts = useMemo(() => {
     if (allProducts.length === 0) return [];
-    
-    // Shuffle the products array
     const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
-    
-    // Prioritize products marked as 'featured', then pick random ones
     const prioritized = shuffled.filter((p: any) => p.featured);
     const nonPrioritized = shuffled.filter((p: any) => !p.featured);
-    
     const combined = [...prioritized, ...nonPrioritized];
     return combined.slice(0, 3);
   }, [allProducts]);
@@ -120,21 +115,21 @@ const Home: React.FC = () => {
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center"
           >
-            <span className="text-white text-[9px] uppercase tracking-[1.2em] mb-10 font-light block opacity-90">
+            <span className="text-white text-[9px] sm:text-[10px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
               {language === 'he' ? 'בית תכשיטי יוקרה' : 'Luxury Jewelry House'}
             </span>
-            <p className="text-white text-base md:text-xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest">
+            <p className="text-white text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest leading-relaxed">
               {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
             </p>
             <div className="flex flex-col sm:flex-row gap-8">
               <Link to={activeBanner.link || "/products"}>
-                <Button className="bg-white/90 text-black hover:bg-white transition-all duration-700 rounded-none px-10 py-7 text-[9px] uppercase tracking-[0.4em] font-bold border-none">
+                <Button className="bg-white/90 text-black hover:bg-white transition-all duration-700 rounded-none px-10 py-7 text-[9px] sm:text-[10px] uppercase tracking-[0.4em] font-bold border-none">
                   {language === 'he' ? 'לקולקציה החדשה' : 'Shop Collection'}
                 </Button>
               </Link>
               <PiercingBooking 
                 trigger={
-                  <Button variant="outline" className="text-white border-white/40 hover:border-white hover:bg-white/5 transition-all duration-700 rounded-none px-10 py-7 text-[9px] uppercase tracking-[0.4em] font-bold">
+                  <Button variant="outline" className="text-white border-white/40 hover:border-white hover:bg-white/5 transition-all duration-700 rounded-none px-10 py-7 text-[9px] sm:text-[10px] uppercase tracking-[0.4em] font-bold">
                     {t('home.bookNow')}
                   </Button>
                 }
@@ -144,7 +139,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* Dynamic Metal Selection Gallery */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 pb-20 mt-auto">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 pb-20 mt-auto">
           {metalPreviews.map((m, i) => (
             <motion.div
               key={i}
@@ -154,16 +149,16 @@ const Home: React.FC = () => {
               onClick={() => navigate(`/products?color=${m.color}`)}
               className="group cursor-pointer flex flex-col items-center"
             >
-              <div className="relative w-full aspect-[3/4] overflow-hidden border border-white/10 mb-6">
+              <div className="relative w-full aspect-[3/4] overflow-hidden border border-white/10 mb-4 sm:mb-6">
                 <img src={m.image} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105" alt={m.name} />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-700"></div>
               </div>
               
               <div className="flex flex-col items-center">
-                 <span className="text-white text-[11px] md:text-[13px] uppercase tracking-[0.4em] font-bold text-center px-2 transition-all duration-500 group-hover:tracking-[0.5em]">
+                 <span className="text-white text-[10px] sm:text-[11px] md:text-[13px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold text-center px-2 transition-all duration-500 group-hover:tracking-[0.5em]">
                    {language === 'he' ? m.name_he : m.name}
                  </span>
-                 <div className="w-8 h-[1px] bg-white/30 mt-4 transition-all duration-700 group-hover:w-16 group-hover:bg-white/60"></div>
+                 <div className="w-6 h-[1px] bg-white/30 mt-3 sm:mt-4 transition-all duration-700 group-hover:w-16 group-hover:bg-white/60"></div>
               </div>
             </motion.div>
           ))}
@@ -171,29 +166,29 @@ const Home: React.FC = () => {
       </section>
 
       {/* Philosophy Section */}
-      <ScrollSection className="py-48 px-6 bg-white border-y border-zinc-50">
+      <ScrollSection className="py-32 sm:py-48 px-6 bg-white border-y border-zinc-50">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-4xl md:text-7xl font-serif mb-16 leading-[1.1] text-black tracking-tight uppercase font-medium">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-12 sm:mb-16 leading-[1.2] sm:leading-[1.1] text-black tracking-tight uppercase font-medium px-4">
             {language === 'he' ? 'דיוק בכל חיתוך, תשוקה בכל עיצוב.' : 'Precision in every cut, passion in every design.'}
           </h2>
-          <Link to="/products" className="inline-flex items-center gap-8 text-black font-bold uppercase text-[9px] tracking-[1em] group opacity-60 hover:opacity-100 transition-opacity">
+          <Link to="/products" className="inline-flex items-center gap-6 sm:gap-8 text-black font-bold uppercase text-[9px] sm:text-[10px] tracking-[1em] group opacity-60 hover:opacity-100 transition-opacity">
             {t('home.viewAll')}
-            <div className="w-12 h-[1px] bg-black transition-all group-hover:w-20"></div>
+            <div className="w-10 sm:w-12 h-[1px] bg-black transition-all group-hover:w-20"></div>
           </Link>
         </div>
       </ScrollSection>
 
       {/* Featured Collection */}
-      <section className="py-48 px-6 max-w-screen-2xl mx-auto">
-        <div className="flex flex-col items-center mb-28">
-           <span className="text-[9px] uppercase tracking-[1em] text-zinc-400 mb-6 font-serif opacity-70">
+      <section className="py-32 sm:py-48 px-6 max-w-screen-2xl mx-auto">
+        <div className="flex flex-col items-center mb-20 sm:mb-28">
+           <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.8em] sm:tracking-[1em] text-zinc-400 mb-6 font-serif opacity-70">
              {language === 'he' ? 'נבחר עבורך' : 'Curated For You'}
            </span>
-           <h2 className="text-4xl md:text-6xl font-serif uppercase tracking-[0.1em] font-medium">
+           <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif uppercase tracking-[0.1em] font-medium">
              {language === 'he' ? 'מוצגים' : 'Featured'}
            </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-20">
           {featuredProducts.length > 0 ? featuredProducts.map((product: any, i: number) => (
             <motion.div 
               key={product._id}
@@ -203,7 +198,7 @@ const Home: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col group"
             >
-              <Link to={`/product/${product._id}`} className="overflow-hidden aspect-[3/4] bg-zinc-50 mb-10 relative border border-zinc-100 grayscale hover:grayscale-0 transition-all duration-1000">
+              <Link to={`/product/${product._id}`} className="overflow-hidden aspect-[3/4] bg-zinc-50 mb-8 sm:mb-10 relative border border-zinc-100 grayscale hover:grayscale-0 transition-all duration-1000">
                 <img 
                   src={product.images[0]} 
                   alt={getLocalizedField(product, 'name')}
@@ -211,9 +206,9 @@ const Home: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
               </Link>
-              <span className="text-[9px] uppercase tracking-[0.6em] text-zinc-400 mb-5 font-serif">{getLocalizedField(product.category, 'name')}</span>
-              <h3 className="text-xl font-serif mb-5 uppercase tracking-[0.2em] font-medium">{getLocalizedField(product, 'name')}</h3>
-              <p className="text-lg font-body tracking-[0.3em] text-zinc-500 italic font-light">₪{product.price.toLocaleString()}</p>
+              <span className="text-[9px] uppercase tracking-[0.5em] sm:tracking-[0.6em] text-zinc-400 mb-4 sm:mb-5 font-serif">{getLocalizedField(product.category, 'name')}</span>
+              <h3 className="text-lg sm:text-xl font-serif mb-4 sm:mb-5 uppercase tracking-[0.1em] sm:tracking-[0.2em] font-medium">{getLocalizedField(product, 'name')}</h3>
+              <p className="text-base sm:text-lg font-body italic text-zinc-500 italic font-light tracking-widest">₪{product.price.toLocaleString()}</p>
             </motion.div>
           )) : (
             <div className="col-span-3 text-center py-20 text-zinc-300 italic font-serif text-2xl tracking-[0.4em]">
@@ -224,15 +219,15 @@ const Home: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-48 bg-black text-white px-6">
+      <section className="py-32 sm:py-48 bg-black text-white px-6">
         <div className="max-w-5xl mx-auto">
-          <span className="text-[9px] uppercase tracking-[1.2em] text-zinc-600 block mb-20 text-center font-serif">{t('home.testimonials')}</span>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
+          <span className="text-[9px] sm:text-[10px] uppercase tracking-[1em] sm:tracking-[1.2em] text-zinc-600 block mb-16 sm:mb-20 text-center font-serif">{t('home.testimonials')}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 sm:gap-20">
             {testimonials.map((item, i) => (
               <ScrollSection key={i} className="flex flex-col items-center text-center">
-                <p className="text-2xl font-body italic mb-10 leading-relaxed font-light opacity-80">"{item.text}"</p>
-                <span className="text-[9px] uppercase tracking-[0.8em] font-bold font-serif">{item.name}</span>
-                <span className="text-[9px] text-zinc-600 uppercase tracking-[0.6em] mt-4 font-serif">{item.location}</span>
+                <p className="text-xl sm:text-2xl md:text-3xl font-body italic mb-8 sm:mb-10 leading-relaxed font-light opacity-80 px-4">"{item.text}"</p>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.6em] sm:tracking-[0.8em] font-bold font-serif">{item.name}</span>
+                <span className="text-[9px] sm:text-[10px] text-zinc-600 uppercase tracking-[0.4em] sm:tracking-[0.6em] mt-3 sm:mt-4 font-serif">{item.location}</span>
               </ScrollSection>
             ))}
           </div>
@@ -240,8 +235,8 @@ const Home: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-48 px-6 bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-20 max-w-screen-2xl mx-auto">
+      <section className="py-32 sm:py-48 px-6 bg-white">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-20 max-w-screen-2xl mx-auto">
           {[
             { icon: Truck, title: 'service.freeShipping' },
             { icon: RefreshCw, title: 'service.30DayReturns' },
@@ -249,11 +244,11 @@ const Home: React.FC = () => {
             { icon: Award, title: 'service.certifiedQuality' }
           ].map((service, i) => (
             <ScrollSection key={i} className="flex flex-col items-center text-center group">
-              <div className="w-20 h-20 rounded-full border border-zinc-100 flex items-center justify-center mb-10 text-black transition-all duration-1000 group-hover:border-black group-hover:scale-105">
-                <service.icon className="w-6 h-6 opacity-60 group-hover:opacity-100" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-zinc-100 flex items-center justify-center mb-8 sm:mb-10 text-black transition-all duration-1000 group-hover:border-black group-hover:scale-105">
+                <service.icon className="w-5 h-5 sm:w-6 sm:h-6 opacity-60 group-hover:opacity-100" />
               </div>
-              <h4 className="text-[11px] font-serif mb-5 tracking-[0.4em] uppercase font-medium">{t(service.title)}</h4>
-              <p className="text-[9px] text-zinc-400 uppercase tracking-[0.3em] leading-loose max-w-[180px] font-body opacity-80 group-hover:opacity-100 transition-opacity">
+              <h4 className="text-[10px] sm:text-[11px] font-serif mb-4 sm:mb-5 tracking-[0.3em] sm:tracking-[0.4em] uppercase font-medium">{t(service.title)}</h4>
+              <p className="text-[8px] sm:text-[9px] text-zinc-400 uppercase tracking-[0.2em] sm:tracking-[0.3em] leading-loose max-w-[180px] font-body opacity-80 group-hover:opacity-100 transition-opacity hidden sm:block">
                 {t(service.title + 'Description')}
               </p>
             </ScrollSection>
@@ -262,11 +257,11 @@ const Home: React.FC = () => {
       </section>
 
       {/* Footer Copyright */}
-      <footer className="py-24 border-t border-zinc-100 text-center bg-zinc-50">
-         <div className="mb-14 opacity-80">
-           <Link to="/" className="text-4xl font-serif font-bold uppercase tracking-[1em] text-black">JOYA</Link>
+      <footer className="py-20 sm:py-24 border-t border-zinc-100 text-center bg-zinc-50">
+         <div className="mb-10 sm:mb-14 opacity-80">
+           <Link to="/" className="text-3xl sm:text-4xl font-serif font-bold uppercase tracking-[0.8em] sm:tracking-[1em] text-black">JOYA</Link>
          </div>
-         <p className="text-[9px] uppercase tracking-[0.8em] text-zinc-400 font-serif">
+         <p className="text-[9px] uppercase tracking-[0.6em] sm:tracking-[0.8em] text-zinc-400 font-serif">
            {t('footer.copyright')}
          </p>
       </footer>
