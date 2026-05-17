@@ -15,7 +15,9 @@ connectDB();
 
 const app = express();
 
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+  origin: 'https://joya-website.onrender.com'
+})); // Restrict CORS to production frontend
 app.use(express.json()); // Enable body parser
 
 app.get('/', (req, res) => {
