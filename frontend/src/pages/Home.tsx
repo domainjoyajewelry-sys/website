@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Shield, Truck, RefreshCw, Award, ArrowRight, Instagram } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '../services/api';
+import { getProducts, getAdBanners } from '../services/api';
 import PiercingBooking from '../components/PiercingBooking';
 import { Toaster } from 'sonner';
 
@@ -43,56 +43,52 @@ const Home: React.FC = () => {
     queryFn: getProducts,
   });
 
-  const featuredProducts = allProducts.filter((p: any) => p.featured).slice(0, 3);
+  const { data: banners = [] } = useQuery({
+    queryKey: ['adbanners'],
+    queryFn: getAdBanners,
+  });
+
+  const activeBanner = banners.find((b: any) => b.isActive) || {
+    image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2940&auto=format&fit=crop',
+    title: 'Luxury Jewelry House'
+  };
+
+  // Logic to randomize "Featured" products each time
+  const featuredProducts = useMemo(() => {
+    if (allProducts.length === 0) return [];
+    
+    // Shuffle the products array
+    const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
+    
+    // Prioritize products marked as 'featured', then pick random ones
+    const prioritized = shuffled.filter((p: any) => p.featured);
+    const nonPrioritized = shuffled.filter((p: any) => !p.featured);
+    
+    const combined = [...prioritized, ...nonPrioritized];
+    return combined.slice(0, 3);
+  }, [allProducts]);
 
   // Dynamic Metal Selection Logic
   const metalPreviews = useMemo(() => {
     if (allProducts.length === 0) return [];
 
     const metalTypes = [
-      { 
-        name: 'Platinum Collection', 
-        name_he: 'קולקציית פלטינה', 
-        color: 'Silver', 
-        fallback: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000' 
-      },
-      { 
-        name: 'Gold Collection', 
-        name_he: 'קולקציית זהב', 
-        color: 'Gold', 
-        fallback: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1000' 
-      },
-      { 
-        name: 'Rose Gold Collection', 
-        name_he: 'קולקציית רוז גולד', 
-        color: 'Rose Gold', 
-        fallback: 'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?q=80&w=1000' 
-      },
-      { 
-        name: 'White Gold Collection', 
-        name_he: 'קולקציית זהב לבן', 
-        color: 'White Gold', 
-        fallback: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000' 
-      }
+      { name: 'Platinum Collection', name_he: 'קולקציית פלטינה', color: 'Silver', fallback: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000' },
+      { name: 'Gold Collection', name_he: 'קולקציית זהב', color: 'Gold', fallback: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1000' },
+      { name: 'Rose Gold Collection', name_he: 'קולקציית רוז גולד', color: 'Rose Gold', fallback: 'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?q=80&w=1000' },
+      { name: 'White Gold Collection', name_he: 'קולקציית זהב לבן', color: 'White Gold', fallback: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000' }
     ];
 
     return metalTypes.map(metal => {
-      // Find all products matching this color/metal
       const matchingProducts = allProducts.filter((p: any) => 
         p.colors === metal.color || 
         p.colors_he?.includes(metal.color) ||
         p.materials?.includes(metal.name.replace(' Collection', ''))
       );
-
-      // Pick a random product image or use fallback
       const randomProduct = matchingProducts.length > 0 
         ? matchingProducts[Math.floor(Math.random() * matchingProducts.length)]
         : null;
-
-      return {
-        ...metal,
-        image: randomProduct ? randomProduct.images[0] : metal.fallback
-      };
+      return { ...metal, image: randomProduct ? randomProduct.images[0] : metal.fallback };
     });
   }, [allProducts, language]);
 
@@ -110,7 +106,7 @@ const Home: React.FC = () => {
       <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32">
         <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2940&auto=format&fit=crop" 
+            src={activeBanner.image} 
             className="w-full h-full object-cover"
             alt="JOYA Hero"
           />
@@ -131,7 +127,7 @@ const Home: React.FC = () => {
               {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
             </p>
             <div className="flex flex-col sm:flex-row gap-8">
-              <Link to="/products">
+              <Link to={activeBanner.link || "/products"}>
                 <Button className="bg-white/90 text-black hover:bg-white transition-all duration-700 rounded-none px-10 py-7 text-[9px] uppercase tracking-[0.4em] font-bold border-none">
                   {language === 'he' ? 'לקולקציה החדשה' : 'Shop Collection'}
                 </Button>

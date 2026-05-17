@@ -16,6 +16,7 @@ interface ProductFiltersProps {
     gemstones: string[];
     colors: string[];
     bodyParts: string[];
+    isNewArrival: boolean;
   };
   setFilters: React.Dispatch<React.SetStateAction<{
     category: string;
@@ -24,6 +25,7 @@ interface ProductFiltersProps {
     gemstones: string[];
     colors: string[];
     bodyParts: string[];
+    isNewArrival: boolean;
   }>>;
 }
 
@@ -36,17 +38,12 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
   });
 
   const materials = [
-    { id: 'metal.gold', value: '18K Gold' },
-    { id: 'metal.silver', value: 'Sterling Silver' },
+    { id: 'metal.gold', value: 'Gold' },
+    { id: 'metal.silver', value: 'Silver' },
     { id: 'metal.roseGold', value: 'Rose Gold' },
-    { id: 'metal.whiteGold', value: 'White Gold' }
-  ];
-
-  const gemstones = [
-    { id: 'gemstone.diamond', value: 'Diamond' },
-    { id: 'gemstone.ruby', value: 'Ruby' },
-    { id: 'gemstone.emerald', value: 'Emerald' },
-    { id: 'gemstone.sapphire', value: 'Sapphire' }
+    { id: 'metal.whiteGold', value: 'White Gold' },
+    { id: 'metal.platinum', value: 'Platinum' },
+    { id: 'metal.titanium', value: 'Titanium' }
   ];
 
   const colors = [
@@ -60,9 +57,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
     { id: 'bodyPart.ear', value: 'Ear' },
     { id: 'bodyPart.nose', value: 'Nose' },
     { id: 'bodyPart.lip', value: 'Lip' },
-    { id: 'bodyPart.belly', value: 'Belly' },
-    { id: 'bodyPart.eyebrow', value: 'Eyebrow' },
-    { id: 'bodyPart.tongue', value: 'Tongue' }
+    { id: 'bodyPart.belly', value: 'Belly' }
   ];
 
   const handlePriceChange = (value: number[]) => {
@@ -75,15 +70,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
         ? [...prev.materials, material]
         : prev.materials.filter((m) => m !== material);
       return { ...prev, materials: newMaterials };
-    });
-  };
-
-  const handleGemstoneChange = (gemstone: string, checked: boolean) => {
-    setFilters((prev) => {
-      const newGemstones = checked
-        ? [...prev.gemstones, gemstone]
-        : prev.gemstones.filter((g) => g !== gemstone);
-      return { ...prev, gemstones: newGemstones };
     });
   };
 
@@ -109,6 +95,10 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
     setFilters((prev) => ({ ...prev, category: catId }));
   };
 
+  const toggleNewArrival = (checked: boolean) => {
+    setFilters((prev) => ({ ...prev, isNewArrival: checked }));
+  };
+
   const clearAllFilters = () => {
     setFilters({
       category: 'all',
@@ -117,11 +107,25 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       gemstones: [],
       colors: [],
       bodyParts: [],
+      isNewArrival: false,
     });
   };
 
   return (
     <div className="flex flex-col gap-12">
+      {/* New Arrivals Toggle */}
+      <div className="flex items-center justify-between pb-6 border-b border-zinc-100">
+         <Label htmlFor="new-arrivals" className="text-[12px] uppercase tracking-[0.4em] font-bold text-black font-serif">
+           {language === 'he' ? 'קולקציה חדשה' : 'New Collection'}
+         </Label>
+         <Checkbox 
+           id="new-arrivals" 
+           checked={filters.isNewArrival} 
+           onCheckedChange={(checked: boolean) => toggleNewArrival(checked)}
+           className="border-zinc-300 rounded-none w-4 h-4"
+         />
+      </div>
+
       {/* Category Filter */}
       <div className="space-y-6">
         <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.category')}</Label>
@@ -161,29 +165,9 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
         </div>
       </div>
 
-      {/* Body Part Filter */}
-      <div className="space-y-6">
-        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.bodyPart')}</Label>
-        <div className="grid grid-cols-1 gap-4">
-          {bodyParts.map((b, index) => (
-            <div key={index} className="flex items-center gap-4 group">
-              <Checkbox
-                id={`bodypart-${index}`}
-                checked={filters.bodyParts.includes(b.value)}
-                onCheckedChange={(checked: boolean) => handleBodyPartChange(b.value, checked)}
-                className="border-zinc-300 rounded-none w-3 h-3"
-              />
-              <label htmlFor={`bodypart-${index}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
-                {t(b.id)}
-              </label>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Color Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.color')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{language === 'he' ? 'צבע מתכת' : 'Metal Color'}</Label>
         <div className="space-y-4">
           {colors.map((c, index) => (
             <div key={index} className="flex items-center gap-4 group">
@@ -201,20 +185,20 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
         </div>
       </div>
 
-      {/* Materials Filter */}
+      {/* Body Part Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.materials')}</Label>
-        <div className="space-y-4">
-          {materials.map((m, index) => (
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.bodyPart')}</Label>
+        <div className="grid grid-cols-1 gap-4">
+          {bodyParts.map((b, index) => (
             <div key={index} className="flex items-center gap-4 group">
               <Checkbox
-                id={`material-${index}`}
-                checked={filters.materials.includes(m.value)}
-                onCheckedChange={(checked: boolean) => handleMaterialChange(m.value, checked)}
+                id={`bodypart-${index}`}
+                checked={filters.bodyParts.includes(b.value)}
+                onCheckedChange={(checked: boolean) => handleBodyPartChange(b.value, checked)}
                 className="border-zinc-300 rounded-none w-3 h-3"
               />
-              <label htmlFor={`material-${index}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
-                {t(m.id)}
+              <label htmlFor={`bodypart-${index}`} className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">
+                {t(b.id)}
               </label>
             </div>
           ))}
