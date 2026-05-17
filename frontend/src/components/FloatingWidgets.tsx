@@ -6,21 +6,24 @@ const FloatingWidgets: React.FC = () => {
   const { language } = useLanguage();
 
   useEffect(() => {
-    // Load Accessibility Script (UserWay - Standard against lawsuits)
-    const script = document.createElement('script');
-    script.setAttribute('data-account', 'YOUR_USERWAY_ID'); // Replace with real ID if available
-    script.src = 'https://cdn.userway.org/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      // Clean up script if component unmounts
-      const existingScript = document.querySelector('script[src="https://cdn.userway.org/widget.js"]');
-      if (existingScript) {
-        document.body.removeChild(existingScript);
-      }
-    };
+    // Load Accessibility Script (UserWay)
+    // We set data-trigger to our custom button ID to unify the behavior
+    if (!document.querySelector('script[src="https://cdn.userway.org/widget.js"]')) {
+      const script = document.createElement('script');
+      script.setAttribute('data-account', 'YOUR_USERWAY_ID'); 
+      script.setAttribute('data-trigger', 'joya-accessibility-trigger');
+      script.src = 'https://cdn.userway.org/widget.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
   }, []);
+
+  const openAccessibility = () => {
+    // Try to trigger via UserWay API if script is loaded
+    if ((window as any).UserWay && (window as any).UserWay.openMenu) {
+      (window as any).UserWay.openMenu();
+    }
+  };
 
   return (
     <div className={`fixed bottom-8 ${language === 'he' ? 'left-8' : 'right-8'} z-50 flex flex-col gap-4`}>
@@ -38,9 +41,11 @@ const FloatingWidgets: React.FC = () => {
         </span>
       </a>
 
-      {/* Manual Accessibility Trigger (in case script delay) */}
+      {/* Customized Accessibility Trigger */}
       <button 
-        className="uway bg-white text-black p-4 rounded-full shadow-2xl hover:bg-zinc-50 transition-all hover:scale-110 flex items-center justify-center border border-zinc-100 group"
+        id="joya-accessibility-trigger"
+        onClick={openAccessibility}
+        className="bg-white text-black p-4 rounded-full shadow-2xl hover:bg-zinc-50 transition-all hover:scale-110 flex items-center justify-center border border-zinc-100 group"
         aria-label="Accessibility Menu"
       >
         <Accessibility className="w-6 h-6" />
