@@ -28,11 +28,13 @@ const Products: React.FC = () => {
   useEffect(() => {
     const colorParam = searchParams.get('color');
     const newParam = searchParams.get('new');
+    const categoryParam = searchParams.get('category');
     
     setFilters(prev => ({
       ...prev,
       colors: colorParam ? [colorParam] : prev.colors,
-      isNewArrival: newParam === 'true'
+      isNewArrival: newParam === 'true',
+      category: categoryParam || prev.category
     }));
   }, [searchParams]);
 
@@ -43,7 +45,12 @@ const Products: React.FC = () => {
 
   const filteredProducts = products.filter((product: any) => {
     const priceMatch = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
-    const categoryMatch = filters.category === 'all' || product.category?._id === filters.category || product.category === filters.category;
+    
+    // Support category match by ID or by slug
+    const categoryMatch = filters.category === 'all' || 
+      product.category?._id === filters.category || 
+      product.category === filters.category ||
+      product.category?.slug === filters.category;
     
     const materialMatch = filters.materials.length === 0 || 
       filters.materials.some(m => product.materials?.includes(m));

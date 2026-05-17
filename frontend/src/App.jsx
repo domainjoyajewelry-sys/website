@@ -8,10 +8,11 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import Profile from './pages/Profile';
-import Login from './pages/Login'; // Import Login component
-import Admin from './pages/admin/Admin'; // Import Admin component
-import AdminLayout from './layouts/AdminLayout'; // Import AdminLayout
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import Login from './pages/Login';
+import InfoPage from './pages/InfoPage';
+import Admin from './pages/admin/Admin';
+import AdminLayout from './layouts/AdminLayout';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -24,14 +25,21 @@ function App() {
       <Route path="/orders" element={<Layout><Orders /></Layout>} />
       <Route path="/profile" element={<Layout><Profile /></Layout>} />
       <Route path="/login" element={<Layout><Login /></Layout>} />
-      <Route path="/unauthorized" element={<Layout><div>Unauthorized</div></Layout>} /> {/* Placeholder Unauthorized Page */}
+      
+      {/* Informational Pages */}
+      <Route path="/about" element={<Layout><InfoPage /></Layout>} />
+      <Route path="/shipping" element={<Layout><InfoPage /></Layout>} />
+      <Route path="/faqs" element={<Layout><InfoPage /></Layout>} />
+      <Route path="/care" element={<Layout><InfoPage /></Layout>} />
+      <Route path="/warranty" element={<Layout><InfoPage /></Layout>} />
+      <Route path="/contact" element={<Layout><InfoPage /></Layout>} />
+
+      <Route path="/unauthorized" element={<Layout><div>Unauthorized</div></Layout>} />
 
       {/* Admin Routes */}
       <Route path="/admin/*" element={<PrivateRoute isAdmin={true} />}>
         <Route path="*" element={<AdminLayout><Admin /></AdminLayout>} />
       </Route>
-
-      {/* Other routes will be added here later */}
     </Routes>
   );
 }
