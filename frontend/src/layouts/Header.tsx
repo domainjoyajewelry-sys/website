@@ -19,6 +19,7 @@ const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isHomePage = location.pathname === '/';
 
@@ -29,6 +30,11 @@ const Header: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu when navigating
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <header 
@@ -42,7 +48,7 @@ const Header: React.FC = () => {
         <div className="flex-1 flex items-center">
           {/* Mobile Menu Trigger */}
           <div className="lg:hidden">
-            <Sheet>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={`${!isHomePage || isScrolled ? 'text-black' : 'text-white'} hover:bg-transparent`}>
                   <Menu className="h-5 w-5" />
@@ -50,9 +56,24 @@ const Header: React.FC = () => {
               </SheetTrigger>
               <SheetContent side={language === 'he' ? 'right' : 'left'} className="bg-white border-none w-full sm:w-[500px] flex flex-col justify-center items-center gap-12">
                  <nav className="flex flex-col items-center gap-10">
-                    <Link to="/products" className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight">{t('nav.collections')}</Link>
-                    <Link to="/products?new=true" className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight">{t('nav.newArrivals')}</Link>
-                    <Link to="/products" className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight">{t('nav.more')}</Link>
+                    <Link 
+                      to="/products" 
+                      className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight"
+                    >
+                      {t('nav.collections')}
+                    </Link>
+                    <Link 
+                      to="/products?new=true" 
+                      className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight"
+                    >
+                      {t('nav.newArrivals')}
+                    </Link>
+                    <Link 
+                      to="/products" 
+                      className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight"
+                    >
+                      {t('nav.more')}
+                    </Link>
                     <Button variant="outline" onClick={toggleLanguage} className="mt-12 border-black text-black rounded-none px-12 py-6 text-[10px] uppercase tracking-[0.5em] font-bold">
                       {language === 'en' ? 'עברית' : 'ENGLISH'}
                     </Button>
@@ -72,7 +93,7 @@ const Header: React.FC = () => {
           </nav>
         </div>
 
-        {/* Centered Logo: Absolute positioned and higher Z-index */}
+        {/* Centered Logo */}
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <Link to="/" className="pointer-events-auto block">
              <motion.span 
@@ -122,12 +143,12 @@ const Header: React.FC = () => {
                        </DropdownMenuItem>
                      )}
                      <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer border-t" onClick={() => { logout(); navigate('/'); }}>
-                        <span className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif text-red-500">Logout</span>
+                        <span className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif text-red-500">{t('nav.logout')}</span>
                      </DropdownMenuItem>
                    </>
                  ) : (
                    <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer">
-                      <Link to="/login" className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif">Login / Register</Link>
+                      <Link to="/login" className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif">{t('nav.loginRegister')}</Link>
                    </DropdownMenuItem>
                  )}
               </DropdownMenuContent>
