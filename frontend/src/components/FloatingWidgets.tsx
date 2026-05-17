@@ -7,14 +7,17 @@ const FloatingWidgets: React.FC = () => {
 
   useEffect(() => {
     // Load Accessibility Script (UserWay)
-    // We set data-trigger to our custom button ID to unify the behavior
-    if (!document.querySelector('script[src="https://cdn.userway.org/widget.js"]')) {
-      const script = document.createElement('script');
-      script.setAttribute('data-account', import.meta.env.VITE_USERWAY_ID || 'YOUR_USERWAY_ID'); 
-      script.setAttribute('data-trigger', 'joya-accessibility-trigger');
-      script.src = 'https://cdn.userway.org/widget.js';
-      script.async = true;
-      document.body.appendChild(script);
+    const userwayId = import.meta.env.VITE_USERWAY_ID;
+    
+    if (userwayId && userwayId !== 'YOUR_USERWAY_ID') {
+      if (!document.querySelector('script[src="https://cdn.userway.org/widget.js"]')) {
+        const script = document.createElement('script');
+        script.setAttribute('data-account', userwayId); 
+        script.setAttribute('data-trigger', 'joya-accessibility-trigger');
+        script.src = 'https://cdn.userway.org/widget.js';
+        script.async = true;
+        document.body.appendChild(script);
+      }
     }
   }, []);
 

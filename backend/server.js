@@ -11,36 +11,18 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
 
-connectDB().then(() => {
-  console.log('Database verification successful');
-});
+// Connect to Database
+connectDB();
 
 const app = express();
 
-// Allow both production and local development origins
-const allowedOrigins = [
-  'https://joya-website.onrender.com',
-  'http://localhost:5173',
-  'http://localhost:3000'
-];
+// Simple CORS for debugging and production
+app.use(cors());
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true
-}));
-
-app.use(express.json()); // Enable body parser
+app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.send('JOYA API is running...');
 });
 
 app.use('/api/users', userRoutes);
