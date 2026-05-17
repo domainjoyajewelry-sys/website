@@ -31,14 +31,12 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when navigating
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
-
   const handleMobileNav = (path: string) => {
     setIsMobileMenuOpen(false);
-    navigate(path);
+    // Use a tiny timeout to ensure the Sheet component registers the state change before navigation
+    setTimeout(() => {
+      navigate(path);
+    }, 100);
   };
 
   return (
@@ -59,7 +57,6 @@ const Header: React.FC = () => {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              {/* Reduced width from w-full to w-[80vw] to see page content behind it */}
               <SheetContent side={language === 'he' ? 'right' : 'left'} className="bg-white border-none w-[80vw] sm:w-[400px] flex flex-col p-0">
                  <div className="flex items-center justify-center h-28 border-b border-zinc-50">
                     <span className="text-2xl font-serif font-bold tracking-[0.4em] text-black">JOYA</span>
@@ -85,12 +82,12 @@ const Header: React.FC = () => {
                     </button>
                     
                     <div className="pt-10 border-t border-zinc-50 flex flex-col gap-6">
-                      <Button variant="outline" onClick={toggleLanguage} className="border-black text-black rounded-none py-6 text-[12px] uppercase tracking-[0.5em] font-bold">
+                      <Button variant="outline" onClick={() => { toggleLanguage(); setIsMobileMenuOpen(false); }} className="border-black text-black rounded-none py-6 text-[12px] sm:text-[14px] uppercase tracking-[0.5em] font-bold">
                         {language === 'en' ? 'עברית' : 'ENGLISH'}
                       </Button>
                       
                       {!user && (
-                         <Button onClick={() => handleMobileNav('/login')} className="bg-black text-white rounded-none py-6 text-[12px] uppercase tracking-[0.5em] font-bold">
+                         <Button onClick={() => handleMobileNav('/login')} className="bg-black text-white rounded-none py-6 text-[12px] sm:text-[14px] uppercase tracking-[0.5em] font-bold">
                            {t('nav.loginRegister')}
                          </Button>
                       )}

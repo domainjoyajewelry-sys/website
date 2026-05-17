@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { CheckCircle2, Lock, ArrowLeft, ArrowRight, CreditCard } from 'lucide-react';
+import { CheckCircle2, Lock, ArrowLeft, ArrowRight, CreditCard, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { loadStripe } from '@stripe/stripe-js';
@@ -18,7 +19,7 @@ import {
 // Use the Stripe publishable key from environment variables
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
 
-const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void }> = ({ onSuccess, onBack }) => {
+const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void, surveyData: any }> = ({ onSuccess, onBack, surveyData }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { t, language } = useLanguage();
@@ -27,36 +28,17 @@ const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void }> = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
+    if (!stripe || !elements) return;
 
     setProcessing(true);
     setError(null);
 
     // Simulate Stripe payment processing
     setTimeout(() => {
+      console.log('Order finalized with survey:', surveyData);
       setProcessing(false);
       onSuccess();
     }, 2000);
-
-    /* Real Stripe Implementation Logic:
-    const cardElement = elements.getElement(CardElement);
-    const {error, paymentMethod} = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement!,
-    });
-    if (error) {
-      setError(error.message || 'Payment failed');
-      setProcessing(false);
-    } else {
-      // Send paymentMethod.id to your server
-      console.log('PaymentMethod:', paymentMethod);
-      setProcessing(false);
-      onSuccess();
-    }
-    */
   };
 
   return (
@@ -73,13 +55,9 @@ const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void }> = ({
                     fontSize: '16px',
                     color: '#000',
                     fontFamily: '"Cormorant Garamond", serif',
-                    '::placeholder': {
-                      color: '#aab7c4',
-                    },
+                    '::placeholder': { color: '#aab7c4' },
                   },
-                  invalid: {
-                    color: '#9e2146',
-                  },
+                  invalid: { color: '#9e2146' },
                 },
               }}
             />
@@ -91,7 +69,7 @@ const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void }> = ({
         <Button disabled={!stripe || processing} type="submit" className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-xl rounded-none uppercase tracking-[0.2em]">
           {processing ? 'Processing...' : t('checkout.placeOrder')}
         </Button>
-        <Button variant="ghost" onClick={onBack} type="button" className="uppercase text-[10px] tracking-widest font-bold text-zinc-400">
+        <Button variant="ghost" onClick={onBack} type="button" className="uppercase text-[12px] tracking-widest font-bold text-zinc-400">
           <ArrowLeft className="mr-2 w-4 h-4" /> {t('checkout.back')}
         </Button>
       </div>
@@ -101,17 +79,19 @@ const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void }> = ({
 
 const Checkout: React.FC = () => {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
 
   const [shippingInfo, setShippingInfo] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
+    fullName: '', email: '', phone: '', address: '', city: '', postalCode: '',
+  });
+
+  const [survey, setSurvey] = useState({
+    source: '',
+    gift: false,
+    notes: ''
   });
 
   const cartItems = [
@@ -155,59 +135,103 @@ const Checkout: React.FC = () => {
           <header className="mb-12">
             <h1 className="text-5xl md:text-7xl font-serif mb-6 uppercase tracking-widest">{t('checkout.checkout')}</h1>
             <div className="flex gap-4">
-              {[1, 2].map((s) => (
+              {[1, 2, 3].map((s) => (
                 <div key={s} className={`h-1 flex-grow transition-colors duration-500 ${s <= currentStep ? 'bg-black' : 'bg-zinc-100'}`} />
               ))}
             </div>
+            {!user && currentStep === 1 && (
+               <div className="mt-8 p-6 bg-zinc-50 border border-zinc-100 flex justify-between items-center">
+                  <p className="text-[12px] uppercase tracking-widest font-serif font-bold">Checking out as a guest</p>
+                  <Link to="/login" className="text-[11px] underline uppercase tracking-widest text-zinc-400 hover:text-black">Login instead?</Link>
+               </div>
+            )}
           </header>
 
           <AnimatePresence mode="wait">
             {currentStep === 1 ? (
-              <motion.div 
-                key="step1"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                className="space-y-8"
-              >
+              <motion.div key="step1" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.fullName')}</Label>
-                    <Input className="rounded-none border-zinc-200 focus-visible:ring-black h-14" required />
+                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.fullName')}</Label>
+                    <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.fullName} onChange={(e) => setShippingInfo({...shippingInfo, fullName: e.target.value})} />
                   </div>
                   <div className="space-y-2">
-                    <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.email')}</Label>
-                    <Input className="rounded-none border-zinc-200 focus-visible:ring-black h-14" type="email" required />
+                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.email')}</Label>
+                    <Input className="rounded-none border-zinc-200 h-14" type="email" required value={shippingInfo.email} onChange={(e) => setShippingInfo({...shippingInfo, email: e.target.value})} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.address')}</Label>
-                  <Input className="rounded-none border-zinc-200 focus-visible:ring-black h-14" required />
+                  <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.address')}</Label>
+                  <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.address} onChange={(e) => setShippingInfo({...shippingInfo, address: e.target.value})} />
                 </div>
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.city')}</Label>
-                    <Input className="rounded-none border-zinc-200 focus-visible:ring-black h-14" required />
+                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.city')}</Label>
+                    <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.city} onChange={(e) => setShippingInfo({...shippingInfo, city: e.target.value})} />
                   </div>
                   <div className="space-y-2">
-                    <Label className="uppercase text-[10px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.postalCode')}</Label>
-                    <Input className="rounded-none border-zinc-200 focus-visible:ring-black h-14" required />
+                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.postalCode')}</Label>
+                    <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.postalCode} onChange={(e) => setShippingInfo({...shippingInfo, postalCode: e.target.value})} />
                   </div>
                 </div>
                 <Button onClick={() => setCurrentStep(2)} className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.3em] font-bold">
-                  {t('checkout.continueToPayment')} <ArrowRight className="ml-4 w-5 h-4" />
+                  {language === 'he' ? 'המשך לשאלון' : 'Continue to Survey'} <ArrowRight className="ml-4 w-5 h-4" />
                 </Button>
               </motion.div>
+            ) : currentStep === 2 ? (
+              <motion.div key="step2" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-12">
+                 <h3 className="text-2xl font-serif mb-6 flex items-center gap-3 tracking-widest uppercase">
+                   <HelpCircle className="w-6 h-6" /> {language === 'he' ? 'כמה שאלות קצרות' : 'Quick Survey'}
+                 </h3>
+                 <div className="space-y-8">
+                    <div className="space-y-4">
+                      <Label className="text-[12px] uppercase tracking-widest font-bold text-zinc-400">{language === 'he' ? 'איך הגעת אלינו?' : 'How did you find us?'}</Label>
+                      <select 
+                        className="w-full bg-white border border-zinc-200 rounded-none h-14 px-4 text-[12px] uppercase tracking-widest"
+                        onChange={(e) => setSurvey({...survey, source: e.target.value})}
+                      >
+                         <option value="">{language === 'he' ? 'בחר אפשרות' : 'Select Option'}</option>
+                         <option value="instagram">Instagram</option>
+                         <option value="facebook">Facebook</option>
+                         <option value="friends">{language === 'he' ? 'חברים' : 'Friends'}</option>
+                         <option value="google">Google</option>
+                      </select>
+                    </div>
+                    <div className="space-y-4">
+                      <Label className="text-[12px] uppercase tracking-widest font-bold text-zinc-400">{language === 'he' ? 'האם זו מתנה?' : 'Is this a gift?'}</Label>
+                      <div className="flex gap-8">
+                         <label className="flex items-center gap-3 cursor-pointer">
+                            <input type="radio" name="gift" onChange={() => setSurvey({...survey, gift: true})} className="w-4 h-4 accent-black" />
+                            <span className="text-[12px] uppercase tracking-widest font-bold">{language === 'he' ? 'כן' : 'Yes'}</span>
+                         </label>
+                         <label className="flex items-center gap-3 cursor-pointer">
+                            <input type="radio" name="gift" defaultChecked onChange={() => setSurvey({...survey, gift: false})} className="w-4 h-4 accent-black" />
+                            <span className="text-[12px] uppercase tracking-widest font-bold">{language === 'he' ? 'לא' : 'No'}</span>
+                         </label>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <Label className="text-[12px] uppercase tracking-widest font-bold text-zinc-400">{language === 'he' ? 'הערות מיוחדות' : 'Special Notes'}</Label>
+                      <textarea 
+                        className="w-full bg-white border border-zinc-200 rounded-none p-6 text-[12px] uppercase tracking-widest h-32 focus:outline-none focus:ring-1 focus:ring-black"
+                        placeholder={language === 'he' ? 'כתוב לנו משהו...' : 'Tell us something...'}
+                        onChange={(e) => setSurvey({...survey, notes: e.target.value})}
+                      />
+                    </div>
+                 </div>
+                 <div className="flex flex-col gap-4">
+                    <Button onClick={() => setCurrentStep(3)} className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.3em] font-bold">
+                      {language === 'he' ? 'המשך לתשלום' : 'Continue to Payment'} <ArrowRight className="ml-4 w-5 h-4" />
+                    </Button>
+                    <Button variant="ghost" onClick={() => setCurrentStep(1)} className="uppercase text-[12px] tracking-widest font-bold text-zinc-400">
+                      {t('checkout.back')}
+                    </Button>
+                 </div>
+              </motion.div>
             ) : (
-              <motion.div 
-                key="step2"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                className="space-y-12"
-              >
+              <motion.div key="step3" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-12">
                 <Elements stripe={stripePromise}>
-                  <CheckoutForm onSuccess={handleSuccess} onBack={() => setCurrentStep(1)} />
+                  <CheckoutForm onSuccess={handleSuccess} onBack={() => setCurrentStep(2)} surveyData={survey} />
                 </Elements>
               </motion.div>
             )}
@@ -215,7 +239,7 @@ const Checkout: React.FC = () => {
         </div>
 
         {/* Right: Summary Sidebar */}
-        <div className="bg-zinc-50 p-12 h-fit space-y-10 border border-zinc-100">
+        <div className="bg-zinc-50 p-12 h-fit space-y-10 border border-zinc-100 sticky top-40">
           <h2 className="text-3xl font-serif mb-8 uppercase tracking-widest">{t('cart.orderSummary')}</h2>
           <div className="space-y-8">
             {cartItems.map((item) => (
@@ -225,7 +249,7 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className="flex-grow">
                   <h4 className="text-lg font-serif uppercase tracking-widest">{language === 'he' ? item.name_he : item.name}</h4>
-                  <p className="text-xs text-zinc-400 uppercase tracking-widest font-bold font-serif">Qty: {item.quantity}</p>
+                  <p className="text-[12px] text-zinc-400 uppercase tracking-widest font-bold font-serif">Qty: {item.quantity}</p>
                 </div>
                 <p className="text-lg font-medium font-body tracking-widest">₪{item.price.toLocaleString()}</p>
               </div>
@@ -233,11 +257,11 @@ const Checkout: React.FC = () => {
           </div>
 
           <div className="border-t border-zinc-200 pt-8 space-y-4 font-serif">
-             <div className="flex justify-between text-zinc-500 text-[10px] uppercase tracking-widest font-bold">
+             <div className="flex justify-between text-zinc-500 text-[12px] uppercase tracking-widest font-bold">
                <span>{t('cart.subtotal')}</span>
                <span>₪{subtotal.toLocaleString()}</span>
              </div>
-             <div className="flex justify-between text-zinc-500 text-[10px] uppercase tracking-widest font-bold">
+             <div className="flex justify-between text-zinc-500 text-[12px] uppercase tracking-widest font-bold">
                <span>{t('cart.shipping')}</span>
                <span className="text-black font-bold">{language === 'he' ? 'חינם' : 'FREE'}</span>
              </div>
