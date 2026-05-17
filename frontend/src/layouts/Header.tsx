@@ -74,7 +74,7 @@ const Header: React.FC = () => {
                     >
                       {t('nav.more')}
                     </Link>
-                    <Button variant="outline" onClick={toggleLanguage} className="mt-12 border-black text-black rounded-none px-12 py-6 text-[10px] uppercase tracking-[0.5em] font-bold">
+                    <Button variant="outline" onClick={toggleLanguage} className="mt-12 border-black text-black rounded-none px-12 py-6 text-[12px] sm:text-[14px] uppercase tracking-[0.5em] font-bold">
                       {language === 'en' ? 'עברית' : 'ENGLISH'}
                     </Button>
                  </nav>
@@ -84,10 +84,10 @@ const Header: React.FC = () => {
 
           {/* Left Nav (Desktop) */}
           <nav className="hidden lg:flex items-center gap-10">
-            <Link to="/products" className={`text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+            <Link to="/products" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
               {t('nav.collections')}
             </Link>
-            <Link to="/products?new=true" className={`text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+            <Link to="/products?new=true" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
               {t('nav.newArrivals')}
             </Link>
           </nav>
@@ -112,7 +112,7 @@ const Header: React.FC = () => {
              variant="ghost" 
              size="sm" 
              onClick={toggleLanguage}
-             className={`hidden sm:flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}
+             className={`hidden sm:flex items-center gap-2 text-[12px] sm:text-[14px] font-bold tracking-[0.3em] transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}
            >
              <Globe className="h-4 w-4" />
              {language === 'en' ? 'HE' : 'EN'}
@@ -132,23 +132,23 @@ const Header: React.FC = () => {
                  {user ? (
                    <>
                      <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer">
-                        <Link to="/profile" className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif">{t('profile.personalInfo')}</Link>
+                        <Link to="/profile" className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif">{t('profile.personalInfo')}</Link>
                      </DropdownMenuItem>
                      <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer">
-                        <Link to="/orders" className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif">{t('orders.myOrders')}</Link>
+                        <Link to="/orders" className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif">{t('orders.myOrders')}</Link>
                      </DropdownMenuItem>
                      {user.role === 'admin' && (
                        <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer border-t">
-                          <Link to="/admin" className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif text-zinc-400">Dashboard</Link>
+                          <Link to="/admin" className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif text-zinc-400">Dashboard</Link>
                        </DropdownMenuItem>
                      )}
                      <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer border-t" onClick={() => { logout(); navigate('/'); }}>
-                        <span className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif text-red-500">{t('nav.logout')}</span>
+                        <span className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif text-red-500">{t('nav.logout')}</span>
                      </DropdownMenuItem>
                    </>
                  ) : (
                    <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer">
-                      <Link to="/login" className="w-full text-[10px] uppercase tracking-[0.3em] font-bold font-serif">{t('nav.loginRegister')}</Link>
+                      <Link to="/login" className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif">{t('nav.loginRegister')}</Link>
                    </DropdownMenuItem>
                  )}
               </DropdownMenuContent>

@@ -115,7 +115,7 @@ const Home: React.FC = () => {
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center"
           >
-            <span className="text-white text-[9px] sm:text-[10px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
+            <span className="text-white text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
               {language === 'he' ? 'בית תכשיטי יוקרה' : 'Luxury Jewelry House'}
             </span>
             <p className="text-white text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest leading-relaxed">
@@ -123,13 +123,13 @@ const Home: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-8">
               <Link to={activeBanner.link || "/products"}>
-                <Button className="bg-white/90 text-black hover:bg-white transition-all duration-700 rounded-none px-10 py-7 text-[9px] sm:text-[10px] uppercase tracking-[0.4em] font-bold border-none">
+                <Button className="bg-white/90 text-black hover:bg-white transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold border-none">
                   {language === 'he' ? 'לקולקציה החדשה' : 'Shop Collection'}
                 </Button>
               </Link>
               <PiercingBooking 
                 trigger={
-                  <Button variant="outline" className="text-white border-white/40 hover:border-white hover:bg-white/5 transition-all duration-700 rounded-none px-10 py-7 text-[9px] sm:text-[10px] uppercase tracking-[0.4em] font-bold">
+                  <Button variant="outline" className="text-white border-white/40 hover:border-white hover:bg-white/5 transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold">
                     {t('home.bookNow')}
                   </Button>
                 }
@@ -171,7 +171,7 @@ const Home: React.FC = () => {
           <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-12 sm:mb-16 leading-[1.2] sm:leading-[1.1] text-black tracking-tight uppercase font-medium px-4">
             {language === 'he' ? 'דיוק בכל חיתוך, תשוקה בכל עיצוב.' : 'Precision in every cut, passion in every design.'}
           </h2>
-          <Link to="/products" className="inline-flex items-center gap-6 sm:gap-8 text-black font-bold uppercase text-[9px] sm:text-[10px] tracking-[1em] group opacity-60 hover:opacity-100 transition-opacity">
+          <Link to="/products" className="inline-flex items-center gap-6 sm:gap-8 text-black font-bold uppercase text-[12px] sm:text-[14px] tracking-[1em] group opacity-60 hover:opacity-100 transition-opacity">
             {t('home.viewAll')}
             <div className="w-10 sm:w-12 h-[1px] bg-black transition-all group-hover:w-20"></div>
           </Link>
@@ -181,7 +181,7 @@ const Home: React.FC = () => {
       {/* Featured Collection */}
       <section className="py-32 sm:py-48 px-6 max-w-screen-2xl mx-auto">
         <div className="flex flex-col items-center mb-20 sm:mb-28">
-           <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.8em] sm:tracking-[1em] text-zinc-400 mb-6 font-serif opacity-70">
+           <span className="text-[12px] sm:text-[14px] uppercase tracking-[0.8em] sm:tracking-[1em] text-zinc-400 mb-6 font-serif opacity-70">
              {language === 'he' ? 'נבחר עבורך' : 'Curated For You'}
            </span>
            <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif uppercase tracking-[0.1em] font-medium">
@@ -221,13 +221,13 @@ const Home: React.FC = () => {
       {/* Testimonials Section */}
       <section className="py-32 sm:py-48 bg-black text-white px-6">
         <div className="max-w-5xl mx-auto">
-          <span className="text-[9px] sm:text-[10px] uppercase tracking-[1em] sm:tracking-[1.2em] text-zinc-600 block mb-16 sm:mb-20 text-center font-serif">{t('home.testimonials')}</span>
+          <span className="text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] text-zinc-600 block mb-16 sm:mb-20 text-center font-serif">{t('home.testimonials')}</span>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 sm:gap-20">
             {testimonials.map((item, i) => (
               <ScrollSection key={i} className="flex flex-col items-center text-center">
                 <p className="text-xl sm:text-2xl md:text-3xl font-body italic mb-8 sm:mb-10 leading-relaxed font-light opacity-80 px-4">"{item.text}"</p>
                 <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.6em] sm:tracking-[0.8em] font-bold font-serif">{item.name}</span>
-                <span className="text-[9px] sm:text-[10px] text-zinc-600 uppercase tracking-[0.4em] sm:tracking-[0.6em] mt-3 sm:mt-4 font-serif">{item.location}</span>
+                <span className="text-[12px] sm:text-[14px] text-zinc-600 uppercase tracking-[0.4em] sm:tracking-[0.6em] mt-3 sm:mt-4 font-serif">{item.location}</span>
               </ScrollSection>
             ))}
           </div>
