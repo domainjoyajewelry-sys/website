@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = '/api'; // Assuming proxy setup in vite.config.js or direct access
+// Point directly to the live backend URL
+const API_URL = 'https://joya-backend-pcvr.onrender.com/api'; 
 
 const api = axios.create({
   baseURL: API_URL,
