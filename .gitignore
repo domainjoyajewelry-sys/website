@@ -4,5 +4,11 @@ node_modules/
 dist/
 build/
 .env
+.env.*
 *.log
 package-lock.json
+
+# Seeders and DB utilities
+backend/*Seeder.js
+backend/seedAdmin.js
+backend/dbDrop.js
