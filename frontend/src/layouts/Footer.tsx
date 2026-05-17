@@ -44,13 +44,21 @@ const Footer: React.FC = () => {
               ))}
             </ul>
           </div>
-
-          {/* Boutique */}
-          <div className="space-y-10">
-            <h3 className="text-[11px] font-serif uppercase tracking-[0.4em] font-bold text-black">{t('footer.help')}</h3>
-            <ul className="space-y-6">
-              {[
-                { label: 'info.aboutTitle', path: '/about' },
+{/* Boutique */}
+<div className="space-y-10">
+  <h3 className="text-[11px] font-serif uppercase tracking-[0.4em] font-bold text-black">{t('footer.help')}</h3>
+  <ul className="space-y-6">
+    <li>
+      <Link 
+        to="/gift-card" 
+        className="text-[10px] uppercase tracking-[0.3em] text-black hover:text-zinc-600 transition-colors font-bold font-serif flex items-center gap-2"
+      >
+        <Gift className="w-3 h-3" /> {language === 'he' ? 'כרטיס מתנה' : 'Gift Card'}
+      </Link>
+    </li>
+    {[
+      { label: 'info.aboutTitle', path: '/about' },
+...
                 { label: 'footer.shipping', path: '/shipping' },
                 { label: 'footer.faqs', path: '/faqs' },
                 { label: 'footer.care', path: '/care' },

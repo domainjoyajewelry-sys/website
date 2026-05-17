@@ -158,4 +158,15 @@ export const updateAdBanner = async (banner: any) => {
   return data;
 };
 
+// --- Gift Card API ---
+export const createGiftCard = async (giftCardData: { amount: number; recipientEmail: string }) => {
+  const { data } = await api.post('/giftcards', giftCardData);
+  return data;
+};
+
+export const getGiftCardByCode = async (code: string) => {
+  const { data } = await api.get(`/giftcards/${code}`);
+  return data;
+};
+
 export default api;

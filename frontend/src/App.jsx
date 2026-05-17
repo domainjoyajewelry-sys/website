@@ -10,6 +10,7 @@ import Orders from './pages/Orders';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import InfoPage from './pages/InfoPage';
+import GiftCardPurchase from './pages/GiftCardPurchase';
 import Admin from './pages/admin/Admin';
 import AdminLayout from './layouts/AdminLayout';
 import PrivateRoute from './components/PrivateRoute';
@@ -25,6 +26,7 @@ function App() {
       <Route path="/orders" element={<Layout><Orders /></Layout>} />
       <Route path="/profile" element={<Layout><Profile /></Layout>} />
       <Route path="/login" element={<Layout><Login /></Layout>} />
+      <Route path="/gift-card" element={<Layout><GiftCardPurchase /></Layout>} />
       
       {/* Informational Pages */}
       <Route path="/about" element={<Layout><InfoPage /></Layout>} />
