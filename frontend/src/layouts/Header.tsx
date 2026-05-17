@@ -36,6 +36,11 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
+  const handleMobileNav = (path: string) => {
+    setIsMobileMenuOpen(false);
+    navigate(path);
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
@@ -54,29 +59,42 @@ const Header: React.FC = () => {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side={language === 'he' ? 'right' : 'left'} className="bg-white border-none w-full sm:w-[500px] flex flex-col justify-center items-center gap-12">
-                 <nav className="flex flex-col items-center gap-10">
-                    <Link 
-                      to="/products" 
-                      className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight"
+              {/* Reduced width from w-full to w-[80vw] to see page content behind it */}
+              <SheetContent side={language === 'he' ? 'right' : 'left'} className="bg-white border-none w-[80vw] sm:w-[400px] flex flex-col p-0">
+                 <div className="flex items-center justify-center h-28 border-b border-zinc-50">
+                    <span className="text-2xl font-serif font-bold tracking-[0.4em] text-black">JOYA</span>
+                 </div>
+                 <nav className="flex flex-col p-10 gap-8">
+                    <button 
+                      onClick={() => handleMobileNav('/products')}
+                      className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right"
                     >
                       {t('nav.collections')}
-                    </Link>
-                    <Link 
-                      to="/products?new=true" 
-                      className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight"
+                    </button>
+                    <button 
+                      onClick={() => handleMobileNav('/products?new=true')}
+                      className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right"
                     >
                       {t('nav.newArrivals')}
-                    </Link>
-                    <Link 
-                      to="/products" 
-                      className="text-4xl md:text-5xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight"
+                    </button>
+                    <button 
+                      onClick={() => handleMobileNav('/products')}
+                      className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right"
                     >
                       {t('nav.more')}
-                    </Link>
-                    <Button variant="outline" onClick={toggleLanguage} className="mt-12 border-black text-black rounded-none px-12 py-6 text-[12px] sm:text-[14px] uppercase tracking-[0.5em] font-bold">
-                      {language === 'en' ? 'עברית' : 'ENGLISH'}
-                    </Button>
+                    </button>
+                    
+                    <div className="pt-10 border-t border-zinc-50 flex flex-col gap-6">
+                      <Button variant="outline" onClick={toggleLanguage} className="border-black text-black rounded-none py-6 text-[12px] uppercase tracking-[0.5em] font-bold">
+                        {language === 'en' ? 'עברית' : 'ENGLISH'}
+                      </Button>
+                      
+                      {!user && (
+                         <Button onClick={() => handleMobileNav('/login')} className="bg-black text-white rounded-none py-6 text-[12px] uppercase tracking-[0.5em] font-bold">
+                           {t('nav.loginRegister')}
+                         </Button>
+                      )}
+                    </div>
                  </nav>
               </SheetContent>
             </Sheet>
