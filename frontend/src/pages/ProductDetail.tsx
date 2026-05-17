@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
@@ -8,14 +8,22 @@ import { Heart, Share2, Plus, Minus, ShieldCheck, Truck, RotateCcw } from 'lucid
 import { useQuery } from '@tanstack/react-query';
 import { getProductById, getProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+
+interface Variant {
+  color: string;
+  color_he: string;
+  image: string;
+  hex: string;
+}
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t, language, getLocalizedField } = useLanguage();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
 
   // Fetch product by ID
   const { data: product, isLoading: isLoadingProduct, isError: isErrorProduct } = useQuery({
@@ -23,6 +31,12 @@ const ProductDetail: React.FC = () => {
     queryFn: () => getProductById(id as string),
     enabled: !!id,
   });
+
+  useEffect(() => {
+    if (product && product.variants && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+    }
+  }, [product]);
 
   // Fetch all products for related
   const { data: allProducts = [] } = useQuery({
@@ -42,11 +56,12 @@ const ProductDetail: React.FC = () => {
 
   const onAddToCart = () => {
     if (product) {
+      const currentImage = selectedVariant ? selectedVariant.image : product.images[0];
       addToCart({
         productId: product._id,
-        name: product.name,
-        name_he: product.name_he,
-        image: product.images[0],
+        name: `${product.name}${selectedVariant ? ` - ${selectedVariant.color}` : ''}`,
+        name_he: `${product.name_he}${selectedVariant ? ` - ${selectedVariant.color_he}` : ''}`,
+        image: currentImage,
         price: product.price,
         quantity: quantity,
         countInStock: product.countInStock
@@ -76,6 +91,8 @@ const ProductDetail: React.FC = () => {
     );
   }
 
+  const currentImage = selectedVariant ? selectedVariant.image : product.images[0];
+
   return (
     <div className="bg-white min-h-screen pt-40 pb-20 px-6">
       <div className="max-w-screen-2xl mx-auto">
@@ -92,18 +109,36 @@ const ProductDetail: React.FC = () => {
           {/* Left Column - Image Gallery */}
           <div className="space-y-8">
             <motion.div 
+              key={currentImage}
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
               className="aspect-[3/4] overflow-hidden bg-zinc-50 border border-zinc-100"
             >
               <img
-                src={product.images[0]}
+                src={currentImage}
                 alt={getLocalizedField(product, 'name')}
                 className="w-full h-full object-cover"
               />
             </motion.div>
             
-            {product.images.length > 1 && (
+            {product.variants && product.variants.length > 0 ? (
+              <div className="grid grid-cols-4 gap-4">
+                {product.variants.map((v: Variant, index: number) => (
+                  <div 
+                    key={index} 
+                    onClick={() => setSelectedVariant(v)}
+                    className={`aspect-square bg-zinc-50 border cursor-pointer overflow-hidden group transition-all duration-300 ${selectedVariant?.color === v.color ? 'border-black' : 'border-zinc-100'}`}
+                  >
+                    <img
+                      src={v.image}
+                      alt=""
+                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : product.images.length > 1 && (
               <div className="grid grid-cols-4 gap-4">
                 {product.images.map((img: string, index: number) => (
                   <div key={index} className="aspect-square bg-zinc-50 border border-zinc-100 cursor-pointer overflow-hidden group">
@@ -134,6 +169,27 @@ const ProductDetail: React.FC = () => {
                  {getLocalizedField(product, 'description')}
                </p>
             </div>
+
+            {/* Variant Selector in Detail Page */}
+            {product.variants && product.variants.length > 1 && (
+              <div className="mb-12">
+                <span className="text-[10px] uppercase tracking-widest font-bold text-black font-serif block mb-6">
+                  {language === 'he' ? 'בחר צבע' : 'Select Color'}: <span className="text-zinc-400 font-normal ml-2">{language === 'he' ? selectedVariant?.color_he : selectedVariant?.color}</span>
+                </span>
+                <div className="flex gap-4">
+                  {product.variants.map((v: Variant, i: number) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedVariant(v)}
+                      className={`w-8 h-8 rounded-full border-2 transition-all duration-300 ${
+                        selectedVariant?.color === v.color ? 'border-black scale-110 shadow-lg' : 'border-zinc-100 hover:border-zinc-300'
+                      }`}
+                      style={{ backgroundColor: v.hex }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="space-y-12 mb-16 border-y border-zinc-100 py-12">
                <div className="flex items-center gap-10">

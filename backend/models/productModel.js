@@ -73,6 +73,14 @@ const productSchema = mongoose.Schema(
     bodyPart_he: {
       type: String,
     },
+    variants: [
+      {
+        color: { type: String, required: true },
+        color_he: { type: String, required: true },
+        image: { type: String, required: true },
+        hex: { type: String }, // Hex code for UI circles
+      }
+    ],
   },
   {
     timestamps: true,
