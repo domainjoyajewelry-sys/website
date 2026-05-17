@@ -10,7 +10,7 @@ const FloatingWidgets: React.FC = () => {
     // We set data-trigger to our custom button ID to unify the behavior
     if (!document.querySelector('script[src="https://cdn.userway.org/widget.js"]')) {
       const script = document.createElement('script');
-      script.setAttribute('data-account', 'YOUR_USERWAY_ID'); 
+      script.setAttribute('data-account', import.meta.env.VITE_USERWAY_ID || 'YOUR_USERWAY_ID'); 
       script.setAttribute('data-trigger', 'joya-accessibility-trigger');
       script.src = 'https://cdn.userway.org/widget.js';
       script.async = true;

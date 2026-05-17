@@ -15,8 +15,8 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 
-// Replace with your actual Stripe publishable key
-const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+// Use the Stripe publishable key from environment variables
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void }> = ({ onSuccess, onBack }) => {
   const stripe = useStripe();
