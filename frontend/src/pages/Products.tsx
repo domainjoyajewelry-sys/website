@@ -69,11 +69,11 @@ const Products: React.FC = () => {
     return priceMatch && categoryMatch && materialMatch && gemstoneMatch && colorMatch && bodyPartMatch && newArrivalMatch;
   });
 
-  const sortedProducts = [...filteredProducts].sort((a: any, b: any) => {
+  const sortedProducts = Array.isArray(filteredProducts) ? [...filteredProducts].sort((a: any, b: any) => {
     if (sortOrder === 'price-low-high') return a.price - b.price;
     if (sortOrder === 'price-high-low') return b.price - a.price;
     return 0;
-  });
+  }) : [];
 
   if (isLoadingProducts) {
     return (

@@ -55,7 +55,7 @@ const Home: React.FC = () => {
 
   // Logic to randomize "Featured" products each time
   const featuredProducts = useMemo(() => {
-    if (allProducts.length === 0) return [];
+    if (!allProducts || !Array.isArray(allProducts) || allProducts.length === 0) return [];
     const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
     const prioritized = shuffled.filter((p: any) => p.featured);
     const nonPrioritized = shuffled.filter((p: any) => !p.featured);
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
 
   // Dynamic Metal Selection Logic
   const metalPreviews = useMemo(() => {
-    if (allProducts.length === 0) return [];
+    if (!allProducts || !Array.isArray(allProducts) || allProducts.length === 0) return [];
 
     const metalTypes = [
       { name: 'Platinum Collection', name_he: 'קולקציית פלטינה', color: 'Silver', fallback: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000' },

@@ -59,20 +59,20 @@ const Footer: React.FC = () => {
     {[
       { label: 'info.aboutTitle', path: '/about' },
       { label: 'footer.shipping', path: '/shipping' },
-                { label: 'footer.faqs', path: '/faqs' },
-                { label: 'footer.care', path: '/care' },
-                { label: 'footer.warranty', path: '/warranty' },
-                { label: 'footer.contact', path: '/contact' }
-              ].map((link) => (
-                <li key={link.path}>
-                  <Link 
-                    to={link.path} 
-                    className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-black transition-colors font-bold font-serif"
-                  >
-                    {t(link.label)}
-                  </Link>
-                </li>
-              ))}
+      { label: 'footer.faqs', path: '/faqs' },
+      { label: 'footer.care', path: '/care' },
+      { label: 'footer.warranty', path: '/warranty' },
+      { label: 'footer.contact', path: '/contact' }
+    ].map((link) => (
+      <li key={link.path}>
+        <Link 
+          to={link.path} 
+          className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-black transition-colors font-bold font-serif"
+        >
+          {t(link.label)}
+        </Link>
+      </li>
+    ))}
             </ul>
           </div>
 
