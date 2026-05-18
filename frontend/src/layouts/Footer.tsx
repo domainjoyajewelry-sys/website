@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Gift } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const { t, language } = useLanguage();
