@@ -58,8 +58,7 @@ const Footer: React.FC = () => {
     </li>
     {[
       { label: 'info.aboutTitle', path: '/about' },
-...
-                { label: 'footer.shipping', path: '/shipping' },
+      { label: 'footer.shipping', path: '/shipping' },
                 { label: 'footer.faqs', path: '/faqs' },
                 { label: 'footer.care', path: '/care' },
                 { label: 'footer.warranty', path: '/warranty' },
