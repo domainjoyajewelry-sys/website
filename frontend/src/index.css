@@ -99,3 +99,15 @@ div[id^="userway-"] {
   color: black;
   border: 1px solid #e5e7eb;
 }
+
+.bg-beige {
+  background-color: #f5f5dc;
+}
+
+.text-beige {
+  color: #f5f5dc;
+}
+
+.hover-bg-beige:hover {
+  background-color: #e8e8c8;
+}

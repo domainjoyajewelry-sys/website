@@ -97,17 +97,8 @@ const Home: React.FC = () => {
     <div className="bg-white relative">
       <Toaster position="top-center" />
       
-      {/* Redesigned Premium Hero */}
-      <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32">
-        <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
-          <img 
-            src={activeBanner.image} 
-            className="w-full h-full object-cover"
-            alt="JOYA Hero"
-          />
-          <div className="absolute inset-0 bg-black/30"></div>
-        </motion.div>
-        
+      {/* Redesigned Premium Hero - Solid Black & White */}
+      <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32 bg-black">
         <div className="relative z-10 text-center px-6 mb-20">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -118,18 +109,21 @@ const Home: React.FC = () => {
             <span className="text-white text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
               {language === 'he' ? 'בית תכשיטי יוקרה' : 'Luxury Jewelry House'}
             </span>
+            <h1 className="text-white text-5xl sm:text-7xl md:text-8xl font-serif uppercase tracking-[0.2em] mb-12">
+              JOYA
+            </h1>
             <p className="text-white text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest leading-relaxed">
               {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
             </p>
             <div className="flex flex-col sm:flex-row gap-8">
               <Link to={activeBanner.link || "/products"}>
-                <Button className="bg-white/90 text-black hover:bg-white transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold border-none">
+                <Button className="bg-[#f5f5dc] text-black hover:bg-[#e8e8c8] transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold border-none">
                   {language === 'he' ? 'לקולקציה החדשה' : 'Shop Collection'}
                 </Button>
               </Link>
               <PiercingBooking 
                 trigger={
-                  <Button variant="outline" className="text-white border-white/40 hover:border-white hover:bg-white/5 transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold">
+                  <Button variant="outline" className="text-[#f5f5dc] border-[#f5f5dc]/40 hover:border-[#f5f5dc] hover:bg-[#f5f5dc]/5 transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold">
                     {t('home.bookNow')}
                   </Button>
                 }
