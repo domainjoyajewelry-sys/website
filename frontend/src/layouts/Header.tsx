@@ -80,6 +80,12 @@ const Header: React.FC = () => {
                     >
                       {t('nav.more')}
                     </button>
+                    <button 
+                      onClick={() => handleMobileNav('/gift-card')}
+                      className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right"
+                    >
+                      {t('nav.giftCard')}
+                    </button>
                     
                     <div className="pt-10 border-t border-zinc-50 flex flex-col gap-6">
                       <Button variant="outline" onClick={() => { toggleLanguage(); setIsMobileMenuOpen(false); }} className="border-black text-black rounded-none py-6 text-[12px] sm:text-[14px] uppercase tracking-[0.5em] font-bold">
@@ -104,6 +110,9 @@ const Header: React.FC = () => {
             </Link>
             <Link to="/products?new=true" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
               {t('nav.newArrivals')}
+            </Link>
+            <Link to="/gift-card" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+              {t('nav.giftCard')}
             </Link>
           </nav>
         </div>

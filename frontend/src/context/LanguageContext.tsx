@@ -70,11 +70,13 @@ const allTranslations: Translations = {
   "productCard.outOfStock": { en: "Out of Stock", he: "אזל מהמלאי" },
   "products.allJewelry": { en: "All Jewelry", he: "כל התכשיטים" },
   "products.allJewelrySubtitle": { en: "Explore our exquisite collection of fine jewelry, crafted with passion and precision.", he: "גלו את קולקציית התכשיטים המעולה שלנו, המעוצבת בתשוקה ובדיוק." },
+  "products.newCollection": { en: "New Collection", he: "קולקציה חדשה" },
   "products.category": { en: "Category", he: "קטגוריה" },
   "products.priceRange": { en: "Price Range", he: "טווח מחירים" },
   "products.materials": { en: "Materials", he: "חומרים" },
   "products.gemstones": { en: "Gemstones", he: "אבני חן" },
   "products.color": { en: "Color", he: "צבע" },
+  "products.metalColor": { en: "Metal Color", he: "צבע מתכת" },
   "products.bodyPart": { en: "Body Part", he: "מיקום בגוף" },
   "products.clearAll": { en: "Clear All", he: "נקה הכל" },
   "products.itemsFound": { en: "items found", he: "פריטים נמצאו" },
@@ -146,6 +148,17 @@ const allTranslations: Translations = {
     he: "יועצי השירות שלנו זמינים לסייע לכם בכל שאלה. בקרו בסטודיו הדגל שלנו בקריון קריות, או צרו איתנו קשר בוואטסאפ בטלפון 051-234-5678. ניתן גם לשלוח לנו מייל לכתובת concierge@joya.co.il לייעוץ סטיילינג אישי."
   },
   "global.backToStore": { en: "Back to Store", he: "חזרה לחנות" },
+  "nav.giftCard": { en: "Gift Card", he: "כרטיס מתנה" },
+  "metal.gold": { en: "Gold", he: "זהב" },
+  "metal.silver": { en: "Silver", he: "כסף" },
+  "metal.roseGold": { en: "Rose Gold", he: "רוז גולד" },
+  "metal.whiteGold": { en: "White Gold", he: "זהב לבן" },
+  "metal.platinum": { en: "Platinum", he: "פלטינה" },
+  "metal.titanium": { en: "Titanium", he: "טיטניום" },
+  "bodyPart.ear": { en: "Ear", he: "אוזן" },
+  "bodyPart.nose": { en: "Nose", he: "אף" },
+  "bodyPart.lip": { en: "Lip", he: "שפה" },
+  "bodyPart.belly": { en: "Belly", he: "טבור" },
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {

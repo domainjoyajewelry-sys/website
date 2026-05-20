@@ -116,7 +116,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       {/* New Arrivals Toggle */}
       <div className="flex items-center justify-between pb-6 border-b border-zinc-100">
          <Label htmlFor="new-arrivals" className="text-[12px] uppercase tracking-[0.4em] font-bold text-black font-serif">
-           {language === 'he' ? 'קולקציה חדשה' : 'New Collection'}
+           {t('products.newCollection')}
          </Label>
          <Checkbox 
            id="new-arrivals" 
@@ -167,7 +167,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
 
       {/* Color Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{language === 'he' ? 'צבע מתכת' : 'Metal Color'}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.metalColor')}</Label>
         <div className="space-y-4">
           {colors.map((c, index) => (
             <div key={index} className="flex items-center gap-4 group">
