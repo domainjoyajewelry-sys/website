@@ -7,6 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
+import { loginUser } from '../services/api';
 
 const Login: React.FC = () => {
   const { t, language } = useLanguage();
@@ -16,23 +17,33 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      if (email === 'admin@joya.co.il' && password === 'AdminPassword2026!') {
-        login({ id: '1', name: 'Admin', email, role: 'admin', token: 'fake-jwt' });
-        toast.success(language === 'he' ? 'ברוך הבא, מנהל' : 'Welcome, Admin');
+    try {
+      const data = await loginUser(email, password);
+      // Map backend fields to frontend AuthContext User interface
+      login({
+        id: data._id,
+        name: data.full_name,
+        email: data.email,
+        role: data.role,
+        token: data.token
+      });
+      
+      toast.success(language === 'he' ? 'התחברת בהצלחה' : 'Logged in successfully');
+      
+      if (data.role === 'admin') {
         navigate('/admin');
       } else {
-        login({ id: '2', name: 'User', email, role: 'user', token: 'fake-jwt' });
-        toast.success(language === 'he' ? 'התחברת בהצלחה' : 'Logged in successfully');
         navigate('/');
       }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || (language === 'he' ? 'שגיאת התחברות' : 'Login failed'));
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleSocialLogin = (platform: string) => {
