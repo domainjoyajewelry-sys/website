@@ -19,10 +19,10 @@ const AdminOrders: React.FC = () => {
       <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
         <div>
           <h2 className="text-4xl font-serif uppercase tracking-widest text-black">
-            {language === 'he' ? 'ניהול הזמנות' : 'Order Overview'}
+            {t('admin.manageOrders')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-            Viewing {orders.length} recent transactions
+            {t('admin.viewingRecent').replace('recent transactions', `${orders.length} ${t('admin.viewingRecent').includes('transactions') ? 'transactions' : ''}`)}
           </p>
         </div>
         <div className="w-16 h-16 bg-zinc-50 flex items-center justify-center border border-zinc-100">
@@ -34,12 +34,12 @@ const AdminOrders: React.FC = () => {
         <Table>
           <TableHeader className="bg-zinc-50">
             <TableRow className="border-zinc-100">
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">Order ID</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Customer</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Date</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">Items</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">Status</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">Total</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">{t('admin.orderId')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.customer')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.date')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.items')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.status')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">{t('admin.total')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

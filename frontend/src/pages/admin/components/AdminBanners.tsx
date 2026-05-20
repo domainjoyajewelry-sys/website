@@ -27,7 +27,7 @@ const AdminBanners: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
       setIsAdding(false);
       setFormData({ title: '', image: '', link: '', isActive: true });
-      toast.success('Banner created successfully');
+      toast.success(language === 'he' ? 'באנר נוצר בהצלחה' : 'Banner created successfully');
     }
   });
 
@@ -36,7 +36,7 @@ const AdminBanners: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
       setEditingBanner(null);
-      toast.success('Banner updated successfully');
+      toast.success(language === 'he' ? 'באנר עודכן בהצלחה' : 'Banner updated successfully');
     }
   });
 
@@ -44,7 +44,7 @@ const AdminBanners: React.FC = () => {
     mutationFn: deleteAdBanner,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
-      toast.success('Banner deleted successfully');
+      toast.success(language === 'he' ? 'באנר נמחק בהצלחה' : 'Banner deleted successfully');
     }
   });
 
@@ -66,10 +66,10 @@ const AdminBanners: React.FC = () => {
       <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
         <div>
           <h2 className="text-4xl font-serif uppercase tracking-widest text-black font-medium">
-            {language === 'he' ? 'ניהול באנרים' : 'Banner Management'}
+            {t('admin.manageBanners')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-            Customize your boutique's visual storytelling
+            {t('admin.bannerDescription')}
           </p>
         </div>
         <Button 
@@ -77,7 +77,7 @@ const AdminBanners: React.FC = () => {
           className="bg-black text-white rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 transition-all flex gap-4"
         >
           <Plus className="w-4 h-4" />
-          {language === 'he' ? 'הוסף באנר חדש' : 'Add New Banner'}
+          {t('admin.addNewBanner')}
         </Button>
       </div>
 
@@ -91,7 +91,7 @@ const AdminBanners: React.FC = () => {
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Banner Title</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.bannerTitle')}</label>
                 <Input 
                   value={formData.title} 
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
@@ -99,7 +99,7 @@ const AdminBanners: React.FC = () => {
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Image URL</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.imageUrl')}</label>
                 <Input 
                   value={formData.image} 
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
@@ -107,7 +107,7 @@ const AdminBanners: React.FC = () => {
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Target Link</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.targetLink')}</label>
                 <Input 
                   value={formData.link} 
                   onChange={(e) => setFormData({...formData, link: e.target.value})}
@@ -116,9 +116,9 @@ const AdminBanners: React.FC = () => {
               </div>
             </div>
             <div className="flex justify-end gap-6">
-              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingBanner(null); }} className="uppercase text-[10px] tracking-widest font-bold">Cancel</Button>
+              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingBanner(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
               <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">
-                <Save className="w-4 h-4 mr-3" /> Save Changes
+                <Save className="w-4 h-4 mr-3" /> {t('admin.saveChanges')}
               </Button>
             </div>
           </motion.div>
@@ -129,18 +129,18 @@ const AdminBanners: React.FC = () => {
         <Table>
           <TableHeader className="bg-zinc-50">
             <TableRow className="border-zinc-100">
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 w-40">Preview</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Title</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Link</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center w-32">Status</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 w-40">Actions</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 w-40">{t('admin.preview')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.name')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.targetLink')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center w-32">{t('admin.status')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 w-40">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">Synchronizing visual assets...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">{t('admin.syncVisuals')}</TableCell></TableRow>
             ) : banners.length === 0 ? (
-              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300 uppercase tracking-widest">No active banners found</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300 uppercase tracking-widest">{t('admin.noBanners')}</TableCell></TableRow>
             ) : banners.map((banner: any) => (
               <TableRow key={banner._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
                 <TableCell className="py-6 px-8">
@@ -152,7 +152,7 @@ const AdminBanners: React.FC = () => {
                 <TableCell className="text-[10px] font-mono text-zinc-400">{banner.link}</TableCell>
                 <TableCell className="text-center">
                   <span className={`text-[8px] font-bold px-3 py-1 rounded-full uppercase tracking-widest ${banner.isActive ? 'bg-green-50 text-green-600' : 'bg-zinc-100 text-zinc-400'}`}>
-                    {banner.isActive ? 'Active' : 'Inactive'}
+                    {banner.isActive ? t('admin.active') : t('admin.inactive')}
                   </span>
                 </TableCell>
                 <TableCell className="text-right px-8">

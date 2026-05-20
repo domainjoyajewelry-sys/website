@@ -36,7 +36,7 @@ const AdminProducts: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       setIsAdding(false);
       resetForm();
-      toast.success('Product created');
+      toast.success(language === 'he' ? 'מוצר נוצר בהצלחה' : 'Product created');
     }
   });
 
@@ -45,7 +45,7 @@ const AdminProducts: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       setEditingProduct(null);
-      toast.success('Product updated');
+      toast.success(language === 'he' ? 'מוצר עודכן בהצלחה' : 'Product updated');
     }
   });
 
@@ -53,7 +53,7 @@ const AdminProducts: React.FC = () => {
     mutationFn: deleteProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
-      toast.success('Product deleted');
+      toast.success(language === 'he' ? 'מוצר נמחק בהצלחה' : 'Product deleted');
     }
   });
 
@@ -86,15 +86,15 @@ const AdminProducts: React.FC = () => {
       <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
         <div>
           <h2 className="text-4xl font-serif uppercase tracking-widest text-black">
-            {language === 'he' ? 'ניהול מוצרים' : 'Product Management'}
+            {t('admin.manageProducts')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-            {products.length} Items in catalog
+            {products.length} {t('admin.itemsInCatalog')}
           </p>
         </div>
         <Button onClick={() => { resetForm(); setIsAdding(true); }} className="bg-black text-white rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 flex gap-4">
           <Plus className="w-4 h-4" />
-          {language === 'he' ? 'הוסף מוצר חדש' : 'Add New Product'}
+          {t('admin.addNewProduct')}
         </Button>
       </div>
 
@@ -103,51 +103,51 @@ const AdminProducts: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-zinc-50 p-10 border border-zinc-100 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Name (EN)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.nameEn')}</label>
                   <Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Name (HE)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.nameHe')}</label>
                   <Input value={formData.name_he} onChange={(e) => setFormData({...formData, name_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Price (₪)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.price')} (₪)</label>
                   <Input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: Number(e.target.value)})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Stock</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.stock')}</label>
                   <Input type="number" value={formData.countInStock} onChange={(e) => setFormData({...formData, countInStock: Number(e.target.value)})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Category</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.category')}</label>
                   <select 
                     value={formData.category} 
                     onChange={(e) => setFormData({...formData, category: e.target.value})}
                     className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
                   >
-                    <option value="">Select Category</option>
+                    <option value="">{t('admin.selectCategory')}</option>
                     {categories.map((cat: any) => (
                       <option key={cat._id} value={cat._id}>{getLocalizedField(cat, 'name')}</option>
                     ))}
                   </select>
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Image URL</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.imageUrl')}</label>
                   <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Metal (EN)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.metalEn')}</label>
                   <Input value={formData.colors} onChange={(e) => setFormData({...formData, colors: e.target.value})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Metal (HE)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.metalHe')}</label>
                   <Input value={formData.colors_he} onChange={(e) => setFormData({...formData, colors_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
                </div>
             </div>
             <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
-              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingProduct(null); }} className="uppercase text-[10px] tracking-widest font-bold">Cancel</Button>
+              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingProduct(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
               <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">
-                <Save className="w-4 h-4 mr-3" /> Save Piece
+                <Save className="w-4 h-4 mr-3" /> {t('admin.savePiece')}
               </Button>
             </div>
           </motion.div>

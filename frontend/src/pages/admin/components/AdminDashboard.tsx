@@ -29,7 +29,7 @@ const AdminDashboard: React.FC = () => {
           {t('admin.dashboard')}
         </h2>
         <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-          Overview of your boutique's performance
+          {t('admin.overview')}
         </p>
       </div>
 
