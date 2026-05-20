@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../components/ui/dropdown-menu';
-import { Menu, Search, ShoppingCart, User, Globe } from 'lucide-react';
+import { Menu, Search, ShoppingCart, User, Globe, LayoutDashboard } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -145,6 +145,12 @@ const Header: React.FC = () => {
            <Link to="/cart" className="relative group p-2">
               <ShoppingCart className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
            </Link>
+
+           {user && user.role === 'admin' && (
+             <Link to="/admin" className="relative group p-2" title="Admin Dashboard">
+                <LayoutDashboard className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
+             </Link>
+           )}
 
            <DropdownMenu>
               <DropdownMenuTrigger asChild>
