@@ -146,7 +146,7 @@ const Header: React.FC = () => {
               <ShoppingCart className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
            </Link>
 
-           {user && user.role === 'admin' && (
+           {user && user.role?.toLowerCase() === 'admin' && (
              <Link to="/admin" className="relative group p-2" title="Admin Dashboard">
                 <LayoutDashboard className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
              </Link>
@@ -167,7 +167,7 @@ const Header: React.FC = () => {
                      <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer">
                         <Link to="/orders" className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif">{t('orders.myOrders')}</Link>
                      </DropdownMenuItem>
-                     {user.role === 'admin' && (
+                     {user.role?.toLowerCase() === 'admin' && (
                        <DropdownMenuItem className="focus:bg-zinc-50 rounded-none py-4 cursor-pointer border-t">
                           <Link to="/admin" className="w-full text-[12px] sm:text-[14px] uppercase tracking-[0.3em] font-bold font-serif text-zinc-400">Dashboard</Link>
                        </DropdownMenuItem>
