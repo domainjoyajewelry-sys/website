@@ -8,6 +8,7 @@ import { Label } from '../components/ui/label';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { loginUser } from '../services/api';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login: React.FC = () => {
   const { t, language } = useLanguage();
@@ -16,6 +17,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,13 +88,22 @@ const Login: React.FC = () => {
           </div>
           <div className="space-y-4">
             <Label className="text-[11px] uppercase tracking-widest font-bold font-serif text-black">Password</Label>
-            <Input 
-              type="password" 
-              required 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="rounded-none border-zinc-300 focus-visible:ring-black h-12 text-[14px]"
-            />
+            <div className="relative">
+              <Input 
+                type={showPassword ? 'text' : 'password'} 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="rounded-none border-zinc-300 focus-visible:ring-black h-12 text-[14px] pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-black transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
           <Button disabled={isSubmitting} type="submit" className="w-full bg-black text-white hover:bg-zinc-800 transition-all duration-500 rounded-none h-14 text-[11px] uppercase tracking-[0.4em] font-bold">
             {isSubmitting ? (language === 'he' ? 'מתחבר...' : 'Signing In...') : (language === 'he' ? 'היכנס' : 'Sign In')}
