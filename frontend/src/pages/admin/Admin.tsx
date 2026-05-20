@@ -5,6 +5,8 @@ import AdminDashboard from './components/AdminDashboard';
 import AdminProducts from './components/AdminProducts';
 import AdminOrders from './components/AdminOrders';
 import AdminBanners from './components/AdminBanners';
+import AdminCategories from './components/AdminCategories';
+import AdminCustomers from './components/AdminCustomers';
 
 const Admin: React.FC = () => {
   const { t } = useLanguage();
@@ -15,8 +17,8 @@ const Admin: React.FC = () => {
       <Route path="products" element={<AdminProducts />} />
       <Route path="orders" element={<AdminOrders />} />
       <Route path="banners" element={<AdminBanners />} />
-      <Route path="customers" element={<div className="p-20 text-center font-serif italic text-2xl text-zinc-300 tracking-widest uppercase">{t('global.refining')}</div>} />
-      <Route path="categories" element={<div className="p-20 text-center font-serif italic text-2xl text-zinc-300 tracking-widest uppercase">{t('global.refining')}</div>} />
+      <Route path="customers" element={<AdminCustomers />} />
+      <Route path="categories" element={<AdminCategories />} />
       {/* Default redirect to dashboard */}
       <Route path="/" element={<AdminDashboard />} />
     </Routes>

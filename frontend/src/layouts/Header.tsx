@@ -146,12 +146,6 @@ const Header: React.FC = () => {
               <ShoppingCart className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
            </Link>
 
-           {user && user.role?.toLowerCase() === 'admin' && (
-             <Link to="/admin" className="relative group p-2" title="Admin Dashboard">
-                <LayoutDashboard className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
-             </Link>
-           )}
-
            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="hover:bg-transparent group p-2 focus:outline-none">
