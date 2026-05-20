@@ -24,13 +24,6 @@ const Header: React.FC = () => {
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
-    if (user) {
-      console.log('Current User Object:', user);
-      console.log('User Role:', user.role);
-    }
-  }, [user]);
-
-  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
