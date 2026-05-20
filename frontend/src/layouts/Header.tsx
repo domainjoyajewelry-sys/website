@@ -104,14 +104,14 @@ const Header: React.FC = () => {
           </div>
 
           {/* Left Nav (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-10">
-            <Link to="/products" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-10">
+            <Link to="/products" className={`text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
               {t('nav.collections')}
             </Link>
-            <Link to="/products?new=true" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+            <Link to="/products?new=true" className={`text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
               {t('nav.newArrivals')}
             </Link>
-            <Link to="/gift-card" className={`text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+            <Link to="/gift-card" className={`text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
               {t('nav.giftCard')}
             </Link>
           </nav>
@@ -123,7 +123,7 @@ const Header: React.FC = () => {
              <motion.span 
                initial={{ opacity: 0, scale: 0.95 }}
                animate={{ opacity: 1, scale: 1 }}
-               className={`text-2xl sm:text-3xl md:text-5xl font-serif font-bold uppercase tracking-[0.5em] sm:tracking-[0.8em] transition-all duration-700 block whitespace-nowrap ${!isHomePage || isScrolled ? 'text-black' : 'text-white'}`}
+               className={`text-xl sm:text-2xl md:text-3xl xl:text-5xl font-serif font-bold uppercase tracking-[0.3em] sm:tracking-[0.5em] xl:tracking-[0.8em] transition-all duration-700 block whitespace-nowrap ${!isHomePage || isScrolled ? 'text-black' : 'text-white'}`}
              >
                JOYA
              </motion.span>
@@ -131,12 +131,12 @@ const Header: React.FC = () => {
         </div>
 
         {/* Right Side Actions */}
-        <div className="flex-1 flex items-center justify-end gap-3 sm:gap-6 md:gap-8">
+        <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4 xl:gap-8">
            <Button 
              variant="ghost" 
              size="sm" 
              onClick={toggleLanguage}
-             className={`hidden sm:flex items-center gap-2 text-[12px] sm:text-[14px] font-bold tracking-[0.3em] transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}
+             className={`hidden sm:flex items-center gap-2 text-[11px] xl:text-[13px] font-bold tracking-[0.2em] xl:tracking-[0.3em] transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black hover:text-zinc-400' : 'text-white hover:text-white/60'}`}
            >
              <Globe className="h-4 w-4" />
              {language === 'en' ? 'HE' : 'EN'}
