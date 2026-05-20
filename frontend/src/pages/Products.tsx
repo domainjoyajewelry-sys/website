@@ -129,7 +129,7 @@ const Products: React.FC = () => {
                 exit={{ opacity: 0, x: -30 }}
                 className="w-full lg:w-72 flex-shrink-0"
               >
-                <div className="sticky top-40 space-y-12">
+                <div className="sticky top-32 space-y-12 max-h-[calc(100vh-160px)] overflow-y-auto pr-4 scrollbar-hide">
                   <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
                     <h2 className="text-sm font-serif tracking-[0.2em]">{language === 'he' ? 'סינון' : 'FILTERS'}</h2>
                     <button onClick={() => setShowFilters(false)} className="lg:hidden">
@@ -188,13 +188,13 @@ const Products: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-24">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-12 gap-y-16 sm:gap-y-24">
                 {sortedProducts.map((product: any, i: number) => (
                   <motion.div 
                     key={product._id}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: (i % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 1, delay: (i % 4) * 0.05, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true, margin: "-50px" }}
                   >
                     <ProductCard product={product} />
