@@ -9,6 +9,14 @@ import { Plus, Edit, Trash2, Save, X, ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
+const METALS = [
+  { id: 'gold', name: 'Gold', name_he: 'זהב', hex: '#D4AF37' },
+  { id: 'silver', name: 'Silver', name_he: 'כסף', hex: '#C0C0C0' },
+  { id: 'roseGold', name: 'Rose Gold', name_he: 'רוז גולד', hex: '#B76E79' },
+  { id: 'whiteGold', name: 'White Gold', name_he: 'זהב לבן', hex: '#E5E4E2' },
+  { id: 'black', name: 'Black', name_he: 'שחור', hex: '#000000' },
+];
+
 const AdminProducts: React.FC = () => {
   const { t, getLocalizedField, language } = useLanguage();
   const queryClient = useQueryClient();
@@ -17,7 +25,11 @@ const AdminProducts: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '', name_he: '', price: 0, countInStock: 0, 
     category: '', materials: '', materials_he: '', 
-    colors: '', colors_he: '', images: [''], description: '', description_he: ''
+    colors: '', colors_he: '', images: [''], description: '', description_he: '',
+    variants: [] as any[],
+    piercingSide: 'none',
+    unitType: 'none',
+    pipeLength: ''
   });
 
   const { data: products = [], isLoading } = useQuery({
@@ -61,7 +73,11 @@ const AdminProducts: React.FC = () => {
     setFormData({
       name: '', name_he: '', price: 0, countInStock: 0, 
       category: '', materials: '', materials_he: '', 
-      colors: '', colors_he: '', images: [''], description: '', description_he: ''
+      colors: '', colors_he: '', images: [''], description: '', description_he: '',
+      variants: [],
+      piercingSide: 'none',
+      unitType: 'none',
+      pipeLength: ''
     });
   };
 
@@ -69,17 +85,49 @@ const AdminProducts: React.FC = () => {
     setEditingProduct(product);
     setFormData({
       ...product,
-      category: product.category?._id || product.category
+      category: product.category?._id || product.category,
+      variants: product.variants || [],
+      piercingSide: product.piercingSide || 'none',
+      unitType: product.unitType || 'none',
+      pipeLength: product.pipeLength || ''
+    });
+  };
+
+  const handleVariantToggle = (metal: any) => {
+    const exists = formData.variants.find((v: any) => v.color === metal.name);
+    if (exists) {
+      setFormData({
+        ...formData,
+        variants: formData.variants.filter((v: any) => v.color !== metal.name)
+      });
+    } else {
+      setFormData({
+        ...formData,
+        variants: [...formData.variants, { color: metal.name, color_he: metal.name_he, image: '', hex: metal.hex }]
+      });
+    }
+  };
+
+  const handleVariantImageChange = (color: string, imageUrl: string) => {
+    setFormData({
+      ...formData,
+      variants: formData.variants.map((v: any) => 
+        v.color === color ? { ...v, image: imageUrl } : v
+      )
     });
   };
 
   const handleSave = () => {
+    const dataToSave = { ...formData };
     if (editingProduct) {
-      updateMutation.mutate({ ...editingProduct, ...formData });
+      updateMutation.mutate({ ...editingProduct, ...dataToSave });
     } else {
-      createMutation.mutate(formData);
+      createMutation.mutate(dataToSave);
     }
   };
+
+  const selectedCategory = categories.find((c: any) => c._id === formData.category);
+  const isEarringOrPiercing = selectedCategory?.slug === 'earrings' || selectedCategory?.slug === 'piercing';
 
   return (
     <div className="space-y-12">
@@ -132,18 +180,78 @@ const AdminProducts: React.FC = () => {
                   </select>
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.imageUrl')}</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.imageUrl')} (Primary)</label>
                   <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 h-12" />
                </div>
-               <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.metalEn')}</label>
-                  <Input value={formData.colors} onChange={(e) => setFormData({...formData, colors: e.target.value})} className="rounded-none border-zinc-200 h-12" />
-               </div>
-               <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.metalHe')}</label>
-                  <Input value={formData.colors_he} onChange={(e) => setFormData({...formData, colors_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
+               
+               {/* Piercing Specific Fields */}
+               {isEarringOrPiercing && (
+                 <>
+                  <div className="space-y-4">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Piercing Side</label>
+                    <select 
+                      value={formData.piercingSide} 
+                      onChange={(e) => setFormData({...formData, piercingSide: e.target.value})}
+                      className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                    >
+                      <option value="none">None</option>
+                      <option value="right">Right</option>
+                      <option value="left">Left</option>
+                      <option value="both">Both</option>
+                    </select>
+                  </div>
+                  <div className="space-y-4">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Unit Type</label>
+                    <select 
+                      value={formData.unitType} 
+                      onChange={(e) => setFormData({...formData, unitType: e.target.value})}
+                      className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                    >
+                      <option value="none">None</option>
+                      <option value="single">Single Earring</option>
+                      <option value="pair">2 Pair (Set)</option>
+                    </select>
+                  </div>
+                  <div className="space-y-4">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Pipe Length (e.g. 1cm)</label>
+                    <Input value={formData.pipeLength} onChange={(e) => setFormData({...formData, pipeLength: e.target.value})} className="rounded-none border-zinc-200 h-12" />
+                  </div>
+                 </>
+               )}
+            </div>
+
+            {/* Metal Color Variants */}
+            <div className="space-y-6 pt-6 border-t border-zinc-100">
+               <label className="text-[12px] uppercase tracking-[0.2em] font-bold text-black font-serif">Available Metal Colors & Images</label>
+               <div className="flex flex-wrap gap-10">
+                  {METALS.map((metal) => (
+                    <div key={metal.id} className="space-y-4 min-w-[200px]">
+                       <div className="flex items-center gap-3">
+                          <input 
+                            type="checkbox" 
+                            checked={formData.variants.some((v: any) => v.color === metal.name)}
+                            onChange={() => handleVariantToggle(metal)}
+                            className="w-4 h-4 accent-black"
+                          />
+                          <div className="w-4 h-4 rounded-full border border-zinc-200" style={{ backgroundColor: metal.hex }}></div>
+                          <span className="text-[11px] uppercase tracking-widest font-bold">{language === 'he' ? metal.name_he : metal.name}</span>
+                       </div>
+                       {formData.variants.some((v: any) => v.color === metal.name) && (
+                         <div className="space-y-2 pl-7">
+                            <label className="text-[9px] uppercase tracking-widest text-zinc-400 block">Variant Image URL</label>
+                            <Input 
+                              value={formData.variants.find((v: any) => v.color === metal.name)?.image || ''} 
+                              onChange={(e) => handleVariantImageChange(metal.name, e.target.value)}
+                              className="rounded-none border-zinc-200 h-10 text-[11px]" 
+                              placeholder="https://..."
+                            />
+                         </div>
+                       )}
+                    </div>
+                  ))}
                </div>
             </div>
+
             <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
               <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingProduct(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
               <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">

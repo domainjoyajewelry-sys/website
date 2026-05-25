@@ -261,6 +261,36 @@ const ProductDetail: React.FC = () => {
                    </ul>
                 </AccordionContent>
               </AccordionItem>
+
+              {(product.piercingSide !== 'none' || product.unitType !== 'none' || product.pipeLength) && (
+                <AccordionItem value="specs" className="border-zinc-100">
+                  <AccordionTrigger className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif hover:no-underline">
+                    {language === 'he' ? 'מפרט טכני' : 'Specifications'}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[10px] uppercase tracking-widest text-zinc-400 leading-loose py-6 font-serif">
+                    <ul className="space-y-4">
+                        {product.piercingSide !== 'none' && (
+                          <li className="flex justify-between">
+                            <span>{language === 'he' ? 'צד פירסינג' : 'Piercing Side'}</span> 
+                            <span className="text-black uppercase">{product.piercingSide}</span>
+                          </li>
+                        )}
+                        {product.unitType !== 'none' && (
+                          <li className="flex justify-between">
+                            <span>{language === 'he' ? 'סוג יחידה' : 'Unit Type'}</span> 
+                            <span className="text-black uppercase">{product.unitType === 'pair' ? (language === 'he' ? 'זוג' : 'Pair') : (language === 'he' ? 'בודד' : 'Single')}</span>
+                          </li>
+                        )}
+                        {product.pipeLength && (
+                          <li className="flex justify-between">
+                            <span>{language === 'he' ? 'אורך מוט' : 'Pipe Length'}</span> 
+                            <span className="text-black uppercase">{product.pipeLength}</span>
+                          </li>
+                        )}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
             </Accordion>
           </div>
         </div>

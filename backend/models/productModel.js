@@ -81,6 +81,19 @@ const productSchema = mongoose.Schema(
         hex: { type: String }, // Hex code for UI circles
       }
     ],
+    piercingSide: {
+      type: String,
+      enum: ['right', 'left', 'both', 'none'],
+      default: 'none',
+    },
+    unitType: {
+      type: String,
+      enum: ['pair', 'single', 'none'],
+      default: 'none',
+    },
+    pipeLength: {
+      type: String, // e.g., '1cm', '2cm'
+    },
   },
   {
     timestamps: true,
