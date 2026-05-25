@@ -27,7 +27,7 @@ const getAdBannerById = asyncHandler(async (req, res) => {
 // @route   POST /api/adbanners
 // @access  Private/Admin
 const createAdBanner = asyncHandler(async (req, res) => {
-  const { title, title_he, subtitle, subtitle_he, image, link, isActive, order } = req.body;
+  const { title, title_he, subtitle, subtitle_he, image, video, backgroundType, link, isActive, order } = req.body;
 
   const adBanner = new AdBanner({
     title,
@@ -35,6 +35,8 @@ const createAdBanner = asyncHandler(async (req, res) => {
     subtitle,
     subtitle_he,
     image,
+    video,
+    backgroundType,
     link,
     isActive,
     order,
@@ -48,7 +50,7 @@ const createAdBanner = asyncHandler(async (req, res) => {
 // @route   PUT /api/adbanners/:id
 // @access  Private/Admin
 const updateAdBanner = asyncHandler(async (req, res) => {
-  const { title, title_he, subtitle, subtitle_he, image, link, isActive, order } = req.body;
+  const { title, title_he, subtitle, subtitle_he, image, video, backgroundType, link, isActive, order } = req.body;
 
   const adBanner = await AdBanner.findById(req.params.id);
 
@@ -58,6 +60,8 @@ const updateAdBanner = asyncHandler(async (req, res) => {
     adBanner.subtitle = subtitle;
     adBanner.subtitle_he = subtitle_he;
     adBanner.image = image;
+    adBanner.video = video;
+    adBanner.backgroundType = backgroundType;
     adBanner.link = link;
     adBanner.isActive = isActive;
     adBanner.order = order;

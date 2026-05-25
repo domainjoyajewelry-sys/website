@@ -97,8 +97,39 @@ const Home: React.FC = () => {
     <div className="bg-white relative">
       <Toaster position="top-center" />
       
-      {/* Redesigned Premium Hero - Solid Black & White */}
-      <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32 bg-black">
+      {/* Redesigned Premium Hero - Dynamic Background */}
+      <section ref={heroRef} className={`relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32 ${activeBanner.backgroundType === 'solid' ? 'bg-black' : ''}`}>
+        
+        {activeBanner.backgroundType === 'video' && activeBanner.video && (
+          <div className="absolute inset-0 z-0">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src={activeBanner.video} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
+        )}
+
+        {activeBanner.backgroundType === 'image' && (
+          <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
+            <img 
+              src={activeBanner.image} 
+              className="w-full h-full object-cover"
+              alt="JOYA Hero"
+            />
+            <div className="absolute inset-0 bg-black/30"></div>
+          </motion.div>
+        )}
+
+        {activeBanner.backgroundType === 'solid' && (
+           <div className="absolute inset-0 bg-black z-0"></div>
+        )}
+        
         <div className="relative z-10 text-center px-6 mb-20">
           <motion.div
             initial={{ opacity: 0, y: 15 }}

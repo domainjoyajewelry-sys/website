@@ -120,13 +120,12 @@ const Header: React.FC = () => {
         {/* Centered Logo */}
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <Link to="/" className="pointer-events-auto block">
-             <motion.span 
-               initial={{ opacity: 0, scale: 0.95 }}
-               animate={{ opacity: 1, scale: 1 }}
-               className={`text-xl sm:text-2xl md:text-3xl xl:text-5xl font-serif font-bold uppercase tracking-[0.3em] sm:tracking-[0.5em] xl:tracking-[0.8em] transition-all duration-700 block whitespace-nowrap ${!isHomePage || isScrolled ? 'text-black' : 'text-white'}`}
-             >
-               JOYA
-             </motion.span>
+             <img 
+               src="/logo.jpeg" 
+               alt="JOYA" 
+               className={`h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 ${!isHomePage || isScrolled ? '' : 'invert brightness-200'}`}
+               style={{ mixBlendMode: !isHomePage || isScrolled ? 'multiply' : 'screen' }}
+             />
           </Link>
         </div>
 

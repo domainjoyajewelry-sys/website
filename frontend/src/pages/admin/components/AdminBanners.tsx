@@ -10,11 +10,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 const AdminBanners: React.FC = () => {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const queryClient = useQueryClient();
   const [editingBanner, setEditingBanner] = useState<any>(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [formData, setFormData] = useState({ title: '', image: '', link: '', isActive: true });
+  const [formData, setFormData] = useState({ 
+    title: '', 
+    title_he: '', 
+    image: '', 
+    video: '', 
+    backgroundType: 'image', 
+    link: '', 
+    isActive: true 
+  });
 
   const { data: banners = [], isLoading } = useQuery({
     queryKey: ['adbanners'],
@@ -26,7 +34,7 @@ const AdminBanners: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
       setIsAdding(false);
-      setFormData({ title: '', image: '', link: '', isActive: true });
+      resetForm();
       toast.success(language === 'he' ? 'באנר נוצר בהצלחה' : 'Banner created successfully');
     }
   });
@@ -48,9 +56,29 @@ const AdminBanners: React.FC = () => {
     }
   });
 
+  const resetForm = () => {
+    setFormData({ 
+      title: '', 
+      title_he: '', 
+      image: '', 
+      video: '', 
+      backgroundType: 'image', 
+      link: '', 
+      isActive: true 
+    });
+  };
+
   const handleEdit = (banner: any) => {
     setEditingBanner(banner);
-    setFormData({ title: banner.title, image: banner.image, link: banner.link, isActive: banner.isActive });
+    setFormData({ 
+      title: banner.title, 
+      title_he: banner.title_he || banner.title,
+      image: banner.image, 
+      video: banner.video || '', 
+      backgroundType: banner.backgroundType || 'image',
+      link: banner.link, 
+      isActive: banner.isActive 
+    });
   };
 
   const handleSave = () => {
@@ -89,9 +117,9 @@ const AdminBanners: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
             className="bg-zinc-50 p-10 border border-zinc-100 space-y-8"
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.bannerTitle')}</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.bannerTitle')} (EN)</label>
                 <Input 
                   value={formData.title} 
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
@@ -99,12 +127,24 @@ const AdminBanners: React.FC = () => {
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.imageUrl')}</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.bannerTitle')} (HE)</label>
                 <Input 
-                  value={formData.image} 
-                  onChange={(e) => setFormData({...formData, image: e.target.value})}
-                  className="rounded-none border-zinc-200 h-12" 
+                  value={formData.title_he} 
+                  onChange={(e) => setFormData({...formData, title_he: e.target.value})}
+                  className="rounded-none border-zinc-200 h-12 text-right" 
                 />
+              </div>
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Background Type</label>
+                <select 
+                  value={formData.backgroundType} 
+                  onChange={(e) => setFormData({...formData, backgroundType: e.target.value})}
+                  className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                >
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
+                  <option value="solid">Solid Black</option>
+                </select>
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.targetLink')}</label>
@@ -114,6 +154,25 @@ const AdminBanners: React.FC = () => {
                   className="rounded-none border-zinc-200 h-12" 
                 />
               </div>
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Image URL</label>
+                <Input 
+                  value={formData.image} 
+                  onChange={(e) => setFormData({...formData, image: e.target.value})}
+                  className="rounded-none border-zinc-200 h-12" 
+                />
+              </div>
+              {formData.backgroundType === 'video' && (
+                <div className="space-y-4">
+                  <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Video URL</label>
+                  <Input 
+                    value={formData.video} 
+                    onChange={(e) => setFormData({...formData, video: e.target.value})}
+                    className="rounded-none border-zinc-200 h-12" 
+                    placeholder="/videos/hero-bg.mp4"
+                  />
+                </div>
+              )}
             </div>
             <div className="flex justify-end gap-6">
               <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingBanner(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
