@@ -49,7 +49,7 @@ const Home: React.FC = () => {
   });
 
   const activeBanner = banners.find((b: any) => b.isActive) || {
-    image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2940&auto=format&fit=crop',
+    image: '/images/new/p1.jpeg',
     title: 'Luxury Jewelry House'
   };
 
@@ -68,10 +68,10 @@ const Home: React.FC = () => {
     if (!allProducts || !Array.isArray(allProducts) || allProducts.length === 0) return [];
 
     const metalTypes = [
-      { name: 'Platinum Collection', name_he: 'קולקציית פלטינה', color: 'Silver', fallback: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000' },
-      { name: 'Gold Collection', name_he: 'קולקציית זהב', color: 'Gold', fallback: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1000' },
-      { name: 'Rose Gold Collection', name_he: 'קולקציית רוז גולד', color: 'Rose Gold', fallback: 'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?q=80&w=1000' },
-      { name: 'White Gold Collection', name_he: 'קולקציית זהב לבן', color: 'White Gold', fallback: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000' }
+      { name: 'Platinum Collection', name_he: 'קולקציית פלטינה', color: 'Silver', fallback: '/images/new/p2.jpeg' },
+      { name: 'Gold Collection', name_he: 'קולקציית זהב', color: 'Gold', fallback: '/images/new/p1.jpeg' },
+      { name: 'Rose Gold Collection', name_he: 'קולקציית רוז גולד', color: 'Rose Gold', fallback: '/images/new/p3.jpeg' },
+      { name: 'White Gold Collection', name_he: 'קולקציית זהב לבן', color: 'White Gold', fallback: '/images/new/p1.jpeg' }
     ];
 
     return metalTypes.map(metal => {

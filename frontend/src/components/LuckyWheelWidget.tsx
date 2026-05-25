@@ -9,17 +9,17 @@ const LuckyWheelWidget: React.FC = () => {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Circular and on the Left */}
       <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-32 right-8 z-40 bg-[#f5f5dc] text-black p-5 rounded-full shadow-2xl border border-zinc-200 group flex items-center gap-3 overflow-hidden"
+        className="fixed bottom-32 left-8 z-40 bg-[#f5f5dc] text-black w-14 h-14 rounded-full shadow-2xl border border-zinc-200 flex items-center justify-center group"
       >
         <Gift className="w-6 h-6" />
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap text-[10px] uppercase tracking-widest font-bold">
+        <span className="absolute left-full ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap bg-black text-white text-[9px] uppercase tracking-widest font-bold px-3 py-2 pointer-events-none">
            Lucky Wheel
         </span>
       </motion.button>
