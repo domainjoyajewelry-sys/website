@@ -14,7 +14,6 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [wonPrize, setWonPrize] = useState<any>(null);
-  const wheelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchPrizes = async () => {
@@ -40,6 +39,10 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     // Calculate rotation
     const segmentAngle = 360 / prizes.length;
     const extraSpins = 5 + Math.floor(Math.random() * 5); // 5 to 10 full spins
+    
+    // Target is the middle of the segment
+    // Arrow is at the top (270 degrees in SVG coordinate system if 0 is right)
+    // We want the winner to land at the arrow
     const targetRotation = rotation + (extraSpins * 360) + (360 - (randomIndex * segmentAngle)) - (segmentAngle / 2);
     
     setRotation(targetRotation);
@@ -49,7 +52,6 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       setIsSpinning(false);
       setWonPrize(selectedPrize);
       
-      // Only record in DB if user is logged in
       if (user) {
         try {
           await recordSpin(selectedPrize._id);
@@ -58,10 +60,22 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           toast.error('Failed to save your win');
         }
       } else {
-        // For guest, save to local storage to prevent immediate re-spin
         localStorage.setItem('joya_guest_won', selectedPrize.label);
       }
     }, 5000);
+  };
+
+  const getSegmentPath = (index: number, total: number) => {
+    const angle = 360 / total;
+    const startAngle = angle * index;
+    const endAngle = startAngle + angle;
+    
+    const x1 = 50 + 50 * Math.cos((Math.PI * startAngle) / 180);
+    const y1 = 50 + 50 * Math.sin((Math.PI * startAngle) / 180);
+    const x2 = 50 + 50 * Math.cos((Math.PI * endAngle) / 180);
+    const y2 = 50 + 50 * Math.sin((Math.PI * endAngle) / 180);
+    
+    return `M 50 50 L ${x1} ${y1} A 50 50 0 0 1 ${x2} ${y2} Z`;
   };
 
   if (user && user.hasSpunWheel && !wonPrize) {
@@ -83,7 +97,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   }
 
   return (
-    <div className="p-10 text-center bg-white max-w-2xl mx-auto border border-zinc-100 shadow-2xl relative overflow-hidden flex flex-col min-h-[600px] justify-between">
+    <div className="p-10 text-center bg-white max-w-2xl mx-auto border border-zinc-100 shadow-2xl relative overflow-hidden flex flex-col min-h-[650px] justify-between">
       <button onClick={onClose} className="absolute top-6 right-6 text-zinc-300 hover:text-black transition-colors z-30"><X className="w-6 h-6" /></button>
       
       <div className="space-y-4 relative z-10">
@@ -93,45 +107,57 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </p>
       </div>
 
-      <div className="relative w-[340px] h-[340px] mx-auto my-8">
+      <div className="relative w-[380px] h-[380px] mx-auto my-12 flex items-center justify-center">
         {/* The Arrow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 z-20">
-          <div className="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[25px] border-t-black"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6 z-20 drop-shadow-lg">
+          <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[35px] border-t-black"></div>
         </div>
 
-        {/* The Wheel */}
+        {/* The Wheel (SVG) */}
         <motion.div
           animate={{ rotate: rotation }}
           transition={{ duration: 5, ease: [0.45, 0.05, 0.55, 0.95] }}
-          className="w-full h-full rounded-full border-[10px] border-zinc-900 relative shadow-2xl overflow-hidden"
-          style={{ transformOrigin: 'center' }}
+          className="w-full h-full relative"
+          style={{ transformOrigin: 'center center' }}
         >
-          {prizes.map((prize, i) => {
-            const angle = 360 / prizes.length;
-            const rotate = angle * i;
-            const skew = 90 - angle;
-            return (
-              <div
-                key={prize._id}
-                className="absolute top-0 right-0 w-1/2 h-1/2 origin-bottom-left"
-                style={{
-                  transform: `rotate(${rotate}deg) skewY(-${skew}deg)`,
-                  backgroundColor: i % 2 === 0 ? '#1a1a1a' : '#f5f5dc',
-                  border: '1px solid rgba(255,255,255,0.05)'
-                }}
-              >
-                <div 
-                  className="absolute bottom-6 left-6 origin-bottom-left flex items-center justify-center w-[120px]"
-                  style={{ transform: `skewY(${skew}deg) rotate(${angle / 2}deg)` }}
-                >
-                  <span className={`text-[11px] font-bold uppercase tracking-tight whitespace-nowrap ${i % 2 === 0 ? 'text-white' : 'text-black'}`}>
+          <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90 overflow-visible">
+            {prizes.map((prize, i) => {
+              const angle = 360 / prizes.length;
+              const textRotation = angle * i + angle / 2;
+              return (
+                <g key={prize._id}>
+                  <path
+                    d={getSegmentPath(i, prizes.length)}
+                    fill={i % 2 === 0 ? '#1a1a1a' : '#f5f5dc'}
+                    stroke="rgba(255,255,255,0.1)"
+                    strokeWidth="0.2"
+                  />
+                  <text
+                    x="75"
+                    y="50"
+                    fill={i % 2 === 0 ? '#ffffff' : '#000000'}
+                    fontSize="3"
+                    fontWeight="bold"
+                    textAnchor="middle"
+                    alignmentBaseline="middle"
+                    className="uppercase tracking-tighter"
+                    transform={`rotate(${textRotation}, 50, 50)`}
+                    style={{ fontFamily: 'Cinzel, serif' }}
+                  >
                     {language === 'he' ? prize.label_he : prize.label}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+                  </text>
+                </g>
+              );
+            })}
+            {/* Inner Gold Circle */}
+            <circle cx="50" cy="50" r="6" fill="#D4AF37" stroke="black" strokeWidth="1" />
+            <circle cx="50" cy="50" r="2" fill="black" />
+          </svg>
         </motion.div>
+        
+        {/* Outer Frame Decoration */}
+        <div className="absolute inset-0 rounded-full border-[12px] border-black pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]"></div>
+        <div className="absolute -inset-2 rounded-full border-[1px] border-zinc-200 pointer-events-none"></div>
       </div>
 
       <div className="relative z-10 min-h-[140px] flex flex-col justify-center">
@@ -152,7 +178,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                    <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
                      {language === 'he' ? 'כדי לקבל את המתנה, עליך להירשם או להיכנס לחשבון' : 'To receive your gift, you must register or log in to your account'}
                    </p>
-                   <Button onClick={() => window.location.href='/login'} className="w-full bg-black text-white rounded-none py-7 uppercase tracking-[0.4em] font-bold">
+                   <Button onClick={() => window.location.href='/login'} className="w-full bg-[#f5f5dc] text-black border border-zinc-200 rounded-none py-7 uppercase tracking-[0.4em] font-bold hover:bg-[#e8e8c8] transition-all">
                      {language === 'he' ? 'הירשמו עכשיו לקבלת הפרס' : 'Register Now to Claim'}
                    </Button>
                 </div>
@@ -168,7 +194,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               )}
             </motion.div>
           ) : (
-            <motion.div key="spin">
+            <motion.div key="spin" className="space-y-6">
               <Button 
                 onClick={spinWheel} 
                 disabled={isSpinning}
