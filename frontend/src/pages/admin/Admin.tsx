@@ -7,6 +7,7 @@ import AdminOrders from './components/AdminOrders';
 import AdminBanners from './components/AdminBanners';
 import AdminCategories from './components/AdminCategories';
 import AdminCustomers from './components/AdminCustomers';
+import AdminPrizes from './components/AdminPrizes';
 
 const Admin: React.FC = () => {
   const { t } = useLanguage();
@@ -19,6 +20,7 @@ const Admin: React.FC = () => {
       <Route path="banners" element={<AdminBanners />} />
       <Route path="customers" element={<AdminCustomers />} />
       <Route path="categories" element={<AdminCategories />} />
+      <Route path="prizes" element={<AdminPrizes />} />
       {/* Default redirect to dashboard */}
       <Route path="/" element={<AdminDashboard />} />
     </Routes>

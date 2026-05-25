@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const Category = require('./models/categoryModel');
 const Product = require('./models/productModel');
 const AdBanner = require('./models/adBannerModel');
+const Prize = require('./models/prizeModel');
 const connectDB = require('./config/db');
 
 dotenv.config();
@@ -14,6 +15,7 @@ const seedData = async () => {
     await Product.deleteMany();
     await Category.deleteMany();
     await AdBanner.deleteMany();
+    await Prize.deleteMany();
 
     // 2. Create only necessary categories for the new items
     const categories = await Category.insertMany([
@@ -133,7 +135,17 @@ const seedData = async () => {
       order: 0
     });
 
-    console.log('Database Purged and Re-Seeded with ONLY your new data!');
+    // 5. Seed Lucky Wheel Prizes
+    await Prize.insertMany([
+      { label: '10% OFF', label_he: '10% הנחה', value: 'JOYA10', chance: 40 },
+      { label: '15% OFF', label_he: '15% הנחה', value: 'JOYA15', chance: 20 },
+      { label: 'FREE SHIPPING', label_he: 'משלוח חינם', value: 'FREESHIP', chance: 20 },
+      { label: 'BOUTIQUE GIFT', label_he: 'מתנת בוטיק', value: 'GIFT_BOX', chance: 10 },
+      { label: '₪50 GIFT CARD', label_he: '₪50 כרטיס מתנה', value: 'CARD50', chance: 5 },
+      { label: '₪100 GIFT CARD', label_he: '₪100 כרטיס מתנה', value: 'CARD100', chance: 5 },
+    ]);
+
+    console.log('Database Purged and Re-Seeded with ONLY your new data & prizes!');
     process.exit();
   } catch (error) {
     console.error(`Error: ${error.message}`);

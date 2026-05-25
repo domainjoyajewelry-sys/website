@@ -40,6 +40,13 @@ const userSchema = mongoose.Schema(
       default: 'user',
       enum: ['user', 'admin'],
     },
+    hasSpunWheel: {
+      type: Boolean,
+      default: false,
+    },
+    wonPrize: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -169,4 +169,35 @@ export const getGiftCardByCode = async (code: string) => {
   return data;
 };
 
+// PRIZE API
+export const getPrizes = async () => {
+  const { data } = await api.get('/prizes');
+  return data;
+};
+
+export const getAdminPrizes = async () => {
+  const { data } = await api.get('/prizes/admin');
+  return data;
+};
+
+export const createPrize = async (prizeData: any) => {
+  const { data } = await api.post('/prizes', prizeData);
+  return data;
+};
+
+export const updatePrize = async (prizeData: any) => {
+  const { data } = await api.put(`/prizes/${prizeData._id}`, prizeData);
+  return data;
+};
+
+export const deletePrize = async (id: string) => {
+  const { data } = await api.delete(`/prizes/${id}`);
+  return data;
+};
+
+export const recordSpin = async (prizeId: string) => {
+  const { data } = await api.post('/prizes/spin', { prizeId });
+  return data;
+};
+
 export default api;

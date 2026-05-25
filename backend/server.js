@@ -8,6 +8,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adBannerRoutes = require('./routes/adBannerRoutes');
 const giftCardRoutes = require('./routes/giftCardRoutes');
+const prizeRoutes = require('./routes/prizeRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/adbanners', adBannerRoutes);
 app.use('/api/giftcards', giftCardRoutes);
+app.use('/api/prizes', prizeRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
