@@ -100,7 +100,7 @@ const Home: React.FC = () => {
       {/* Redesigned Premium Hero - Dynamic Background */}
       <section ref={heroRef} className={`relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32 ${activeBanner.backgroundType === 'solid' ? 'bg-black' : ''}`}>
         
-        {activeBanner.backgroundType === 'video' && activeBanner.video && (
+        {activeBanner.backgroundType === 'video' && activeBanner.video && activeBanner.videoActive !== false && (
           <div className="absolute inset-0 z-0">
             <video
               autoPlay
@@ -115,7 +115,7 @@ const Home: React.FC = () => {
           </div>
         )}
 
-        {activeBanner.backgroundType === 'image' && (
+        {(activeBanner.backgroundType === 'image' || (activeBanner.backgroundType === 'video' && activeBanner.videoActive === false)) && (
           <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
             <img 
               src={activeBanner.image} 

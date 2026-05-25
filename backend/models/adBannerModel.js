@@ -23,6 +23,10 @@ const adBannerSchema = mongoose.Schema(
     video: {
       type: String, // Optional URL for background video
     },
+    videoActive: {
+      type: Boolean,
+      default: true,
+    },
     backgroundType: {
       type: String,
       enum: ['image', 'video', 'solid'],

@@ -19,6 +19,7 @@ const AdminBanners: React.FC = () => {
     title_he: '', 
     image: '', 
     video: '', 
+    videoActive: true,
     backgroundType: 'image', 
     link: '', 
     isActive: true 
@@ -62,6 +63,7 @@ const AdminBanners: React.FC = () => {
       title_he: '', 
       image: '', 
       video: '', 
+      videoActive: true,
       backgroundType: 'image', 
       link: '', 
       isActive: true 
@@ -75,6 +77,7 @@ const AdminBanners: React.FC = () => {
       title_he: banner.title_he || banner.title,
       image: banner.image, 
       video: banner.video || '', 
+      videoActive: banner.videoActive !== undefined ? banner.videoActive : true,
       backgroundType: banner.backgroundType || 'image',
       link: banner.link, 
       isActive: banner.isActive 
@@ -159,13 +162,26 @@ const AdminBanners: React.FC = () => {
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Video URL (MP4)</label>
-                <Input 
-                  value={formData.video} 
-                  onChange={(e) => setFormData({...formData, video: e.target.value})}
-                  className="rounded-none border-zinc-300 h-12 focus-visible:ring-black" 
-                  placeholder="/videos/hero-bg.mp4"
-                  disabled={formData.backgroundType !== 'video'}
-                />
+                <div className="flex gap-4 items-center">
+                  <Input 
+                    value={formData.video} 
+                    onChange={(e) => setFormData({...formData, video: e.target.value})}
+                    className="rounded-none border-zinc-300 h-12 focus-visible:ring-black flex-grow" 
+                    placeholder="/videos/hero-bg.mp4"
+                    disabled={formData.backgroundType !== 'video'}
+                  />
+                  {formData.backgroundType === 'video' && (
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white border border-zinc-200">
+                       <input 
+                         type="checkbox" 
+                         checked={formData.videoActive} 
+                         onChange={(e) => setFormData({...formData, videoActive: e.target.checked})}
+                         className="w-4 h-4 accent-black"
+                       />
+                       <span className="text-[9px] font-bold uppercase tracking-widest">Active</span>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="space-y-4">
                 <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Target Link</label>
