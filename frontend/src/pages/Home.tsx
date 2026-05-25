@@ -1,9 +1,10 @@
 import React, { useRef, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles } from 'lucide-react';
+import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles, Menu, User as UserIcon, Globe } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts, getAdBanners } from '../services/api';
@@ -32,7 +33,8 @@ const ParallaxSection: React.FC<{ children: React.ReactNode; className?: string 
 };
 
 const Home: React.FC = () => {
-  const { t, language, getLocalizedField } = useLanguage();
+  const { t, language, getLocalizedField, toggleLanguage } = useLanguage();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const heroRef = useRef(null);
   
@@ -103,9 +105,42 @@ const Home: React.FC = () => {
     <div className="bg-white relative">
       <Toaster position="top-center" />
       
-      {/* Redesigned Premium Hero - Dynamic Background */}
-      <section ref={heroRef} className={`relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32 ${activeBanner.backgroundType === 'solid' ? 'bg-black' : ''}`}>
+      {/* Redesigned Premium Hero - Dynamic Background with Embedded Nav */}
+      <section ref={heroRef} className={`relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-48 ${activeBanner.backgroundType === 'solid' ? 'bg-black' : ''}`}>
         
+        {/* Embedded Hero Navigation */}
+        <div className="absolute top-0 left-0 right-0 z-30 px-6 sm:px-12 py-10 flex items-center justify-between pointer-events-none">
+           {/* Left: Collections & New */}
+           <nav className="hidden lg:flex items-center gap-10 pointer-events-auto">
+              <Link to="/products" className="text-[11px] uppercase tracking-[0.4em] font-bold text-white/60 hover:text-white transition-all font-serif">
+                {t('nav.collections')}
+              </Link>
+              <Link to="/products?new=true" className="text-[11px] uppercase tracking-[0.4em] font-bold text-white/60 hover:text-white transition-all font-serif">
+                {t('nav.newArrivals')}
+              </Link>
+           </nav>
+
+           {/* Center: Logo */}
+           <div className="absolute left-1/2 top-10 transform -translate-x-1/2 pointer-events-auto">
+              <Link to="/">
+                <img src="/logo.png" alt="JOYA" className="h-20 sm:h-28 md:h-36 w-auto invert brightness-200" />
+              </Link>
+           </div>
+
+           {/* Right: Actions */}
+           <div className="flex items-center gap-6 sm:gap-8 pointer-events-auto">
+              <button onClick={toggleLanguage} className="hidden sm:block text-[11px] font-bold tracking-[0.3em] text-white/60 hover:text-white font-serif uppercase">
+                {language === 'en' ? 'HE' : 'EN'}
+              </button>
+              <Link to="/cart" className="text-white/60 hover:text-white transition-all">
+                <ShoppingBag className="w-5 h-5" />
+              </Link>
+              <Link to={user ? "/profile" : "/login"} className="text-white/60 hover:text-white transition-all">
+                <UserIcon className="w-5 h-5" />
+              </Link>
+           </div>
+        </div>
+
         {activeBanner.backgroundType === 'video' && activeBanner.video && activeBanner.videoActive !== false && (
           <div className="absolute inset-0 z-0">
             <video
@@ -146,9 +181,6 @@ const Home: React.FC = () => {
             <span className="text-white text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
               {language === 'he' ? 'בית תכשיטי יוקרה' : 'Luxury Jewelry House'}
             </span>
-            <h1 className="text-white text-5xl sm:text-7xl md:text-8xl font-serif uppercase tracking-[0.2em] mb-12">
-              JOYA
-            </h1>
             <p className="text-white text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest leading-relaxed">
               {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
             </p>

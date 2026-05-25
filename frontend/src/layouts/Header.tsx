@@ -42,7 +42,9 @@ const Header: React.FC = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        !isHomePage || isScrolled ? 'bg-white/95 backdrop-blur-md py-4 md:py-6 shadow-sm border-b border-zinc-100' : 'bg-transparent py-8 md:py-10'
+        !isHomePage || isScrolled 
+          ? 'bg-white/95 backdrop-blur-md py-4 md:py-6 shadow-sm border-b border-zinc-100 opacity-100 translate-y-0' 
+          : 'bg-transparent py-8 md:py-10 opacity-0 -translate-y-full pointer-events-none'
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-12 max-w-screen-2xl relative h-10 md:h-12">
@@ -121,13 +123,9 @@ const Header: React.FC = () => {
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <Link to="/" className="pointer-events-auto block">
              <img 
-               src="/logo.jpeg" 
+               src="/logo.png" 
                alt="JOYA" 
-               className={`h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 ${!isHomePage || isScrolled ? 'brightness-0' : 'invert brightness-0 invert'}`}
-               style={{ 
-                 mixBlendMode: !isHomePage || isScrolled ? 'multiply' : 'screen',
-                 filter: !isHomePage || isScrolled ? 'contrast(200%) brightness(0)' : 'invert(1) brightness(200%)'
-               }}
+               className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 brightness-0"
              />
           </Link>
         </div>
