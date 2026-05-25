@@ -123,8 +123,11 @@ const Header: React.FC = () => {
              <img 
                src="/logo.jpeg" 
                alt="JOYA" 
-               className={`h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 ${!isHomePage || isScrolled ? '' : 'invert brightness-200'}`}
-               style={{ mixBlendMode: !isHomePage || isScrolled ? 'multiply' : 'screen' }}
+               className={`h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 ${!isHomePage || isScrolled ? 'brightness-0' : 'invert brightness-0 invert'}`}
+               style={{ 
+                 mixBlendMode: !isHomePage || isScrolled ? 'multiply' : 'screen',
+                 filter: !isHomePage || isScrolled ? 'contrast(200%) brightness(0)' : 'invert(1) brightness(200%)'
+               }}
              />
           </Link>
         </div>
