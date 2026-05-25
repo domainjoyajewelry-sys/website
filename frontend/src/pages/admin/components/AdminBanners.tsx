@@ -5,7 +5,7 @@ import { getAdBanners, createAdBanner, updateAdBanner, deleteAdBanner } from '..
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
-import { Plus, Edit, Trash2, Image as ImageIcon, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Image as ImageIcon, Save, X, Video } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -35,7 +35,7 @@ const AdminBanners: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
       setIsAdding(false);
       resetForm();
-      toast.success(language === 'he' ? 'באנר נוצר בהצלחה' : 'Banner created successfully');
+      toast.success(language === 'he' ? 'עיצוב נוצר בהצלחה' : 'Hero design created');
     }
   });
 
@@ -44,7 +44,7 @@ const AdminBanners: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
       setEditingBanner(null);
-      toast.success(language === 'he' ? 'באנר עודכן בהצלחה' : 'Banner updated successfully');
+      toast.success(language === 'he' ? 'עיצוב עודכן בהצלחה' : 'Hero design updated');
     }
   });
 
@@ -52,7 +52,7 @@ const AdminBanners: React.FC = () => {
     mutationFn: deleteAdBanner,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adbanners'] });
-      toast.success(language === 'he' ? 'באנר נמחק בהצלחה' : 'Banner deleted successfully');
+      toast.success(language === 'he' ? 'עיצוב נמחק בהצלחה' : 'Hero design deleted');
     }
   });
 
@@ -96,13 +96,13 @@ const AdminBanners: React.FC = () => {
           <h2 className="text-4xl font-serif uppercase tracking-widest text-black font-medium">
             {t('admin.manageBanners')}
           </h2>
-          <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
+          <p className="text-[11px] uppercase tracking-[0.4em] text-zinc-400 mt-4 font-bold max-w-2xl">
             {t('admin.bannerDescription')}
           </p>
         </div>
         <Button 
-          onClick={() => setIsAdding(true)}
-          className="bg-black text-white rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 transition-all flex gap-4"
+          onClick={() => { resetForm(); setIsAdding(true); }}
+          className="bg-[#f5f5dc] text-black border border-zinc-200 rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-[#e8e8c8] transition-all flex gap-4"
         >
           <Plus className="w-4 h-4" />
           {t('admin.addNewBanner')}
@@ -117,64 +117,67 @@ const AdminBanners: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
             className="bg-zinc-50 p-10 border border-zinc-100 space-y-8"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.bannerTitle')} (EN)</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">{t('admin.bannerTitle')} (EN)</label>
                 <Input 
                   value={formData.title} 
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  className="rounded-none border-zinc-200 h-12" 
+                  className="rounded-none border-zinc-300 h-12 focus-visible:ring-black" 
+                  placeholder="e.g. Winter Collection"
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.bannerTitle')} (HE)</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">{t('admin.bannerTitle')} (HE)</label>
                 <Input 
                   value={formData.title_he} 
                   onChange={(e) => setFormData({...formData, title_he: e.target.value})}
-                  className="rounded-none border-zinc-200 h-12 text-right" 
+                  className="rounded-none border-zinc-300 h-12 text-right focus-visible:ring-black" 
+                  placeholder="לדוגמה: קולקציית חורף"
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Background Type</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Background Type</label>
                 <select 
                   value={formData.backgroundType} 
                   onChange={(e) => setFormData({...formData, backgroundType: e.target.value})}
-                  className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-full bg-white border border-zinc-300 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black font-bold uppercase tracking-widest"
                 >
-                  <option value="image">Image</option>
-                  <option value="video">Video</option>
-                  <option value="solid">Solid Black</option>
+                  <option value="image">Static Image</option>
+                  <option value="video">Background Video</option>
+                  <option value="solid">Solid Black Color</option>
                 </select>
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">{t('admin.targetLink')}</label>
-                <Input 
-                  value={formData.link} 
-                  onChange={(e) => setFormData({...formData, link: e.target.value})}
-                  className="rounded-none border-zinc-200 h-12" 
-                />
-              </div>
-              <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Image URL</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Main Image / Video Poster</label>
                 <Input 
                   value={formData.image} 
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
-                  className="rounded-none border-zinc-200 h-12" 
+                  className="rounded-none border-zinc-300 h-12 focus-visible:ring-black" 
+                  placeholder="/images/hero.jpg"
                 />
               </div>
-              {formData.backgroundType === 'video' && (
-                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-zinc-400">Video URL</label>
-                  <Input 
-                    value={formData.video} 
-                    onChange={(e) => setFormData({...formData, video: e.target.value})}
-                    className="rounded-none border-zinc-200 h-12" 
-                    placeholder="/videos/hero-bg.mp4"
-                  />
-                </div>
-              )}
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Video URL (MP4)</label>
+                <Input 
+                  value={formData.video} 
+                  onChange={(e) => setFormData({...formData, video: e.target.value})}
+                  className="rounded-none border-zinc-300 h-12 focus-visible:ring-black" 
+                  placeholder="/videos/hero-bg.mp4"
+                  disabled={formData.backgroundType !== 'video'}
+                />
+              </div>
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Target Link</label>
+                <Input 
+                  value={formData.link} 
+                  onChange={(e) => setFormData({...formData, link: e.target.value})}
+                  className="rounded-none border-zinc-300 h-12 focus-visible:ring-black" 
+                  placeholder="/products"
+                />
+              </div>
             </div>
-            <div className="flex justify-end gap-6">
+            <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
               <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingBanner(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
               <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">
                 <Save className="w-4 h-4 mr-3" /> {t('admin.saveChanges')}
@@ -190,7 +193,7 @@ const AdminBanners: React.FC = () => {
             <TableRow className="border-zinc-100">
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 w-40">{t('admin.preview')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.name')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.targetLink')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Type</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center w-32">{t('admin.status')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 w-40">{t('admin.actions')}</TableHead>
             </TableRow>
@@ -203,12 +206,18 @@ const AdminBanners: React.FC = () => {
             ) : banners.map((banner: any) => (
               <TableRow key={banner._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
                 <TableCell className="py-6 px-8">
-                  <div className="w-24 h-12 bg-zinc-100 border border-zinc-100 overflow-hidden relative">
-                    <img src={banner.image} alt="" className="w-full h-full object-cover" />
+                  <div className="w-24 h-12 bg-zinc-100 border border-zinc-100 overflow-hidden relative flex items-center justify-center">
+                    {banner.backgroundType === 'video' ? (
+                       <Video className="w-5 h-5 text-zinc-400" />
+                    ) : banner.backgroundType === 'solid' ? (
+                       <div className="w-full h-full bg-black"></div>
+                    ) : (
+                       <img src={banner.image} alt="" className="w-full h-full object-cover" />
+                    )}
                   </div>
                 </TableCell>
-                <TableCell className="font-serif text-sm tracking-widest uppercase text-black font-medium">{banner.title}</TableCell>
-                <TableCell className="text-[10px] font-mono text-zinc-400">{banner.link}</TableCell>
+                <TableCell className="font-serif text-sm tracking-widest uppercase text-black font-medium">{language === 'he' ? banner.title_he : banner.title}</TableCell>
+                <TableCell className="text-[9px] uppercase tracking-widest font-bold text-zinc-400">{banner.backgroundType}</TableCell>
                 <TableCell className="text-center">
                   <span className={`text-[8px] font-bold px-3 py-1 rounded-full uppercase tracking-widest ${banner.isActive ? 'bg-green-50 text-green-600' : 'bg-zinc-100 text-zinc-400'}`}>
                     {banner.isActive ? t('admin.active') : t('admin.inactive')}

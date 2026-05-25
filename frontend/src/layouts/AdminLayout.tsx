@@ -37,7 +37,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: t('admin.orders'), icon: ShoppingCart, link: '/admin/orders' },
     { name: t('admin.customers'), icon: Users, link: '/admin/customers' },
     { name: t('admin.banners'), icon: Image, link: '/admin/banners' },
-    { name: language === 'he' ? 'פרסים' : 'Prizes', icon: Gift, link: '/admin/prizes' },
+    { name: t('admin.prizes'), icon: Gift, link: '/admin/prizes' },
   ];
 
   return (
