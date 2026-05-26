@@ -89,6 +89,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               src={currentImage}
               alt={getLocalizedField(product, 'name')}
               className="w-full h-full object-cover"
+              style={{ mixBlendMode: 'multiply' }}
             />
           </AnimatePresence>
         </Link>

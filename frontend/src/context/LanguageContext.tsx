@@ -223,6 +223,7 @@ const allTranslations: Translations = {
   "tryOn.instruction": { en: "Drag to position, use sliders to resize and rotate", he: "גררו למיקום, השתמשו בסרגלים לשינוי גודל וסיבוב" },
   "tryOn.uploadPhoto": { en: "Upload Photo", he: "העלאת תמונה" },
   "tryOn.useCamera": { en: "Use Live Camera", he: "חזרה למצלמה" },
+  "tryOn.snap": { en: "Snap Photo", he: "צלמו תמונה" },
   "productDetail.color": { en: "Color", he: "צבע" },
   "productDetail.sku": { en: "SKU", he: "מק״ט" },
   "specs.title": { en: "Specifications", he: "מפרט טכני" },

@@ -122,6 +122,7 @@ const ProductDetail: React.FC = () => {
                 src={currentImage}
                 alt={getLocalizedField(product, 'name')}
                 className="w-full h-full object-cover"
+                style={{ mixBlendMode: 'multiply' }}
               />
             </motion.div>
             
@@ -137,6 +138,7 @@ const ProductDetail: React.FC = () => {
                       src={v.image}
                       alt=""
                       className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                      style={{ mixBlendMode: 'multiply' }}
                     />
                   </div>
                 ))}
