@@ -217,6 +217,8 @@ const allTranslations: Translations = {
   "tryOn.scale": { en: "Scale", he: "גודל" },
   "tryOn.rotate": { en: "Rotate", he: "סיבוב" },
   "tryOn.instruction": { en: "Drag to position, use sliders to resize and rotate", he: "גררו למיקום, השתמשו בסרגלים לשינוי גודל וסיבוב" },
+  "tryOn.uploadPhoto": { en: "Upload Photo", he: "העלאת תמונה" },
+  "tryOn.useCamera": { en: "Use Live Camera", he: "חזרה למצלמה" },
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
