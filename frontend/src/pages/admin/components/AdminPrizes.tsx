@@ -122,7 +122,7 @@ const AdminPrizes: React.FC = () => {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">Loading prizes...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">{t('global.loadingPrizes')}</TableCell></TableRow>
             ) : prizes.map((prize: any) => (
               <TableRow key={prize._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
                 <TableCell className="py-6 px-8 font-serif text-sm tracking-widest uppercase">

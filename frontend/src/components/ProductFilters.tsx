@@ -130,7 +130,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
       <div className="space-y-6">
         <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.category')}</Label>
         {isLoadingCategories ? (
-          <div className="animate-pulse text-[12px] uppercase tracking-widest">Loading...</div>
+          <div className="animate-pulse text-[12px] uppercase tracking-widest">{t('global.loadingData')}</div>
         ) : (
           <RadioGroup value={filters.category} onValueChange={handleCategoryChange} className="space-y-4">
             <div className="flex items-center gap-4 group">

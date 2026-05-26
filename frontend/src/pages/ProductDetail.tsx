@@ -76,7 +76,7 @@ const ProductDetail: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="animate-pulse font-serif text-2xl tracking-[0.2em] text-zinc-300 uppercase">
-          Revealing masterpiece...
+          {t('global.loading')}
         </div>
       </div>
     );

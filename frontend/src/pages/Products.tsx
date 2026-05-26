@@ -78,7 +78,7 @@ const Products: React.FC = () => {
   if (isLoadingProducts) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-pulse font-serif text-2xl tracking-widest">Refining collection...</div>
+        <div className="animate-pulse font-serif text-2xl tracking-widest">{t('global.loadingData')}</div>
       </div>
     );
   }

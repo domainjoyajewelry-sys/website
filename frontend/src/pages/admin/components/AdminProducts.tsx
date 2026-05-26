@@ -275,7 +275,7 @@ const AdminProducts: React.FC = () => {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">Synchronizing catalog...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">{t('admin.synchronizing')}</TableCell></TableRow>
             ) : products.map((product: any) => (
               <TableRow key={product._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
                 <TableCell className="py-6 px-8">

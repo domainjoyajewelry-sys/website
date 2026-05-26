@@ -61,7 +61,7 @@ const Orders: React.FC = () => {
   };
 
   if (isLoadingOrders) {
-    return <div>Loading orders...</div>;
+    return <div className="min-h-screen flex items-center justify-center font-serif uppercase tracking-widest text-zinc-400">{t('global.loadingOrders')}</div>;
   }
 
   if (isErrorOrders) {

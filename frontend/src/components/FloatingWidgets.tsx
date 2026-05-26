@@ -39,33 +39,33 @@ const FloatingWidgets: React.FC = () => {
   const isHomePage = location.pathname === '/';
 
   return (
-    <div className={`fixed bottom-8 right-8 z-40 flex flex-col gap-4 transition-all duration-700 ${isHomePage && !isScrolled ? 'opacity-20 translate-x-20 pointer-events-none' : 'opacity-100 translate-x-0'}`}>
+    <div className={`fixed bottom-8 left-8 z-40 flex flex-col gap-6 transition-all duration-700 ${isHomePage && !isScrolled ? 'opacity-0 -translate-x-20 pointer-events-none' : 'opacity-100 translate-x-0'}`}>
+      {/* Accessibility Trigger */}
+      <button 
+        id="joya-accessibility-trigger"
+        onClick={openAccessibility}
+        className="w-14 h-14 bg-white text-black rounded-full shadow-2xl hover:bg-zinc-50 transition-all hover:scale-110 flex items-center justify-center border border-zinc-200 group active:scale-95"
+        aria-label="Accessibility Menu"
+      >
+        <Accessibility className="w-6 h-6" />
+        <span className="absolute left-full ml-4 bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif shadow-xl">
+          {language === 'he' ? 'נגישות' : 'Accessibility'}
+        </span>
+      </button>
+
       {/* WhatsApp Button */}
       <a 
         href="https://wa.me/972512345678" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#20bd5a] transition-all hover:scale-110 flex items-center justify-center group"
+        className="w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#20bd5a] transition-all hover:scale-110 flex items-center justify-center group active:scale-95"
         aria-label="Contact us on WhatsApp"
       >
-        <MessageCircle className="w-6 h-6" />
-        <span className={`absolute ${language === 'he' ? 'left-14' : 'right-14'} bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif`}>
-          {language === 'he' ? 'צרו קשר בווצאפ' : 'Chat with us'}
+        <MessageCircle className="w-7 h-7" />
+        <span className="absolute left-full ml-4 bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif shadow-xl">
+          {language === 'he' ? 'צרו קשר בווצאפ' : 'WhatsApp'}
         </span>
       </a>
-
-      {/* Customized Accessibility Trigger */}
-      <button 
-        id="joya-accessibility-trigger"
-        onClick={openAccessibility}
-        className="bg-white text-black p-4 rounded-full shadow-2xl hover:bg-zinc-50 transition-all hover:scale-110 flex items-center justify-center border border-zinc-100 group"
-        aria-label="Accessibility Menu"
-      >
-        <Accessibility className="w-6 h-6" />
-        <span className={`absolute ${language === 'he' ? 'left-14' : 'right-14'} bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif`}>
-          {language === 'he' ? 'נגישות' : 'Accessibility'}
-        </span>
-      </button>
     </div>
   );
 };

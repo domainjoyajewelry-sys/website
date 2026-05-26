@@ -147,7 +147,7 @@ const Profile: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading profile...</div>;
+    return <div className="min-h-screen flex items-center justify-center font-serif uppercase tracking-widest text-zinc-400">{t('global.loadingProfile')}</div>;
   }
 
   if (isError) {

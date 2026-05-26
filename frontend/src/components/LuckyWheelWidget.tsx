@@ -33,7 +33,7 @@ const LuckyWheelWidget: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-52 left-8 z-40 bg-[#f5f5dc] text-black w-14 h-14 rounded-full shadow-2xl border border-zinc-200 flex items-center justify-center group transition-all duration-700"
+        className="fixed bottom-48 left-8 z-40 bg-[#f5f5dc] text-black w-14 h-14 rounded-full shadow-2xl border border-zinc-200 flex items-center justify-center group transition-all duration-700"
       >
         <Gift className="w-6 h-6" />
         <span className="absolute left-full ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap bg-black text-white text-[9px] uppercase tracking-widest font-bold px-3 py-2 pointer-events-none">
