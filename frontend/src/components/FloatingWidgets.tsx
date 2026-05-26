@@ -36,36 +36,41 @@ const FloatingWidgets: React.FC = () => {
     }
   };
 
-  const isHomePage = location.pathname === '/';
-
   return (
-    <div className={`fixed bottom-8 left-8 z-40 flex flex-col gap-6 transition-all duration-700 ${isHomePage && !isScrolled ? 'opacity-0 -translate-x-20 pointer-events-none' : 'opacity-100 translate-x-0'}`}>
-      {/* Accessibility Trigger */}
-      <button 
-        id="joya-accessibility-trigger"
-        onClick={openAccessibility}
-        className="w-14 h-14 bg-white text-black rounded-full shadow-2xl hover:bg-zinc-50 transition-all hover:scale-110 flex items-center justify-center border border-zinc-200 group active:scale-95"
-        aria-label="Accessibility Menu"
+    <div className="fixed bottom-8 left-8 z-40 flex flex-col gap-6">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="flex flex-col gap-6"
       >
-        <Accessibility className="w-6 h-6" />
-        <span className="absolute left-full ml-4 bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif shadow-xl">
-          {language === 'he' ? 'נגישות' : 'Accessibility'}
-        </span>
-      </button>
+        {/* Accessibility Trigger */}
+        <button 
+          id="joya-accessibility-trigger"
+          onClick={openAccessibility}
+          className="w-14 h-14 bg-white text-black rounded-full shadow-2xl hover:bg-zinc-50 transition-all hover:scale-110 flex items-center justify-center border border-zinc-200 group active:scale-95"
+          aria-label="Accessibility Menu"
+        >
+          <Accessibility className="w-6 h-6" />
+          <span className="absolute left-full ml-4 bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif shadow-xl">
+            {language === 'he' ? 'נגישות' : 'Accessibility'}
+          </span>
+        </button>
 
-      {/* WhatsApp Button */}
-      <a 
-        href="https://wa.me/972512345678" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#20bd5a] transition-all hover:scale-110 flex items-center justify-center group active:scale-95"
-        aria-label="Contact us on WhatsApp"
-      >
-        <MessageCircle className="w-7 h-7" />
-        <span className="absolute left-full ml-4 bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif shadow-xl">
-          {language === 'he' ? 'צרו קשר בווצאפ' : 'WhatsApp'}
-        </span>
-      </a>
+        {/* WhatsApp Button */}
+        <a 
+          href="https://wa.me/972512345678" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#20bd5a] transition-all hover:scale-110 flex items-center justify-center group active:scale-95"
+          aria-label="Contact us on WhatsApp"
+        >
+          <MessageCircle className="w-7 h-7" />
+          <span className="absolute left-full ml-4 bg-black text-white text-[10px] px-3 py-2 rounded uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap font-serif shadow-xl">
+            {language === 'he' ? 'צרו קשר בווצאפ' : 'WhatsApp'}
+          </span>
+        </a>
+      </motion.div>
     </div>
   );
 };

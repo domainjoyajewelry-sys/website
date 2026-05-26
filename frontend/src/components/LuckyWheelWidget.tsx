@@ -18,22 +18,17 @@ const LuckyWheelWidget: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isHomePage = location.pathname === '/';
-
   return (
     <>
       {/* Floating Button - Circular and on the Left */}
       <motion.button
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ 
-          scale: isHomePage && !isScrolled ? 0 : 1, 
-          opacity: isHomePage && !isScrolled ? 0 : 1,
-          x: isHomePage && !isScrolled ? -100 : 0
-        }}
+        initial={{ scale: 0, opacity: 0, x: -20 }}
+        animate={{ scale: 1, opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-48 left-8 z-40 bg-[#f5f5dc] text-black w-14 h-14 rounded-full shadow-2xl border border-zinc-200 flex items-center justify-center group transition-all duration-700"
+        className="fixed bottom-48 left-8 z-40 bg-[#f5f5dc] text-black w-14 h-14 rounded-full shadow-2xl border border-zinc-200 flex items-center justify-center group"
       >
         <Gift className="w-6 h-6" />
         <span className="absolute left-full ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap bg-black text-white text-[9px] uppercase tracking-widest font-bold px-3 py-2 pointer-events-none">
