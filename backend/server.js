@@ -18,8 +18,13 @@ connectDB();
 
 const app = express();
 
-// Simple CORS for debugging and production
-app.use(cors());
+// Improved CORS configuration
+app.use(cors({
+  origin: true, // Reflect request origin
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
+}));
 
 app.use(express.json());
 

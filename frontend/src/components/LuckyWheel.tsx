@@ -6,6 +6,7 @@ import { getPrizes, recordSpin } from '../services/api';
 import { Button } from './ui/button';
 import { Gift, X, Trophy } from 'lucide-react';
 import { toast } from 'sonner';
+import { DialogTitle, DialogDescription } from './ui/dialog';
 
 const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { language, t } = useLanguage();
@@ -98,9 +99,18 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="p-6 sm:p-10 text-center bg-white max-w-2xl mx-auto border border-zinc-100 shadow-2xl relative overflow-hidden flex flex-col min-h-[550px] sm:min-h-[650px] justify-between">
-      <button onClick={onClose} className="absolute top-6 right-6 text-zinc-300 hover:text-black transition-colors z-30"><X className="w-6 h-6" /></button>
+      <DialogTitle className="sr-only">Lucky Wheel Game</DialogTitle>
+      <DialogDescription className="sr-only">Spin the wheel to win exclusive boutique gifts and discounts.</DialogDescription>
       
-      <div className="space-y-4 relative z-10">
+      <button 
+        onClick={onClose} 
+        className="absolute top-6 right-6 sm:top-10 sm:right-10 text-zinc-300 hover:text-black transition-colors z-30 p-2"
+        aria-label="Close"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      
+      <div className="space-y-4 relative z-10 pt-8 sm:pt-12">
         <h2 className="text-2xl sm:text-3xl font-serif uppercase tracking-widest">{language === 'he' ? 'גלגל המזל של ג׳ויה' : 'The JOYA Lucky Wheel'}</h2>
         <p className="text-zinc-400 font-serif tracking-widest uppercase text-[9px] sm:text-[10px]">
           {language === 'he' ? 'סובבו וגלו את המתנה שלכם' : 'Spin to reveal your exclusive boutique gift'}
