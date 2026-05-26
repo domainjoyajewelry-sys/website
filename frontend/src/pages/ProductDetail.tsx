@@ -4,10 +4,11 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
-import { Heart, Share2, Plus, Minus, ShieldCheck, Truck, RotateCcw } from 'lucide-react';
+import { Heart, Share2, Plus, Minus, ShieldCheck, Truck, RotateCcw, Camera } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getProductById, getProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
+import VirtualTryOn from '../components/VirtualTryOn';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -24,6 +25,7 @@ const ProductDetail: React.FC = () => {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+  const [showTryOn, setShowTryOn] = useState(false);
 
   // Fetch product by ID
   const { data: product, isLoading: isLoadingProduct, isError: isErrorProduct } = useQuery({
@@ -92,6 +94,7 @@ const ProductDetail: React.FC = () => {
   }
 
   const currentImage = selectedVariant ? selectedVariant.image : product.images[0];
+  const isEarringOrPiercing = product?.category?.slug === 'earrings' || product?.category?.slug === 'piercing';
 
   return (
     <div className="bg-white min-h-screen pt-40 pb-20 px-6">
@@ -221,6 +224,17 @@ const ProductDetail: React.FC = () => {
                   >
                     {product.countInStock > 0 ? t('productCard.addToBag') : t('productDetail.outOfStock')}
                   </Button>
+
+                  {isEarringOrPiercing && (
+                    <Button 
+                      onClick={() => setShowTryOn(true)}
+                      variant="outline"
+                      className="bg-[#f5f5dc] text-black border-none rounded-none py-10 px-8 hover:bg-[#e8e8c8] transition-all duration-500 flex gap-3"
+                    >
+                      <Camera className="w-5 h-5" />
+                      <span className="uppercase tracking-[0.2em] text-[10px] font-bold">{t('tryOn.title')}</span>
+                    </Button>
+                  )}
                   <Button variant="outline" className="border-zinc-200 rounded-none p-8 hover:bg-zinc-50 transition-colors">
                     <Heart className="w-5 h-5 text-zinc-300" />
                   </Button>
@@ -310,6 +324,22 @@ const ProductDetail: React.FC = () => {
           </div>
         </section>
       </div>
+
+      <AnimatePresence>
+        {showTryOn && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100]"
+          >
+            <VirtualTryOn 
+              productImage={currentImage} 
+              onClose={() => setShowTryOn(false)} 
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

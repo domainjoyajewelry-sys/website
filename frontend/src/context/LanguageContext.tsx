@@ -198,6 +198,7 @@ const allTranslations: Translations = {
     he: "יועצי השירות שלנו זמינים לסייע לכם בכל שאלה. בקרו בסטודיו הדגל שלנו בקריון קריות, או צרו איתנו קשר בוואטסאפ בטלפון 051-234-5678. ניתן גם לשלוח לנו מייל לכתובת concierge@joya.co.il לייעוץ סטיילינג אישי."
   },
   "global.backToStore": { en: "Back to Store", he: "חזרה לחנות" },
+  "global.scroll": { en: "Scroll", he: "גללו" },
   "nav.giftCard": { en: "Gift Card", he: "כרטיס מתנה" },
   "metal.gold": { en: "Gold", he: "זהב" },
   "metal.silver": { en: "Silver", he: "כסף" },
@@ -209,6 +210,13 @@ const allTranslations: Translations = {
   "bodyPart.nose": { en: "Nose", he: "אף" },
   "bodyPart.lip": { en: "Lip", he: "שפה" },
   "bodyPart.belly": { en: "Belly", he: "טבור" },
+  "tryOn.title": { en: "Virtual Try-On", he: "מדידה וירטואלית" },
+  "tryOn.allowCamera": { en: "Please allow camera access to use Virtual Try-On", he: "אנא אפשרו גישה למצלמה כדי להשתמש במדידה וירטואלית" },
+  "tryOn.noCamera": { en: "No camera found on this device", he: "לא נמצאה מצלמה במכשיר זה" },
+  "tryOn.close": { en: "Close", he: "סגור" },
+  "tryOn.scale": { en: "Scale", he: "גודל" },
+  "tryOn.rotate": { en: "Rotate", he: "סיבוב" },
+  "tryOn.instruction": { en: "Drag to position, use sliders to resize and rotate", he: "גררו למיקום, השתמשו בסרגלים לשינוי גודל וסיבוב" },
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {

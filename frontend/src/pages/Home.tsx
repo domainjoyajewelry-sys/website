@@ -209,7 +209,7 @@ const Home: React.FC = () => {
           className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 cursor-pointer z-10"
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
         >
-          <span className="text-white/40 text-[9px] uppercase tracking-[0.6em] font-bold vertical-text">Scroll</span>
+          <span className="text-white/40 text-[9px] uppercase tracking-[0.6em] font-bold vertical-text">{t('global.scroll')}</span>
           <div className="w-[1px] h-16 bg-gradient-to-b from-white/60 to-transparent"></div>
         </motion.div>
       </section>
