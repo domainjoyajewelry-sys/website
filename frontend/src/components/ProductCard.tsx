@@ -118,17 +118,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
            </button>
         </div>
 
-        {/* Try On Button (Top Right) - Last in DOM + Highest Z-index to ensure visibility on all devices */}
+        {/* Try On Button (Top Right) - Styled as a prominent badge */}
         {isEarringOrPiercing && (
-           <div className="absolute top-4 right-4 z-[40]">
+           <div className="absolute top-4 right-4 z-[45]">
               <button 
                 onClick={handleTryOnClick}
-                className="bg-[#f5f5dc] text-black w-10 h-10 rounded-full flex items-center justify-center shadow-2xl hover:bg-[#e8e8c8] transition-all transform hover:scale-110 group/try active:scale-95"
-                title={t('tryOn.title')}
+                className="bg-[#f5f5dc] text-black px-4 py-2 flex items-center gap-2 shadow-2xl hover:bg-[#e8e8c8] transition-all transform hover:scale-105 active:scale-95 border border-zinc-200"
               >
-                <Camera className="w-5 h-5" />
-                <span className="absolute right-full mr-3 opacity-0 group-hover/try:opacity-100 transition-opacity bg-black text-white text-[8px] uppercase tracking-widest px-3 py-2 whitespace-nowrap pointer-events-none shadow-xl">
-                   {t('tryOn.title')}
+                <Camera className="w-3 h-3" />
+                <span className="text-[8px] uppercase tracking-[0.2em] font-bold">
+                   {language === 'he' ? 'מדידה' : 'Try On'}
                 </span>
               </button>
            </div>
