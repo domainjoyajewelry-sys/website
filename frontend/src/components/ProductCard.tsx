@@ -69,26 +69,34 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     setShowTryOn(true);
   };
 
-  const isEarringOrPiercing = product.category?.slug === 'earrings' || product.category?.slug === 'piercing' || product.category === 'earrings' || product.category === 'piercing';
+  const isEarringOrPiercing = 
+    product.category?.slug === 'earrings' || 
+    product.category?.slug === 'piercing' || 
+    product.category === 'earrings' || 
+    product.category === 'piercing' ||
+    getLocalizedField(product.category, 'name')?.toLowerCase().includes('ear') ||
+    getLocalizedField(product.category, 'name')?.toLowerCase().includes('pierc');
 
   return (
     <div className="group relative flex flex-col">
-      <Link to={`/product/${product._id}`} className="block relative overflow-hidden bg-zinc-50 aspect-[3/4] border border-zinc-100">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={currentImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            src={currentImage}
-            alt={getLocalizedField(product, 'name')}
-            className="w-full h-full object-cover"
-          />
-        </AnimatePresence>
+      <div className="relative aspect-[3/4] overflow-hidden bg-zinc-50 border border-zinc-100">
+        <Link to={`/product/${product._id}`} className="block w-full h-full">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              src={currentImage}
+              alt={getLocalizedField(product, 'name')}
+              className="w-full h-full object-cover"
+            />
+          </AnimatePresence>
+        </Link>
         
         {/* Subtle Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
           {product.featured && (
              <span className="text-[8px] uppercase tracking-[0.3em] bg-black text-white px-3 py-1 font-bold">
                {language === 'he' ? 'נבחר' : 'Featured'}
@@ -101,9 +109,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
 
-        {/* Try On Button (Top Right) */}
+        {/* Try On Button (Top Right) - Now outside the Link to ensure clickability */}
         {isEarringOrPiercing && (
-           <div className="absolute top-4 right-4 z-20">
+           <div className="absolute top-4 right-4 z-30">
               <button 
                 onClick={handleTryOnClick}
                 className="bg-[#f5f5dc] text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#e8e8c8] transition-all transform hover:scale-110 group/try"
@@ -118,16 +126,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
 
         {/* Quick Add (Hidden till hover) */}
-        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-end justify-center p-6">
+        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-end justify-center p-6 pointer-events-none">
            <button 
              onClick={handleAddToCart}
              disabled={product.countInStock === 0}
-             className="w-full bg-white text-black py-5 text-[9px] uppercase tracking-[0.4em] font-bold transform translate-y-4 group-hover:translate-y-0 transition-all duration-700 hover:bg-black hover:text-white shadow-xl"
+             className="w-full bg-white text-black py-5 text-[9px] uppercase tracking-[0.4em] font-bold transform translate-y-4 group-hover:translate-y-0 transition-all duration-700 hover:bg-black hover:text-white shadow-xl pointer-events-auto"
            >
              {product.countInStock > 0 ? t('productCard.addToBag') : t('productDetail.outOfStock')}
            </button>
         </div>
-      </Link>
+      </div>
 
       <div className="mt-8 flex flex-col items-center text-center">
         {/* Color Selection Circles */}
