@@ -70,12 +70,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   const isEarringOrPiercing = 
-    product.category?.slug === 'earrings' || 
-    product.category?.slug === 'piercing' || 
-    product.category === 'earrings' || 
-    product.category === 'piercing' ||
-    getLocalizedField(product.category, 'name')?.toLowerCase().includes('ear') ||
-    getLocalizedField(product.category, 'name')?.toLowerCase().includes('pierc');
+    (product.category?.slug === 'earrings' || product.category?.slug === 'piercing') ||
+    (typeof product.category === 'string' && (product.category.includes('ear') || product.category.includes('pierc'))) ||
+    (getLocalizedField(product.category, 'name')?.toLowerCase().includes('ear')) ||
+    (getLocalizedField(product.category, 'name')?.toLowerCase().includes('pierc'));
 
   return (
     <div className="group relative flex flex-col">
@@ -109,22 +107,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
 
-        {/* Try On Button (Top Right) - Now outside the Link to ensure clickability */}
-        {isEarringOrPiercing && (
-           <div className="absolute top-4 right-4 z-30">
-              <button 
-                onClick={handleTryOnClick}
-                className="bg-[#f5f5dc] text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#e8e8c8] transition-all transform hover:scale-110 group/try"
-                title={t('tryOn.title')}
-              >
-                <Camera className="w-4 h-4" />
-                <span className="absolute right-full mr-3 opacity-0 group-hover/try:opacity-100 transition-opacity bg-black text-white text-[7px] uppercase tracking-widest px-2 py-1 whitespace-nowrap pointer-events-none">
-                   {t('tryOn.title')}
-                </span>
-              </button>
-           </div>
-        )}
-
         {/* Quick Add (Hidden till hover) */}
         <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-end justify-center p-6 pointer-events-none">
            <button 
@@ -135,6 +117,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
              {product.countInStock > 0 ? t('productCard.addToBag') : t('productDetail.outOfStock')}
            </button>
         </div>
+
+        {/* Try On Button (Top Right) - Last in DOM + Highest Z-index to ensure visibility on all devices */}
+        {isEarringOrPiercing && (
+           <div className="absolute top-4 right-4 z-[40]">
+              <button 
+                onClick={handleTryOnClick}
+                className="bg-[#f5f5dc] text-black w-10 h-10 rounded-full flex items-center justify-center shadow-2xl hover:bg-[#e8e8c8] transition-all transform hover:scale-110 group/try active:scale-95"
+                title={t('tryOn.title')}
+              >
+                <Camera className="w-5 h-5" />
+                <span className="absolute right-full mr-3 opacity-0 group-hover/try:opacity-100 transition-opacity bg-black text-white text-[8px] uppercase tracking-widest px-3 py-2 whitespace-nowrap pointer-events-none shadow-xl">
+                   {t('tryOn.title')}
+                </span>
+              </button>
+           </div>
+        )}
       </div>
 
       <div className="mt-8 flex flex-col items-center text-center">
