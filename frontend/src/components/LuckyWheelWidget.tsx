@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Gift } from 'lucide-react';
 import LuckyWheel from './LuckyWheel';
-import { Dialog, DialogContent } from './ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from './ui/dialog';
 import { useLocation } from 'react-router-dom';
 
 const LuckyWheelWidget: React.FC = () => {
@@ -43,6 +43,8 @@ const LuckyWheelWidget: React.FC = () => {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-3xl p-0 bg-transparent border-none shadow-none sm:rounded-none">
+           <DialogTitle className="sr-only">Lucky Wheel</DialogTitle>
+           <DialogDescription className="sr-only">Spin the wheel to win exclusive boutique gifts.</DialogDescription>
            <LuckyWheel onClose={() => setIsOpen(false)} />
         </DialogContent>
       </Dialog>
