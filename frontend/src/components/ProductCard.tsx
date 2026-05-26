@@ -4,6 +4,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { Camera } from 'lucide-react';
+import VirtualTryOn from './VirtualTryOn';
 
 interface Variant {
   color: string;
@@ -30,6 +32,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { t, language, getLocalizedField } = useLanguage();
   const { addToCart } = useCart();
+  const [showTryOn, setShowTryOn] = useState(false);
   
   // Track selected variant
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
@@ -60,6 +63,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     setSelectedVariant(variant);
   };
 
+  const handleTryOnClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowTryOn(true);
+  };
+
+  const isEarringOrPiercing = product.category?.slug === 'earrings' || product.category?.slug === 'piercing' || product.category === 'earrings' || product.category === 'piercing';
+
   return (
     <div className="group relative flex flex-col">
       <Link to={`/product/${product._id}`} className="block relative overflow-hidden bg-zinc-50 aspect-[3/4] border border-zinc-100">
@@ -89,6 +100,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
              </span>
           )}
         </div>
+
+        {/* Try On Button (Top Right) */}
+        {isEarringOrPiercing && (
+           <div className="absolute top-4 right-4 z-20">
+              <button 
+                onClick={handleTryOnClick}
+                className="bg-[#f5f5dc] text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-[#e8e8c8] transition-all transform hover:scale-110 group/try"
+                title={t('tryOn.title')}
+              >
+                <Camera className="w-4 h-4" />
+                <span className="absolute right-full mr-3 opacity-0 group-hover/try:opacity-100 transition-opacity bg-black text-white text-[7px] uppercase tracking-widest px-2 py-1 whitespace-nowrap pointer-events-none">
+                   {t('tryOn.title')}
+                </span>
+              </button>
+           </div>
+        )}
 
         {/* Quick Add (Hidden till hover) */}
         <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-end justify-center p-6">
@@ -130,6 +157,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           ₪{product.price.toLocaleString()}
         </p>
       </div>
+
+      <AnimatePresence>
+        {showTryOn && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100]"
+          >
+            <VirtualTryOn 
+              productImage={currentImage} 
+              onClose={() => setShowTryOn(false)} 
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
