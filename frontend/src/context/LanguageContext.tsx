@@ -219,6 +219,17 @@ const allTranslations: Translations = {
   "tryOn.instruction": { en: "Drag to position, use sliders to resize and rotate", he: "גררו למיקום, השתמשו בסרגלים לשינוי גודל וסיבוב" },
   "tryOn.uploadPhoto": { en: "Upload Photo", he: "העלאת תמונה" },
   "tryOn.useCamera": { en: "Use Live Camera", he: "חזרה למצלמה" },
+  "productDetail.color": { en: "Color", he: "צבע" },
+  "productDetail.sku": { en: "SKU", he: "מק״ט" },
+  "specs.title": { en: "Specifications", he: "מפרט טכני" },
+  "specs.piercingSide": { en: "Piercing Side", he: "צד פירסינג" },
+  "specs.unitType": { en: "Unit Type", he: "סוג יחידה" },
+  "specs.pipeLength": { en: "Pipe Length", he: "אורך מוט" },
+  "specs.right": { en: "Right", he: "ימין" },
+  "specs.left": { en: "Left", he: "שמאל" },
+  "specs.both": { en: "Both", he: "שניהם" },
+  "specs.single": { en: "Single", he: "בודד" },
+  "specs.pair": { en: "Pair", he: "זוג" },
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {

@@ -270,8 +270,8 @@ const ProductDetail: React.FC = () => {
                    <ul className="space-y-4">
                       <li className="flex justify-between"><span>{t('products.materials')}</span> <span className="text-black">{getLocalizedField(product, 'materials')}</span></li>
                       {product.gemstones && <li className="flex justify-between"><span>{t('products.gemstones')}</span> <span className="text-black">{getLocalizedField(product, 'gemstones')}</span></li>}
-                      <li className="flex justify-between"><span>Color</span> <span className="text-black uppercase">{getLocalizedField(product, 'colors')}</span></li>
-                      <li className="flex justify-between"><span>SKU</span> <span className="text-black uppercase">JY-{product._id.slice(-6).toUpperCase()}</span></li>
+                      <li className="flex justify-between"><span>{t('productDetail.color')}</span> <span className="text-black uppercase">{getLocalizedField(product, 'colors')}</span></li>
+                      <li className="flex justify-between"><span>{t('productDetail.sku')}</span> <span className="text-black uppercase">JY-{product._id.slice(-6).toUpperCase()}</span></li>
                    </ul>
                 </AccordionContent>
               </AccordionItem>
@@ -279,25 +279,25 @@ const ProductDetail: React.FC = () => {
               {(product.piercingSide !== 'none' || product.unitType !== 'none' || product.pipeLength) && (
                 <AccordionItem value="specs" className="border-zinc-100">
                   <AccordionTrigger className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif hover:no-underline">
-                    {language === 'he' ? 'מפרט טכני' : 'Specifications'}
+                    {t('specs.title')}
                   </AccordionTrigger>
                   <AccordionContent className="text-[10px] uppercase tracking-widest text-zinc-400 leading-loose py-6 font-serif">
                     <ul className="space-y-4">
                         {product.piercingSide !== 'none' && (
                           <li className="flex justify-between">
-                            <span>{language === 'he' ? 'צד פירסינג' : 'Piercing Side'}</span> 
-                            <span className="text-black uppercase">{product.piercingSide}</span>
+                            <span>{t('specs.piercingSide')}</span> 
+                            <span className="text-black uppercase">{t(`specs.${product.piercingSide}`)}</span>
                           </li>
                         )}
                         {product.unitType !== 'none' && (
                           <li className="flex justify-between">
-                            <span>{language === 'he' ? 'סוג יחידה' : 'Unit Type'}</span> 
-                            <span className="text-black uppercase">{product.unitType === 'pair' ? (language === 'he' ? 'זוג' : 'Pair') : (language === 'he' ? 'בודד' : 'Single')}</span>
+                            <span>{t('specs.unitType')}</span> 
+                            <span className="text-black uppercase">{t(`specs.${product.unitType}`)}</span>
                           </li>
                         )}
                         {product.pipeLength && (
                           <li className="flex justify-between">
-                            <span>{language === 'he' ? 'אורך מוט' : 'Pipe Length'}</span> 
+                            <span>{t('specs.pipeLength')}</span> 
                             <span className="text-black uppercase">{product.pipeLength}</span>
                           </li>
                         )}
