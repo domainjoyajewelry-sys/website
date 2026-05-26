@@ -165,13 +165,16 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
                   rotate: rotation
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="relative"
+                className="relative flex items-center justify-center"
               >
                 <img 
                   src={productImage} 
                   alt="Earring Try-On" 
-                  className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none"
-                  style={{ mixBlendMode: 'multiply' }}
+                  className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none block"
+                  style={{ 
+                    mixBlendMode: 'multiply',
+                    filter: 'contrast(1.1) brightness(1.05)'
+                  }}
                 />
               </motion.div>
             </motion.div>
