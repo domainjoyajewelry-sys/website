@@ -1,12 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MessageCircle, Accessibility } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useLocation } from 'react-router-dom';
 
 const FloatingWidgets: React.FC = () => {
   const { language } = useLanguage();
+  const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    // Load Accessibility Script (UserWay)
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    
+    // Load Accessibility Script...
     const userwayId = import.meta.env.VITE_USERWAY_ID;
     
     if (userwayId && userwayId !== 'YOUR_USERWAY_ID') {
@@ -28,8 +36,10 @@ const FloatingWidgets: React.FC = () => {
     }
   };
 
+  const isHomePage = location.pathname === '/';
+
   return (
-    <div className={`fixed bottom-8 ${language === 'he' ? 'left-8' : 'right-8'} z-50 flex flex-col gap-4`}>
+    <div className={`fixed bottom-8 right-8 z-40 flex flex-col gap-4 transition-all duration-700 ${isHomePage && !isScrolled ? 'opacity-20 translate-x-20 pointer-events-none' : 'opacity-100 translate-x-0'}`}>
       {/* WhatsApp Button */}
       <a 
         href="https://wa.me/972512345678" 
