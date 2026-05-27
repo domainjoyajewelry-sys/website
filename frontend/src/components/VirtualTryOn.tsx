@@ -65,16 +65,31 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
   }
 
   const handleSnap = () => {
+    console.log('Attempting to snap photo...');
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
+      
+      // Ensure video dimensions are valid
+      if (video.videoWidth === 0 || video.videoHeight === 0) {
+        console.error('Video dimensions are 0. Cannot snap.');
+        return;
+      }
+
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext('2d');
       if (ctx) {
+        console.log('Drawing video frame to canvas...');
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        setCapturedImage(canvas.toDataURL('image/jpeg'));
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        console.log('Photo captured successfully.');
+        setCapturedImage(dataUrl);
+      } else {
+        console.error('Failed to get canvas context');
       }
+    } else {
+      console.error('Video or Canvas ref not found', { video: !!videoRef.current, canvas: !!canvasRef.current });
     }
   };
 
@@ -200,7 +215,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
 
             {/* Snap Button (Only in Live mode) */}
             {!capturedImage && !error && (
-               <div className="absolute bottom-48 left-1/2 -translate-x-1/2 z-50">
+               <div className="absolute bottom-48 left-1/2 -translate-x-1/2 z-[60]">
                   <button 
                     onClick={handleSnap}
                     className="w-16 h-16 rounded-full border-4 border-white flex items-center justify-center group hover:scale-110 transition-all active:scale-95"
