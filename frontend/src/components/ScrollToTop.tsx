@@ -27,7 +27,7 @@ const ScrollToTop: React.FC = () => {
     });
   };
 
-  const xOffset = language === 'he' ? "-100%" : "0%";
+  const xOffset = "-50%";
 
   return (
     <AnimatePresence>
