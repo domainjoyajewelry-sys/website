@@ -4,7 +4,6 @@ import { useLanguage } from '../context/LanguageContext';
 import { X, Camera, RotateCcw, Maximize2, Minimize2, Upload, RefreshCw, Sparkles } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
-import { DialogTitle, DialogDescription } from './ui/dialog';
 
 interface VirtualTryOnProps {
   productImage: string;
@@ -96,8 +95,8 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
 
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center">
-      <DialogTitle className="sr-only">Virtual Try-On</DialogTitle>
-      <DialogDescription className="sr-only">Try on earrings and piercings virtually using your camera or a photo.</DialogDescription>
+      <h2 className="sr-only">Virtual Try-On</h2>
+      <p className="sr-only">Try on earrings and piercings virtually using your camera or a photo.</p>
       
       {/* SVG Background Removal Filter Definition */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>

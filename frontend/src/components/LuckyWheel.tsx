@@ -6,7 +6,6 @@ import { getPrizes, recordSpin } from '../services/api';
 import { Button } from './ui/button';
 import { Gift, X, Trophy } from 'lucide-react';
 import { toast } from 'sonner';
-import { DialogTitle, DialogDescription } from './ui/dialog';
 
 const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { language, t } = useLanguage();
@@ -99,8 +98,6 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="p-6 sm:p-10 text-center bg-white max-w-2xl mx-auto border border-zinc-100 shadow-2xl relative overflow-hidden flex flex-col min-h-[550px] sm:min-h-[650px] justify-between">
-      <DialogTitle className="sr-only">Lucky Wheel Game</DialogTitle>
-      <DialogDescription className="sr-only">Spin the wheel to win exclusive boutique gifts and discounts.</DialogDescription>
       
       <button 
         onClick={onClose} 
