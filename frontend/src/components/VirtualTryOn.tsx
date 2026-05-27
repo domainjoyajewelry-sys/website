@@ -95,6 +95,20 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
 
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center">
+      {/* SVG Background Removal Filter Definition */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <defs>
+          <filter id="remove-white" colorInterpolationFilters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      -1 -1 -1 3 -1"
+            />
+          </filter>
+        </defs>
+      </svg>
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-[110] bg-gradient-to-b from-black/60 to-transparent px-8 sm:px-12">
         <h2 className="text-white font-serif uppercase tracking-[0.3em] text-sm">{t('tryOn.title')}</h2>
@@ -172,8 +186,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
                   alt="Earring Try-On" 
                   className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none block"
                   style={{ 
-                    mixBlendMode: 'multiply',
-                    filter: 'contrast(1.1) brightness(1.05)'
+                    filter: 'url(#remove-white) contrast(1.2) brightness(1.1)'
                   }}
                 />
               </motion.div>
