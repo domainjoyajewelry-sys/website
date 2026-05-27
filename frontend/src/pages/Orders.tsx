@@ -173,6 +173,7 @@ const Orders: React.FC = () => {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };
