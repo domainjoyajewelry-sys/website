@@ -62,6 +62,7 @@ const allTranslations: Translations = {
   "home.luxuryHouse": { en: "Luxury Jewelry House", he: "בית תכשיטי יוקרה" },
   "home.timelessElegance": { en: "Exquisite Craftsmanship, Timeless Elegance", he: "אומנות מעולה, אלגנטיות נצחית" },
   "home.shopCollection": { en: "Shop Collection", he: "לקולקציה החדשה" },
+  "home.featuredPieces": { en: "Featured Pieces", he: "פריטים נבחרים" },
   "home.curatedSelection": { en: "Curated Selection", he: "קולקציה נבחרת" },
   "home.curatingLatest": { en: "Curating our latest creations...", he: "אוצרים את היצירות האחרונות שלנו..." },
   "home.viewAll": { en: "View All", he: "צפו בכולם" },
