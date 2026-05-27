@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import FloatingWidgets from '../components/FloatingWidgets';
 import LuckyWheelWidget from '../components/LuckyWheelWidget';
+import ScrollToTop from '../components/ScrollToTop';
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Footer />
       <FloatingWidgets />
       <LuckyWheelWidget />
+      <ScrollToTop />
     </div>
   );
 };
