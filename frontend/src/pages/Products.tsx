@@ -59,7 +59,11 @@ const Products: React.FC = () => {
       filters.gemstones.some(g => product.gemstones?.includes(g));
 
     const colorMatch = filters.colors.length === 0 || 
-      filters.colors.some(c => product.colors?.includes(c) || product.color === c || product.colors_he?.includes(c));
+      filters.colors.some(c => 
+        product.colors?.toLowerCase().includes(c.toLowerCase()) || 
+        product.color?.toLowerCase() === c.toLowerCase() || 
+        product.colors_he?.includes(c)
+      );
 
     const bodyPartMatch = filters.bodyParts.length === 0 || 
       filters.bodyParts.some(bp => product.bodyParts?.includes(bp) || product.bodyPart === bp);
