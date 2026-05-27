@@ -188,7 +188,7 @@ const Products: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-12 gap-y-16 sm:gap-y-24">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 sm:gap-x-12 gap-y-12 sm:gap-y-24">
                 {sortedProducts.map((product: any, i: number) => (
                   <motion.div 
                     key={product._id}
