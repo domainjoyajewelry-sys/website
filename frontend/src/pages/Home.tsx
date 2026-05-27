@@ -425,9 +425,9 @@ const Home: React.FC = () => {
       {/* Simple Footer Text */}
       <footer className="bg-white py-20 border-t border-zinc-100 text-center space-y-12">
          <div className="flex justify-center gap-16">
-            <Link to="/privacy" className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors font-bold font-serif">Privacy</Link>
-            <Link to="/terms" className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors font-bold font-serif">Terms</Link>
-            <Link to="/accessibility" className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors font-bold font-serif">Accessibility</Link>
+            <Link to="/privacy" className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors font-bold font-serif">{t('footer.privacy')}</Link>
+            <Link to="/terms" className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors font-bold font-serif">{t('footer.terms')}</Link>
+            <Link to="/accessibility" className="text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors font-bold font-serif">{t('footer.accessibility')}</Link>
          </div>
          <p className="text-[9px] uppercase tracking-[0.6em] sm:tracking-[0.8em] text-zinc-400 font-serif">
            {t('footer.copyright')}

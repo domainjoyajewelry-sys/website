@@ -53,12 +53,12 @@ const allTranslations: Translations = {
   "footer.sizeGuide": { en: "Size Guide", he: "מדריך מידות" },
   "footer.care": { en: "Jewelry Care", he: "טיפול בתכשיטים" },
   "footer.warranty": { en: "Warranty", he: "אחריות" },
-  "footer.copyright": { en: "© 2026 Joya. All rights reserved.", he: "© 2026 ג'ויה. כל הזכויות שמורות." },
-  "footer.brandDescription": { 
-    en: "JOYA represents the pinnacle of luxury jewelry. Our mission is to curate exceptional pieces that celebrate life's most precious moments with unparalleled craftsmanship.", 
-    he: "JOYA מייצגת את פסגת תכשיטי היוקרה. המשימה שלנו היא לאצור פריטים יוצאי דופן החוגגים את הרגעים היקרים ביותר בחיים עם אומנות ללא פשרות." 
-  },
   "footer.subscribe": { en: "Subscribe", he: "הרשמה" },
+  "footer.privacy": { en: "Privacy", he: "פרטיות" },
+  "footer.terms": { en: "Terms", he: "תנאי שימוש" },
+  "footer.accessibility": { en: "Accessibility", he: "נגישות" },
+  "footer.copyright": { en: "© 2026 Joya. All rights reserved.", he: "© 2026 ג'ויה. כל הזכויות שמורות." },
+
   "home.featuredPieces": { en: "Featured Pieces", he: "פריטים נבחרים" },
   "home.viewAll": { en: "View All", he: "צפו בכולם" },
   "home.discoverMore": { en: "Discover More", he: "גלו עוד" },
