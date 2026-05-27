@@ -27,13 +27,15 @@ const ScrollToTop: React.FC = () => {
     });
   };
 
+  const xOffset = language === 'he' ? "-100%" : "0%";
+
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ opacity: 0, y: 20, x: "-50%" }}
-          animate={{ opacity: 1, y: 0, x: language === 'he' ? "-150%" : "50%" }}
-          exit={{ opacity: 0, y: 20, x: "-50%" }}
+          initial={{ opacity: 0, y: 20, x: xOffset }}
+          animate={{ opacity: 1, y: 0, x: xOffset }}
+          exit={{ opacity: 0, y: 20, x: xOffset }}
           onClick={scrollToTop}
           className="fixed bottom-8 left-1/2 z-40 bg-white/80 backdrop-blur-md text-black w-12 h-12 rounded-full shadow-2xl border border-zinc-100 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 group"
           aria-label="Scroll to top"
