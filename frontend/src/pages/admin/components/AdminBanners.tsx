@@ -116,6 +116,7 @@ const AdminBanners: React.FC = () => {
         {(isAdding || editingBanner) && (
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
+
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className="bg-zinc-50 p-10 border border-zinc-100 space-y-8"

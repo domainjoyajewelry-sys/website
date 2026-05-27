@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MessageCircle, Accessibility } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const FloatingWidgets: React.FC = () => {
   const { language } = useLanguage();

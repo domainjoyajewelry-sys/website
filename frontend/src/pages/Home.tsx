@@ -2,7 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles, Menu, User as UserIcon, Globe } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
