@@ -96,7 +96,7 @@ const AdminBanners: React.FC = () => {
     <div className="space-y-12">
       <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
         <div>
-          <h2 className="text-4xl font-serif uppercase tracking-widest text-black font-medium">
+          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-black font-medium">
             {t('admin.manageBanners')}
           </h2>
           <p className="text-[11px] uppercase tracking-[0.4em] text-zinc-400 mt-4 font-bold max-w-2xl">

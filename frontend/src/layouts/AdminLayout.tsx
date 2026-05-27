@@ -114,8 +114,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
       {/* Main Content Area */}
       <div className={`flex flex-col flex-1 transition-all duration-300 ${language === 'he' ? 'lg:mr-64' : 'lg:ml-64'}`}>
-        <main className="flex-1 p-8 lg:p-16 bg-white min-h-screen">
-          <div className="max-w-screen-xl mx-auto">
+        <main className="flex-1 p-4 sm:p-8 lg:p-16 bg-white min-h-screen mt-16 lg:mt-0">
+          <div className="max-w-screen-xl mx-auto w-full overflow-x-hidden">
             {children}
           </div>
         </main>

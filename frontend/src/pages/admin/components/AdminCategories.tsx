@@ -90,7 +90,7 @@ const AdminCategories: React.FC = () => {
     <div className="space-y-12">
       <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
         <div>
-          <h2 className="text-4xl font-serif uppercase tracking-widest text-black">
+          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-black">
             {t('admin.categories')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">

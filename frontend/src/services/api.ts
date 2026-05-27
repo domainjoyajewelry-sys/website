@@ -200,4 +200,15 @@ export const recordSpin = async (prizeId: string) => {
   return data;
 };
 
+// DASHBOARD API
+export const getDashboardStats = async () => {
+  const { data } = await api.get('/dashboard/stats');
+  return data;
+};
+
+export const getSalesData = async () => {
+  const { data } = await api.get('/dashboard/sales');
+  return data;
+};
+
 export default api;
