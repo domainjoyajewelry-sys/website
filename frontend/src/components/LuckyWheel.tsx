@@ -131,6 +131,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {prizes.map((prize, i) => {
               const angle = 360 / prizes.length;
               const textRotation = angle * i + angle / 2;
+              const isUpsideDown = textRotation > 90 && textRotation < 270;
               return (
                 <g key={prize._id}>
                   <path
@@ -148,7 +149,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     textAnchor="middle"
                     alignmentBaseline="middle"
                     className="uppercase tracking-tighter"
-                    transform={`rotate(${textRotation}, 50, 50)`}
+                    transform={isUpsideDown ? `rotate(${textRotation}, 50, 50) rotate(180, 75, 50)` : `rotate(${textRotation}, 50, 50)`}
                     style={{ fontFamily: 'Cinzel, serif' }}
                   >
                     {language === 'he' ? prize.label_he : prize.label}
