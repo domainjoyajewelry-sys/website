@@ -263,7 +263,7 @@ const ProductDetail: React.FC = () => {
             </div>
 
             {/* Accordion */}
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="multiple" defaultValue={["details", "specs"]} className="w-full">
               <AccordionItem value="details" className="border-zinc-100">
                 <AccordionTrigger className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif hover:no-underline">
                   {t('productDetail.details')}
