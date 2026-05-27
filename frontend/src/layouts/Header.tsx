@@ -39,6 +39,13 @@ const Header: React.FC = () => {
     }, 100);
   };
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (isHomePage) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
@@ -117,21 +124,13 @@ const Header: React.FC = () => {
               {t('nav.giftCard')}
             </Link>
           </nav>
-        const handleLogoClick = (e: React.MouseEvent) => {
-          if (isHomePage) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        };
+        </div>
 
-        return (
-        ...
-              {/* Centered Logo */}
-              <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-                <Link to="/" onClick={handleLogoClick} className="pointer-events-auto block">
-                   <img 
-                     src="/logo.png" 
-
+        {/* Centered Logo */}
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+          <Link to="/" onClick={handleLogoClick} className="pointer-events-auto block">
+             <img 
+               src="/logo.png" 
                alt="JOYA" 
                className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 brightness-0"
              />

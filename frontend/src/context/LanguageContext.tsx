@@ -118,7 +118,6 @@ const allTranslations: Translations = {
   "admin.orders": { en: "Orders", he: "הזמנות" },
   "admin.customers": { en: "Customers", he: "לקוחות" },
   "admin.prizes": { en: "Lucky Wheel", he: "גלגל המזל" },
-  "admin.banners": { en: "Banners", he: "באנרים" },
   "admin.totalRevenue": { en: "Total Revenue", he: "סך הכנסות" },
   "admin.totalOrders": { en: "Total Orders", he: "סך הזמנות" },
   "admin.totalProducts": { en: "Total Products", he: "סך מוצרים" },
