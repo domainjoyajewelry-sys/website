@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
 import { Heart, Share2, Plus, Minus, ShieldCheck, Truck, RotateCcw, Camera } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getProductById, getProducts } from '../services/api';
@@ -262,28 +261,28 @@ const ProductDetail: React.FC = () => {
                </div>
             </div>
 
-            {/* Accordion */}
-            <Accordion type="multiple" defaultValue={["details", "specs"]} className="w-full">
-              <AccordionItem value="details" className="border-zinc-100">
-                <AccordionTrigger className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif hover:no-underline">
+            {/* Static Product Info Sections */}
+            <div className="w-full space-y-12">
+              <div className="border-t border-zinc-100 pt-10">
+                <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif mb-8 text-black">
                   {t('productDetail.details')}
-                </AccordionTrigger>
-                <AccordionContent className="text-[10px] uppercase tracking-widest text-zinc-400 leading-loose py-6 font-serif">
+                </h3>
+                <div className="text-[10px] uppercase tracking-widest text-zinc-400 leading-loose font-serif">
                    <ul className="space-y-4">
                       <li className="flex justify-between"><span>{t('products.materials')}</span> <span className="text-black">{getLocalizedField(product, 'materials')}</span></li>
                       {product.gemstones && <li className="flex justify-between"><span>{t('products.gemstones')}</span> <span className="text-black">{getLocalizedField(product, 'gemstones')}</span></li>}
                       <li className="flex justify-between"><span>{t('productDetail.color')}</span> <span className="text-black uppercase">{getLocalizedField(product, 'colors')}</span></li>
                       <li className="flex justify-between"><span>{t('productDetail.sku')}</span> <span className="text-black uppercase">JY-{product._id.slice(-6).toUpperCase()}</span></li>
                    </ul>
-                </AccordionContent>
-              </AccordionItem>
+                </div>
+              </div>
 
               {(product.piercingSide !== 'none' || product.unitType !== 'none' || product.pipeLength) && (
-                <AccordionItem value="specs" className="border-zinc-100">
-                  <AccordionTrigger className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif hover:no-underline">
+                <div className="border-t border-zinc-100 pt-10">
+                  <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold font-serif mb-8 text-black">
                     {t('specs.title')}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-[10px] uppercase tracking-widest text-zinc-400 leading-loose py-6 font-serif">
+                  </h3>
+                  <div className="text-[10px] uppercase tracking-widest text-zinc-400 leading-loose font-serif">
                     <ul className="space-y-4">
                         {product.piercingSide !== 'none' && (
                           <li className="flex justify-between">
@@ -304,10 +303,10 @@ const ProductDetail: React.FC = () => {
                           </li>
                         )}
                     </ul>
-                  </AccordionContent>
-                </AccordionItem>
+                  </div>
+                </div>
               )}
-            </Accordion>
+            </div>
           </div>
         </div>
 
