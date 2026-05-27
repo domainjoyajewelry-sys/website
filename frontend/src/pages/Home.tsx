@@ -179,15 +179,15 @@ const Home: React.FC = () => {
             className="flex flex-col items-center"
           >
             <span className="text-white text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
-              {language === 'he' ? 'בית תכשיטי יוקרה' : 'Luxury Jewelry House'}
+              {t('home.luxuryHouse')}
             </span>
             <p className="text-white text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest leading-relaxed">
-              {language === 'he' ? 'אומנות מעולה, אלגנטיות נצחית' : 'Exquisite Craftsmanship, Timeless Elegance'}
+              {t('home.timelessElegance')}
             </p>
             <div className="flex flex-col sm:flex-row gap-8">
               <Link to={activeBanner.link || "/products"}>
                 <Button className="bg-[#f5f5dc] text-black hover:bg-[#e8e8c8] transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold border-none">
-                  {language === 'he' ? 'לקולקציה החדשה' : 'Shop Collection'}
+                  {t('home.shopCollection')}
                 </Button>
               </Link>
               <PiercingBooking 
@@ -219,10 +219,10 @@ const Home: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24">
             {[
-              { icon: ShoppingBag, label: 'service.freeShipping', desc: 'Complimentary delivery on all pieces' },
-              { icon: Shield, label: 'service.30DayReturns', desc: 'Secure and seamless returns policy' },
-              { icon: Star, label: 'service.lifetimeCare', desc: 'Professional cleaning and maintenance' },
-              { icon: Clock, label: 'service.certifiedQuality', desc: 'GIA certified stones and 18k hallmark' },
+              { icon: ShoppingBag, label: 'service.freeShipping', desc: 'service.freeShippingDesc' },
+              { icon: Shield, label: 'service.30DayReturns', desc: 'service.30DayReturnsDesc' },
+              { icon: Star, label: 'service.lifetimeCare', desc: 'service.lifetimeCareDesc' },
+              { icon: Clock, label: 'service.certifiedQuality', desc: 'service.certifiedQualityDesc' },
             ].map((s, i) => (
               <motion.div 
                 key={i}
@@ -237,7 +237,7 @@ const Home: React.FC = () => {
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-white text-[11px] uppercase tracking-[0.4em] font-bold">{t(s.label)}</h3>
-                  <p className="text-zinc-600 text-[9px] uppercase tracking-widest leading-relaxed">{s.desc}</p>
+                  <p className="text-zinc-600 text-[9px] uppercase tracking-widest leading-relaxed">{t(s.desc)}</p>
                 </div>
               </motion.div>
             ))}
@@ -250,7 +250,7 @@ const Home: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12 border-b border-zinc-100 pb-16">
             <div className="space-y-6">
-              <span className="text-[12px] uppercase tracking-[1em] text-zinc-400 font-light block">{language === 'he' ? 'קולקציה נבחרת' : 'Curated Selection'}</span>
+              <span className="text-[12px] uppercase tracking-[1em] text-zinc-400 font-light block">{t('home.curatedSelection')}</span>
               <h2 className="text-5xl sm:text-6xl font-serif text-black">{t('home.featuredPieces')}</h2>
             </div>
             <Link 
@@ -277,7 +277,7 @@ const Home: React.FC = () => {
               ))
             ) : (
               <div className="col-span-3 text-center py-20 font-serif italic text-2xl text-zinc-300 tracking-widest uppercase">
-                Curating our latest creations...
+                {t('home.curatingLatest')}
               </div>
             )}
           </div>
@@ -288,8 +288,8 @@ const Home: React.FC = () => {
       <section className="bg-zinc-50 py-40 overflow-hidden border-y border-zinc-100">
         <div className="container mx-auto px-6">
           <div className="text-center mb-32 space-y-6">
-            <span className="text-[12px] uppercase tracking-[1em] text-zinc-400 font-light block">{language === 'he' ? 'גלו את החומרים' : 'Discover the Elements'}</span>
-            <h2 className="text-5xl sm:text-6xl font-serif text-black">{language === 'he' ? 'בחרו לפי סוג המתכת' : 'Selection by Metal'}</h2>
+            <span className="text-[12px] uppercase tracking-[1em] text-zinc-400 font-light block">{t('home.discoverElements')}</span>
+            <h2 className="text-5xl sm:text-6xl font-serif text-black">{t('home.selectionByMetal')}</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
@@ -346,7 +346,7 @@ const Home: React.FC = () => {
                  transition={{ delay: 0.2 }}
                  className="text-white text-5xl sm:text-7xl md:text-8xl font-serif leading-tight uppercase"
                >
-                 {language === 'he' ? 'כל פריט מספר סיפור' : 'Every Piece Tells A Story'}
+                 {t('home.everyPieceStory')}
                </motion.h2>
                <motion.p 
                  initial={{ opacity: 0 }}
@@ -354,11 +354,11 @@ const Home: React.FC = () => {
                  transition={{ delay: 0.4 }}
                  className="text-zinc-400 text-lg sm:text-xl font-light leading-relaxed max-w-2xl font-body italic"
                >
-                 {language === 'he' ? 'מהמכרות האתיים ועד לידיים של האמנים המומחים שלנו, אנחנו יוצרים יותר מתכשיטים. אנחנו יוצרים מורשת.' : 'From ethical sourcing to the hands of our master artisans, we create more than jewelry. We create a legacy.'}
+                 {t('home.legacyText')}
                </motion.p>
                <Link to="/about">
                  <Button className="mt-8 bg-[#f5f5dc] text-black hover:bg-[#e8e8c8] rounded-none px-12 py-8 uppercase tracking-[0.5em] font-bold text-[12px]">
-                   {language === 'he' ? 'הסיפור שלנו' : 'Our Story'}
+                   {t('home.ourStory')}
                  </Button>
                </Link>
             </div>
@@ -370,7 +370,7 @@ const Home: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-32 space-y-6">
             <span className="text-[12px] uppercase tracking-[1em] text-zinc-400 font-light block">{t('home.testimonials')}</span>
-            <h2 className="text-5xl sm:text-6xl font-serif text-black">{language === 'he' ? 'המילים שלכם' : 'Client Kind Words'}</h2>
+            <h2 className="text-5xl sm:text-6xl font-serif text-black">{t('home.clientWords')}</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
@@ -404,18 +404,18 @@ const Home: React.FC = () => {
          <div className="container mx-auto px-6 text-center space-y-16">
             <div className="flex flex-col items-center space-y-6">
                <Sparkles className="w-10 h-10 text-[#f5f5dc] opacity-50" />
-               <h2 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white uppercase tracking-widest">{language === 'he' ? 'מוכנים לזהור?' : 'Ready to Shine?'}</h2>
-               <p className="text-zinc-500 text-[12px] uppercase tracking-[0.8em] font-bold max-w-xl">{language === 'he' ? 'גלו את התוספת המושלמת לאוסף שלכם' : 'Find the perfect addition to your curated collection'}</p>
+               <h2 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white uppercase tracking-widest">{t('home.readyToShine')}</h2>
+               <p className="text-zinc-500 text-[12px] uppercase tracking-[0.8em] font-bold max-w-xl">{t('home.findPerfect')}</p>
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-8">
                <Link to="/products">
                  <Button className="bg-[#f5f5dc] text-black hover:bg-[#e8e8c8] rounded-none px-16 py-8 uppercase tracking-[0.5em] font-bold text-[12px] min-w-[280px]">
-                    {language === 'he' ? 'קנו עכשיו' : 'Shop Collections'}
+                    {t('home.shopCollections')}
                  </Button>
                </Link>
                <Link to="/contact">
                  <Button variant="outline" className="text-white border-white/20 hover:border-white hover:bg-white/5 rounded-none px-16 py-8 uppercase tracking-[0.5em] font-bold text-[12px] min-w-[280px]">
-                    {language === 'he' ? 'תיאום ייעוץ' : 'Contact Stylist'}
+                    {t('home.contactStylist')}
                  </Button>
                </Link>
             </div>
