@@ -33,11 +33,12 @@ const ScrollToTop: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ opacity: 0, y: 20, x: xOffset }}
+          initial={{ opacity: 0, y: 10, x: xOffset }}
           animate={{ opacity: 1, y: 0, x: xOffset }}
-          exit={{ opacity: 0, y: 20, x: xOffset }}
+          exit={{ opacity: 0, y: 10, x: xOffset }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           onClick={scrollToTop}
-          className="fixed bottom-8 left-1/2 z-40 bg-white/80 backdrop-blur-md text-black w-12 h-12 rounded-full shadow-2xl border border-zinc-100 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 group"
+          className="fixed bottom-8 left-1/2 z-40 bg-white/80 backdrop-blur-md text-black w-12 h-12 rounded-full shadow-2xl border border-zinc-100 flex items-center justify-center hover:bg-black hover:text-white transition-all group"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-6 h-6 transition-transform group-hover:-translate-y-1" />
