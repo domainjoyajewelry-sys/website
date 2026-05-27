@@ -20,6 +20,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
+  const [bgSensitivity, setBgSensitivity] = useState(3);
 
   useEffect(() => {
     if (!capturedImage) {
@@ -104,10 +105,10 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
           <filter id="remove-white" colorInterpolationFilters="sRGB">
             <feColorMatrix
               type="matrix"
-              values="1 0 0 0 0
+              values={`1 0 0 0 0
                       0 1 0 0 0
                       0 0 1 0 0
-                      -1 -1 -1 3 -1"
+                      ${-bgSensitivity} ${-bgSensitivity} ${-bgSensitivity} 0 ${bgSensitivity * 2.95}`}
             />
           </filter>
         </defs>
@@ -259,6 +260,24 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
                  max={180} 
                  step={1} 
                  onValueChange={(v) => setRotation(v[0])}
+                 className="[&_[role=slider]]:bg-white"
+               />
+            </div>
+
+            {/* Background Removal Control */}
+            <div className="space-y-4">
+               <div className="flex justify-between items-center text-white/60 text-[9px] uppercase tracking-widest font-bold">
+                  <span>{language === 'he' ? 'הסרת רקע' : 'Background Removal'}</span>
+                  <button onClick={() => setBgSensitivity(3)} className="flex items-center gap-2 hover:text-white transition-colors">
+                     <RotateCcw className="w-3 h-3" />
+                  </button>
+               </div>
+               <Slider 
+                 value={[bgSensitivity]} 
+                 min={1} 
+                 max={15} 
+                 step={0.1} 
+                 onValueChange={(v) => setBgSensitivity(v[0])}
                  className="[&_[role=slider]]:bg-white"
                />
             </div>
