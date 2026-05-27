@@ -153,25 +153,24 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
             </div>
           </div>
         ) : (
-          <>
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
             {capturedImage ? (
-               <img src={capturedImage} className="w-full h-full object-contain" alt="Captured Feed" />
+               <img src={capturedImage} className="w-full h-full object-contain pointer-events-none" alt="Captured Feed" />
             ) : (
                <video
                  ref={videoRef}
                  autoPlay
                  playsInline
                  muted
-                 className="w-full h-full object-cover grayscale-[20%] opacity-80"
+                 className="w-full h-full object-cover grayscale-[20%] opacity-80 pointer-events-none"
                />
             )}
             
-            {/* The Draggable Product Overlay */}
+            {/* The Draggable Product Overlay - Explicitly separate from background layers */}
             <motion.div
               drag
               dragMomentum={false}
-              className="absolute z-40 cursor-move pointer-events-auto"
-              style={{ x: 0, y: 0 }}
+              className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
             >
               <motion.div
                 animate={{ 
@@ -179,7 +178,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
                   rotate: rotation
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="relative flex items-center justify-center"
+                className="relative flex items-center justify-center pointer-events-auto cursor-move"
               >
                 <img 
                   src={productImage} 
@@ -191,6 +190,8 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
                 />
               </motion.div>
             </motion.div>
+          </div>
+        )}
 
             {/* Snap Button (Only in Live mode) */}
             {!capturedImage && !error && (
