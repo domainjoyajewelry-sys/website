@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { X, Camera, RotateCcw, Maximize2, Minimize2, Upload, RefreshCw, Sparkles } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
+import { DialogTitle, DialogDescription } from './ui/dialog';
 
 interface VirtualTryOnProps {
   productImage: string;
@@ -95,6 +96,9 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
 
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center">
+      <DialogTitle className="sr-only">Virtual Try-On</DialogTitle>
+      <DialogDescription className="sr-only">Try on earrings and piercings virtually using your camera or a photo.</DialogDescription>
+      
       {/* SVG Background Removal Filter Definition */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
@@ -109,6 +113,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
           </filter>
         </defs>
       </svg>
+
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-[110] bg-gradient-to-b from-black/60 to-transparent px-8 sm:px-12">
         <h2 className="text-white font-serif uppercase tracking-[0.3em] text-sm">{t('tryOn.title')}</h2>
@@ -153,45 +158,45 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
             </div>
           </div>
         ) : (
-          <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
-            {capturedImage ? (
-               <img src={capturedImage} className="w-full h-full object-contain pointer-events-none" alt="Captured Feed" />
-            ) : (
-               <video
-                 ref={videoRef}
-                 autoPlay
-                 playsInline
-                 muted
-                 className="w-full h-full object-cover grayscale-[20%] opacity-80 pointer-events-none"
-               />
-            )}
-            
-            {/* The Draggable Product Overlay - Explicitly separate from background layers */}
-            <motion.div
-              drag
-              dragMomentum={false}
-              className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
-            >
+          <>
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
+              {capturedImage ? (
+                 <img src={capturedImage} className="w-full h-full object-contain pointer-events-none" alt="Captured Feed" />
+              ) : (
+                 <video
+                   ref={videoRef}
+                   autoPlay
+                   playsInline
+                   muted
+                   className="w-full h-full object-cover grayscale-[20%] opacity-80 pointer-events-none"
+                 />
+              )}
+              
+              {/* The Draggable Product Overlay - Explicitly separate from background layers */}
               <motion.div
-                animate={{ 
-                  scale: scale,
-                  rotate: rotation
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="relative flex items-center justify-center pointer-events-auto cursor-move"
+                drag
+                dragMomentum={false}
+                className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
               >
-                <img 
-                  src={productImage} 
-                  alt="Earring Try-On" 
-                  className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none block"
-                  style={{ 
-                    filter: 'url(#remove-white) contrast(1.2) brightness(1.1)'
+                <motion.div
+                  animate={{ 
+                    scale: scale,
+                    rotate: rotation
                   }}
-                />
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="relative flex items-center justify-center pointer-events-auto cursor-move"
+                >
+                  <img 
+                    src={productImage} 
+                    alt="Earring Try-On" 
+                    className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none block"
+                    style={{ 
+                      filter: 'url(#remove-white) contrast(1.2) brightness(1.1)'
+                    }}
+                  />
+                </motion.div>
               </motion.div>
-            </motion.div>
-          </div>
-        )}
+            </div>
 
             {/* Snap Button (Only in Live mode) */}
             {!capturedImage && !error && (
