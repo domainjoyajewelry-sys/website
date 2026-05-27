@@ -14,11 +14,14 @@ import GiftCardPurchase from './pages/GiftCardPurchase';
 import Admin from './pages/admin/Admin';
 import AdminLayout from './layouts/AdminLayout';
 import PrivateRoute from './components/PrivateRoute';
+import ScrollToTopOnNav from './components/ScrollToTopOnNav';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout><Home /></Layout>} />
+    <>
+      <ScrollToTopOnNav />
+      <Routes>
+        <Route path="/" element={<Layout><Home /></Layout>} />
       <Route path="/products" element={<Layout><Products /></Layout>} />
       <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
       <Route path="/cart" element={<Layout><Cart /></Layout>} />

@@ -69,10 +69,11 @@ const Orders: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-5xl font-serif text-stone-900 text-center mb-8">
-        {t('orders.myOrders')}
-      </h1>
+    <div className="bg-white min-h-screen pt-40 pb-20 px-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-5xl font-serif text-black text-center mb-16 uppercase tracking-widest">
+          {t('orders.myOrders')}
+        </h1>
 
       {orders.length === 0 ? (
         <div className="text-center py-20">

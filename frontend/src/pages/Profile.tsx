@@ -155,10 +155,11 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-5xl font-serif text-stone-900 text-center mb-8">
-        {t('profile.myProfile')}
-      </h1>
+    <div className="bg-white min-h-screen pt-40 pb-20 px-6">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-5xl font-serif text-black text-center mb-16 uppercase tracking-widest">
+          {t('profile.personalInfo')}
+        </h1>
 
       <Tabs defaultValue="personalInfo" className="w-full">
         <TabsList>

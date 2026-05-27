@@ -94,6 +94,10 @@ const Checkout: React.FC = () => {
     notes: ''
   });
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentStep]);
+
   const cartItems = [
     { productId: '1', name: 'Diamond Solitaire Ring', name_he: 'טבעת יהלום סוליטר', price: 4500, quantity: 1, image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2940' },
   ];
