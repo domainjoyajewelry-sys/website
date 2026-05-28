@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '../context/LanguageContext';
-import { X, Camera, RotateCcw, Maximize2, Minimize2, Upload, RefreshCw, Sparkles } from 'lucide-react';
+import { X, Camera, RotateCcw, Maximize2, Minimize2, Upload, RefreshCw, Sparkles, Scissors, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
 
@@ -21,6 +18,8 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [bgSensitivity, setBgSensitivity] = useState(3);
+  const [crop, setCrop] = useState({ top: 0, bottom: 0, left: 0, right: 0 });
+  const [showCrop, setShowCrop] = useState(false);
 
   useEffect(() => {
     if (!capturedImage) {
@@ -107,6 +106,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
   const handleReset = () => {
     setScale(1);
     setRotation(0);
+    setCrop({ top: 0, bottom: 0, left: 0, right: 0 });
   };
 
   return (
@@ -117,7 +117,7 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
       {/* SVG Background Removal Filter Definition */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
-          <filter id="remove-white" colorInterpolationFilters="sRGB">
+          <filter id="remove-bg" colorInterpolationFilters="sRGB">
             <feColorMatrix
               type="matrix"
               values={`1 0 0 0 0
@@ -201,14 +201,21 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   className="relative flex items-center justify-center pointer-events-auto cursor-move"
                 >
-                  <img 
-                    src={productImage} 
-                    alt="Earring Try-On" 
-                    className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none block"
-                    style={{ 
-                      filter: 'url(#remove-white) contrast(1.2) brightness(1.1)'
+                  <div 
+                    className="relative overflow-hidden"
+                    style={{
+                      clipPath: `inset(${crop.top}% ${crop.right}% ${crop.bottom}% ${crop.left}%)`
                     }}
-                  />
+                  >
+                    <img 
+                      src={productImage} 
+                      alt="Earring Try-On" 
+                      className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-2xl select-none pointer-events-none block"
+                      style={{ 
+                        filter: 'url(#remove-bg) contrast(1.2) brightness(1.1)'
+                      }}
+                    />
+                  </div>
                 </motion.div>
               </motion.div>
             </div>
@@ -241,49 +248,104 @@ const VirtualTryOn: React.FC<VirtualTryOnProps> = ({ productImage, onClose }) =>
       {/* Controls Bar */}
       {(!error || capturedImage) && (
         <div className="absolute bottom-0 left-0 right-0 p-8 sm:p-12 bg-gradient-to-t from-black/80 to-transparent z-50">
-          <div className="max-w-md mx-auto space-y-10">
-            {/* Scale Control */}
-            <div className="space-y-4">
-               <div className="flex justify-between items-center text-white/60 text-[9px] uppercase tracking-widest font-bold">
-                  <span>{t('tryOn.scale')}</span>
-                  <div className="flex gap-4">
-                     <button onClick={() => setScale(prev => Math.max(0.2, prev - 0.1))}><Minimize2 className="w-3 h-3" /></button>
-                     <button onClick={() => setScale(prev => Math.min(3, prev + 0.1))}><Maximize2 className="w-3 h-3" /></button>
-                  </div>
-               </div>
-               <Slider 
-                 value={[scale]} 
-                 min={0.2} 
-                 max={3} 
-                 step={0.01} 
-                 onValueChange={(v) => setScale(v[0])}
-                 className="[&_[role=slider]]:bg-white"
-               />
-            </div>
-
-            {/* Rotation Control */}
-            <div className="space-y-4">
-               <div className="flex justify-between items-center text-white/60 text-[9px] uppercase tracking-widest font-bold">
-                  <span>{t('tryOn.rotate')}</span>
-                  <button onClick={handleReset} className="flex items-center gap-2 hover:text-white transition-colors">
-                     <RotateCcw className="w-3 h-3" />
+          <div className="max-w-md mx-auto space-y-8">
+            <div className="flex justify-between items-center border-b border-white/10 pb-4">
+               <div className="flex gap-4">
+                  <button 
+                    onClick={() => setShowCrop(false)} 
+                    className={`text-[9px] uppercase tracking-widest font-bold transition-colors ${!showCrop ? 'text-[#f5f5dc]' : 'text-white/40 hover:text-white'}`}
+                  >
+                    {t('tryOn.rotate')} & {t('tryOn.scale')}
+                  </button>
+                  <button 
+                    onClick={() => setShowCrop(true)} 
+                    className={`text-[9px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors ${showCrop ? 'text-[#f5f5dc]' : 'text-white/40 hover:text-white'}`}
+                  >
+                    <Scissors className="w-3 h-3" />
+                    {t('tryOn.crop')}
                   </button>
                </div>
-               <Slider 
-                 value={[rotation]} 
-                 min={-180} 
-                 max={180} 
-                 step={1} 
-                 onValueChange={(v) => setRotation(v[0])}
-                 className="[&_[role=slider]]:bg-white"
-               />
+               <button onClick={handleReset} className="text-white/40 hover:text-white transition-colors">
+                  <RotateCcw className="w-3.5 h-3.5" />
+               </button>
             </div>
 
+            <AnimatePresence mode="wait">
+              {showCrop ? (
+                <motion.div 
+                  key="crop-controls"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="grid grid-cols-2 gap-x-12 gap-y-8"
+                >
+                  <div className="space-y-4">
+                    <span className="text-white/40 text-[8px] uppercase tracking-widest font-bold block">Top</span>
+                    <Slider value={[crop.top]} min={0} max={90} step={1} onValueChange={(v) => setCrop(prev => ({...prev, top: v[0]}))} className="[&_[role=slider]]:bg-white" />
+                  </div>
+                  <div className="space-y-4">
+                    <span className="text-white/40 text-[8px] uppercase tracking-widest font-bold block">Bottom</span>
+                    <Slider value={[crop.bottom]} min={0} max={90} step={1} onValueChange={(v) => setCrop(prev => ({...prev, bottom: v[0]}))} className="[&_[role=slider]]:bg-white" />
+                  </div>
+                  <div className="space-y-4">
+                    <span className="text-white/40 text-[8px] uppercase tracking-widest font-bold block">Left</span>
+                    <Slider value={[crop.left]} min={0} max={90} step={1} onValueChange={(v) => setCrop(prev => ({...prev, left: v[0]}))} className="[&_[role=slider]]:bg-white" />
+                  </div>
+                  <div className="space-y-4">
+                    <span className="text-white/40 text-[8px] uppercase tracking-widest font-bold block">Right</span>
+                    <Slider value={[crop.right]} min={0} max={90} step={1} onValueChange={(v) => setCrop(prev => ({...prev, right: v[0]}))} className="[&_[role=slider]]:bg-white" />
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="main-controls"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="space-y-8"
+                >
+                  {/* Scale Control */}
+                  <div className="space-y-4">
+                     <div className="flex justify-between items-center text-white/60 text-[9px] uppercase tracking-widest font-bold">
+                        <span>{t('tryOn.scale')}</span>
+                        <div className="flex gap-4">
+                           <button onClick={() => setScale(prev => Math.max(0.2, prev - 0.1))}><Minimize2 className="w-3 h-3" /></button>
+                           <button onClick={() => setScale(prev => Math.min(3, prev + 0.1))}><Maximize2 className="w-3 h-3" /></button>
+                        </div>
+                     </div>
+                     <Slider 
+                       value={[scale]} 
+                       min={0.2} 
+                       max={3} 
+                       step={0.01} 
+                       onValueChange={(v) => setScale(v[0])}
+                       className="[&_[role=slider]]:bg-white"
+                     />
+                  </div>
+
+                  {/* Rotation Control */}
+                  <div className="space-y-4">
+                     <div className="flex justify-between items-center text-white/60 text-[9px] uppercase tracking-widest font-bold">
+                        <span>{t('tryOn.rotate')}</span>
+                     </div>
+                     <Slider 
+                       value={[rotation]} 
+                       min={-180} 
+                       max={180} 
+                       step={1} 
+                       onValueChange={(v) => setRotation(v[0])}
+                       className="[&_[role=slider]]:bg-white"
+                     />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Background Removal Control */}
-            <div className="space-y-4">
+            <div className="space-y-6 pt-4 border-t border-white/5">
                <div className="flex justify-between items-center text-white/60 text-[9px] uppercase tracking-widest font-bold">
-                  <span>{language === 'he' ? 'הסרת רקע' : 'Background Removal'}</span>
-                  <button onClick={() => setBgSensitivity(3)} className="flex items-center gap-2 hover:text-white transition-colors">
+                  <span>{t('tryOn.removeBackground')}</span>
+                  <button onClick={() => setBgSensitivity(3)} className="text-white/40 hover:text-white transition-colors">
                      <RotateCcw className="w-3 h-3" />
                   </button>
                </div>

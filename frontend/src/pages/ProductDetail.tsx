@@ -3,19 +3,18 @@ import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
-import { Heart, Share2, Plus, Minus, ShieldCheck, Truck, RotateCcw, Camera } from 'lucide-react';
+import { Heart, Share2, Plus, Minus, ShieldCheck, Truck, RotateCcw, Camera, MessageCircle } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getProductById, getProducts } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import VirtualTryOn from '../components/VirtualTryOn';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'sonner';
 
 interface Variant {
   color: string;
   color_he: string;
-  image: string;
   hex: string;
+  image: string;
 }
 
 const ProductDetail: React.FC = () => {
@@ -23,77 +22,55 @@ const ProductDetail: React.FC = () => {
   const { t, language, getLocalizedField } = useLanguage();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+  const [currentImage, setCurrentImage] = useState('');
   const [showTryOn, setShowTryOn] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
 
-  // Fetch product by ID
-  const { data: product, isLoading: isLoadingProduct, isError: isErrorProduct } = useQuery({
+  const { data: product, isLoading, isError } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById(id as string),
     enabled: !!id,
   });
 
-  useEffect(() => {
-    if (product && product.variants && product.variants.length > 0) {
-      setSelectedVariant(product.variants[0]);
-    }
-  }, [product]);
-
-  // Fetch all products for related
   const { data: allProducts = [] } = useQuery({
     queryKey: ['products'],
     queryFn: getProducts,
   });
 
-  const relatedProducts = allProducts.filter(
-    (p: any) => p.category?._id === product?.category?._id && p._id !== product?._id
-  ).slice(0, 4);
-
-  const handleQuantityChange = (change: number) => {
+  useEffect(() => {
     if (product) {
-      setQuantity((prev) => Math.max(1, Math.min(prev + change, product.countInStock)));
+      if (product.variants && product.variants.length > 0) {
+        setSelectedVariant(product.variants[0]);
+        setCurrentImage(product.variants[0].image);
+      } else {
+        setCurrentImage(product.images[0]);
+      }
     }
+  }, [product]);
+
+  useEffect(() => {
+    if (selectedVariant) {
+      setCurrentImage(selectedVariant.image);
+    }
+  }, [selectedVariant]);
+
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center font-serif uppercase tracking-widest text-zinc-400">{t('global.loading')}</div>;
+  if (isError || !product) return <div className="min-h-screen flex items-center justify-center font-serif text-2xl uppercase tracking-widest">Product not found</div>;
+
+  const handleAddToCart = () => {
+    addToCart({
+      productId: product._id,
+      name: product.name,
+      name_he: product.name_he,
+      price: product.price,
+      image: currentImage,
+      quantity,
+    });
   };
 
-  const onAddToCart = () => {
-    if (product) {
-      const currentImage = selectedVariant ? selectedVariant.image : product.images[0];
-      addToCart({
-        productId: product._id,
-        name: `${product.name}${selectedVariant ? ` - ${selectedVariant.color}` : ''}`,
-        name_he: `${product.name_he}${selectedVariant ? ` - ${selectedVariant.color_he}` : ''}`,
-        image: currentImage,
-        price: product.price,
-        quantity: quantity,
-        countInStock: product.countInStock
-      });
-      toast.success(language === 'he' ? 'התווסף לסל הקניות' : 'Added to bag');
-    }
-  };
-
-  if (isLoadingProduct) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-pulse font-serif text-2xl tracking-[0.2em] text-zinc-300 uppercase">
-          {t('global.loading')}
-        </div>
-      </div>
-    );
-  }
-
-  if (isErrorProduct || !product) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white px-6">
-        <h1 className="text-4xl font-serif mb-8 tracking-widest uppercase">Piece Not Found</h1>
-        <Link to="/products">
-          <Button variant="outline" className="border-black rounded-none px-10 py-6 uppercase tracking-widest text-[10px] font-bold">Return to Gallery</Button>
-        </Link>
-      </div>
-    );
-  }
-
-  const currentImage = selectedVariant ? selectedVariant.image : product.images[0];
-  const isEarringOrPiercing = product?.category?.slug === 'earrings' || product?.category?.slug === 'piercing';
+  const relatedProducts = allProducts
+    .filter((p: any) => p.category?._id === product.category?._id && p._id !== product._id)
+    .slice(0, 4);
 
   return (
     <div className="bg-white min-h-screen pt-40 pb-20 px-6">
@@ -107,58 +84,10 @@ const ProductDetail: React.FC = () => {
           <span className="text-black font-bold">{getLocalizedField(product, 'name')}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-32">
-          {/* Left Column - Image Gallery */}
-          <div className="space-y-8">
-            <motion.div 
-              key={currentImage}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="aspect-[3/4] overflow-hidden bg-zinc-50 border border-zinc-100"
-            >
-              <img
-                src={currentImage}
-                alt={getLocalizedField(product, 'name')}
-                className="w-full h-full object-cover"
-                style={{ mixBlendMode: 'multiply' }}
-              />
-            </motion.div>
-            
-            {product.variants && product.variants.length > 0 ? (
-              <div className="grid grid-cols-4 gap-4">
-                {product.variants.map((v: Variant, index: number) => (
-                  <div 
-                    key={index} 
-                    onClick={() => setSelectedVariant(v)}
-                    className={`aspect-square bg-zinc-50 border cursor-pointer overflow-hidden group transition-all duration-300 ${selectedVariant?.color === v.color ? 'border-black' : 'border-zinc-100'}`}
-                  >
-                    <img
-                      src={v.image}
-                      alt=""
-                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
-                      style={{ mixBlendMode: 'multiply' }}
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
-                {product.images.map((img: string, index: number) => (
-                  <div key={index} className="aspect-square bg-zinc-50 border border-zinc-100 cursor-pointer overflow-hidden group">
-                    <img
-                      src={img}
-                      alt=""
-                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Product Info */}
-          <div className="flex flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-32 items-start">
+          
+          {/* Column - Product Info (Order-2 on desktop, first for RTL alignment to right) */}
+          <div className="flex flex-col lg:order-2 rtl:lg:order-1 rtl:text-right">
             <div className="mb-12">
                <span className="text-[10px] uppercase tracking-[0.6em] text-zinc-400 mb-6 block font-serif">
                  {getLocalizedField(product.category, 'name')}
@@ -169,16 +98,16 @@ const ProductDetail: React.FC = () => {
                <p className="text-3xl font-body italic text-black mb-12 tracking-widest">
                  ₪{product.price.toLocaleString()}
                </p>
-               <p className="text-[11px] text-zinc-500 leading-relaxed uppercase tracking-widest font-body max-w-xl">
+               <div className="text-[11px] text-zinc-500 leading-relaxed uppercase tracking-widest font-body max-w-xl">
                  {getLocalizedField(product, 'description')}
-               </p>
+               </div>
             </div>
 
-            {/* Variant Selector in Detail Page */}
+            {/* Variant Selector */}
             {product.variants && product.variants.length > 1 && (
               <div className="mb-12">
                 <span className="text-[10px] uppercase tracking-widest font-bold text-black font-serif block mb-6">
-                  {language === 'he' ? 'בחר צבע' : 'Select Color'}: <span className="text-zinc-400 font-normal ml-2">{language === 'he' ? selectedVariant?.color_he : selectedVariant?.color}</span>
+                  {t('productDetail.selectColor')}: <span className="text-zinc-400 font-normal ms-2">{language === 'he' ? selectedVariant?.color_he : selectedVariant?.color}</span>
                 </span>
                 <div className="flex gap-4">
                   {product.variants.map((v: Variant, i: number) => (
@@ -198,18 +127,16 @@ const ProductDetail: React.FC = () => {
             <div className="space-y-12 mb-16 border-y border-zinc-100 py-12">
                <div className="flex items-center gap-10">
                   <span className="text-[10px] uppercase tracking-widest font-bold text-black font-serif">{t('productDetail.quantity')}</span>
-                  <div className="flex items-center border border-zinc-200 p-1">
+                  <div className="flex items-center border border-zinc-200">
                     <button 
-                      onClick={() => handleQuantityChange(-1)} 
-                      disabled={quantity <= 1}
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       className="w-12 h-12 flex items-center justify-center text-zinc-400 hover:text-black transition-colors"
                     >
                       <Minus className="w-3 h-3" />
                     </button>
                     <span className="w-12 text-center text-sm font-bold font-serif">{quantity}</span>
                     <button 
-                      onClick={() => handleQuantityChange(1)} 
-                      disabled={quantity >= product.countInStock}
+                      onClick={() => setQuantity(quantity + 1)}
                       className="w-12 h-12 flex items-center justify-center text-zinc-400 hover:text-black transition-colors"
                     >
                       <Plus className="w-3 h-3" />
@@ -219,23 +146,11 @@ const ProductDetail: React.FC = () => {
 
                <div className="flex flex-col sm:flex-row gap-6">
                   <Button 
-                    onClick={onAddToCart}
-                    disabled={product.countInStock === 0}
-                    className="flex-grow bg-black text-white hover:bg-zinc-800 transition-all duration-500 rounded-none py-10 text-[11px] uppercase tracking-[0.4em] font-bold"
+                    onClick={handleAddToCart}
+                    className="flex-grow bg-black text-white hover:bg-zinc-800 transition-all duration-700 rounded-none py-10 text-[11px] uppercase tracking-[0.5em] font-bold shadow-2xl"
                   >
-                    {product.countInStock > 0 ? t('productCard.addToBag') : t('productDetail.outOfStock')}
+                    {t('productCard.addToBag')}
                   </Button>
-
-                  {isEarringOrPiercing && (
-                    <Button 
-                      onClick={() => setShowTryOn(true)}
-                      variant="outline"
-                      className="bg-[#f5f5dc] text-black border-none rounded-none py-10 px-8 hover:bg-[#e8e8c8] transition-all duration-500 flex gap-3"
-                    >
-                      <Camera className="w-5 h-5" />
-                      <span className="uppercase tracking-[0.2em] text-[10px] font-bold">{t('tryOn.title')}</span>
-                    </Button>
-                  )}
                   <Button variant="outline" className="border-zinc-200 rounded-none p-8 hover:bg-zinc-50 transition-colors">
                     <Heart className="w-5 h-5 text-zinc-300" />
                   </Button>
@@ -253,11 +168,11 @@ const ProductDetail: React.FC = () => {
                </div>
                <div className="flex flex-col items-center text-center">
                   <RotateCcw className="w-5 h-5 text-zinc-300 mb-4" />
-                  <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">30-Day Returns</span>
+                  <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">{t('productDetail.30DayReturns')}</span>
                </div>
                <div className="flex flex-col items-center text-center">
                   <ShieldCheck className="w-5 h-5 text-zinc-300 mb-4" />
-                  <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">Lifetime Warranty</span>
+                  <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold">{t('productDetail.lifetimeWarranty')}</span>
                </div>
             </div>
 
@@ -308,13 +223,73 @@ const ProductDetail: React.FC = () => {
               )}
             </div>
           </div>
+
+          {/* Column - Image Gallery (Order-1 on desktop, second for RTL alignment to left) */}
+          <div className="space-y-8 lg:order-1 rtl:lg:order-2">
+            <motion.div 
+              key={currentImage}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="aspect-[3/4] overflow-hidden bg-zinc-50 border border-zinc-100 relative group"
+            >
+              <img
+                src={currentImage}
+                alt={getLocalizedField(product, 'name')}
+                className="w-full h-full object-cover"
+                style={{ mixBlendMode: 'multiply' }}
+              />
+
+              {/* Try On Trigger */}
+              <Button 
+                onClick={() => setShowTryOn(true)}
+                className="absolute bottom-8 start-8 end-8 bg-white/90 backdrop-blur-md text-black hover:bg-black hover:text-white rounded-none h-16 uppercase tracking-[0.4em] text-[10px] font-bold transition-all duration-700 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0"
+              >
+                <Camera className="me-4 w-4 h-4" />
+                {t('tryOn.title')}
+              </Button>
+            </motion.div>
+            
+            {product.variants && product.variants.length > 0 ? (
+              <div className="grid grid-cols-4 gap-4">
+                {product.variants.map((v: Variant, index: number) => (
+                  <div 
+                    key={index} 
+                    onClick={() => setSelectedVariant(v)}
+                    className={`aspect-square bg-zinc-50 border cursor-pointer overflow-hidden group transition-all duration-300 ${selectedVariant?.color === v.color ? 'border-black' : 'border-zinc-100'}`}
+                  >
+                    <img
+                      src={v.image}
+                      alt=""
+                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                      style={{ mixBlendMode: 'multiply' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : product.images.length > 1 && (
+              <div className="grid grid-cols-4 gap-4">
+                {product.images.map((img: string, index: number) => (
+                  <div key={index} 
+                    onClick={() => setCurrentImage(img)}
+                    className={`aspect-square bg-zinc-50 border cursor-pointer overflow-hidden group transition-all duration-300 ${currentImage === img ? 'border-black' : 'border-zinc-100'}`}>
+                    <img
+                      src={img}
+                      alt=""
+                      className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Related Products Section */}
         <section className="mt-60">
           <div className="flex flex-col items-center mb-24">
-             <span className="text-[10px] uppercase tracking-[0.8em] text-zinc-400 mb-6 font-serif opacity-70">Complete the Look</span>
-             <h2 className="text-4xl md:text-5xl font-serif text-black uppercase tracking-[0.1em] font-medium">
+             <span className="text-[10px] uppercase tracking-[0.8em] text-zinc-400 mb-6 font-serif opacity-70">{t('productDetail.completeTheLook')}</span>
+             <h2 className="text-4xl md:text-5xl font-serif text-black uppercase tracking-[0.1em] font-medium text-center">
                {t('productDetail.youMayAlsoLike')}
              </h2>
           </div>

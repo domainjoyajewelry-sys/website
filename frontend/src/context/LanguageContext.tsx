@@ -58,6 +58,11 @@ const allTranslations: Translations = {
   "footer.terms": { en: "Terms", he: "תנאי שימוש" },
   "footer.accessibility": { en: "Accessibility", he: "נגישות" },
   "footer.copyright": { en: "© 2026 Joya. All rights reserved.", he: "© 2026 ג'ויה. כל הזכויות שמורות." },
+  "footer.brandDescription": { 
+    en: "Luxury jewelry house dedicated to exquisite craftsmanship and ethical sourcing. Every piece tells a story of elegance and timeless beauty.", 
+    he: "בית תכשיטי יוקרה המוקדש לאומנות מעולה ומקורות אתיים. כל פריט מספר סיפור של אלגנטיות ויופי נצחי." 
+  },
+  "footer.contactWhatsapp": { en: "Contact us on WhatsApp", he: "צרו קשר בווצאפ" },
 
   "home.luxuryHouse": { en: "Luxury Jewelry House", he: "בית תכשיטי יוקרה" },
   "home.timelessElegance": { en: "Exquisite Craftsmanship, Timeless Elegance", he: "אומנות מעולה, אלגנטיות נצחית" },
@@ -92,6 +97,10 @@ const allTranslations: Translations = {
   "service.lifetimeCareDesc": { en: "Professional cleaning and maintenance", he: "ניקוי ותחזוקה מקצועיים" },
   "service.certifiedQuality": { en: "Certified Quality", he: "איכות מוסמכת" },
   "service.certifiedQualityDesc": { en: "GIA certified stones and 18k hallmark", he: "אבנים באישור GIA וזהב 18K" },
+  "productDetail.freeShipping": { en: "Free Shipping", he: "משלוח חינם" },
+  "productDetail.30DayReturns": { en: "30-Day Returns", he: "החזרות עד 30 יום" },
+  "productDetail.lifetimeWarranty": { en: "Lifetime Warranty", he: "אחריות לכל החיים" },
+  "productDetail.completeTheLook": { en: "Complete the Look", he: "השלימו את הלוק" },
   "productCard.addToBag": { en: "Add to Bag", he: "הוסף לסל" },
   "productCard.outOfStock": { en: "Out of Stock", he: "אזל מהמלאי" },
   "products.allJewelry": { en: "All Jewelry", he: "כל התכשיטים" },
@@ -110,6 +119,7 @@ const allTranslations: Translations = {
   "products.clearAllFilters": { en: "Clear All Filters", he: "נקה את כל הסינונים" },
   "productDetail.quantity": { en: "Quantity", he: "כמות" },
   "productDetail.outOfStock": { en: "Out of Stock", he: "אזל מהמלאי" },
+  "productDetail.selectColor": { en: "Select Color", he: "בחר צבע" },
   "productDetail.details": { en: "Product Details", he: "פרטי מוצר" },
   "productDetail.youMayAlsoLike": { en: "You May Also Like", he: "אולי יעניין אותך גם" },
   "cart.shoppingBag": { en: "Shopping Bag", he: "סל קניות" },
@@ -245,6 +255,11 @@ const allTranslations: Translations = {
   "tryOn.uploadPhoto": { en: "Upload Photo", he: "העלאת תמונה" },
   "tryOn.useCamera": { en: "Use Live Camera", he: "חזרה למצלמה" },
   "tryOn.snap": { en: "Snap Photo", he: "צלמו תמונה" },
+  "tryOn.removeBackground": { en: "Background Removal", he: "הסרת רקע" },
+  "tryOn.white": { en: "White", he: "לבן" },
+  "tryOn.black": { en: "Black", he: "שחור" },
+  "tryOn.crop": { en: "Crop Image", he: "גזירת תמונה" },
+  "tryOn.reset": { en: "Reset", he: "איפוס" },
   "productDetail.color": { en: "Color", he: "צבע" },
   "productDetail.sku": { en: "SKU", he: "מק״ט" },
   "specs.title": { en: "Specifications", he: "מפרט טכני" },
@@ -277,7 +292,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = (key: string): string => {
-    const translation = allTranslations[key];
+    // Try exact match first
+    let translation = allTranslations[key];
+    
+    // If not found, try case-insensitive match
+    if (!translation) {
+      const lowerKey = key.toLowerCase();
+      const actualKey = Object.keys(allTranslations).find(k => k.toLowerCase() === lowerKey);
+      if (actualKey) {
+        translation = allTranslations[actualKey];
+      }
+    }
+
     if (typeof translation === 'string') {
       return translation;
     }
