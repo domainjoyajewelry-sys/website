@@ -70,7 +70,7 @@ const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void, survey
           {processing ? 'Processing...' : t('checkout.placeOrder')}
         </Button>
         <Button variant="ghost" onClick={onBack} type="button" className="uppercase text-[12px] tracking-widest font-bold text-zinc-400">
-          <ArrowLeft className="mr-2 w-4 h-4" /> {t('checkout.back')}
+          <ArrowLeft className="me-2 w-4 h-4 rtl:rotate-180" /> {t('checkout.back')}
         </Button>
       </div>
     </form>
@@ -179,7 +179,7 @@ const Checkout: React.FC = () => {
                   </div>
                 </div>
                 <Button onClick={() => setCurrentStep(2)} className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.3em] font-bold">
-                  {language === 'he' ? 'המשך לשאלון' : 'Continue to Survey'} <ArrowRight className="ml-4 w-5 h-4" />
+                  {language === 'he' ? 'המשך לשאלון' : 'Continue to Survey'} <ArrowRight className="ms-4 w-5 h-4 rtl:rotate-180" />
                 </Button>
               </motion.div>
             ) : currentStep === 2 ? (
@@ -225,7 +225,7 @@ const Checkout: React.FC = () => {
                  </div>
                  <div className="flex flex-col gap-4">
                     <Button onClick={() => setCurrentStep(3)} className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.3em] font-bold">
-                      {language === 'he' ? 'המשך לתשלום' : 'Continue to Payment'} <ArrowRight className="ml-4 w-5 h-4" />
+                      {language === 'he' ? 'המשך לתשלום' : 'Continue to Payment'} <ArrowRight className="ms-4 w-5 h-4 rtl:rotate-180" />
                     </Button>
                     <Button variant="ghost" onClick={() => setCurrentStep(1)} className="uppercase text-[12px] tracking-widest font-bold text-zinc-400">
                       {t('checkout.back')}

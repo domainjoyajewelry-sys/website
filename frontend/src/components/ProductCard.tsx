@@ -95,7 +95,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </Link>
         
         {/* Subtle Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
+        <div className="absolute top-4 start-4 flex flex-col gap-2 pointer-events-none">
           {product.featured && (
              <span className="text-[8px] uppercase tracking-[0.3em] bg-black text-white px-3 py-1 font-bold">
                {language === 'he' ? 'נבחר' : 'Featured'}
@@ -121,7 +121,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Try On Button (Top Right) - Styled as a prominent badge */}
         {isEarringOrPiercing && (
-           <div className="absolute top-4 right-4 z-[45]">
+           <div className="absolute top-4 end-4 z-[45]">
               <button 
                 onClick={handleTryOnClick}
                 className="bg-[#f5f5dc] text-black px-4 py-2 flex items-center gap-2 shadow-2xl hover:bg-[#e8e8c8] transition-all transform hover:scale-105 active:scale-95 border border-zinc-200"

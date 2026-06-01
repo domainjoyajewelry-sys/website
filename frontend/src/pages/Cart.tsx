@@ -129,7 +129,7 @@ const Cart: React.FC = () => {
               <Link to="/checkout">
                 <Button className="w-full bg-black text-white hover:bg-zinc-800 transition-all duration-500 rounded-none py-10 text-[11px] uppercase tracking-[0.4em] font-bold flex items-center justify-center gap-4">
                   {t('cart.proceedToCheckout')}
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                 </Button>
               </Link>
 

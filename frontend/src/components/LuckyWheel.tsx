@@ -87,7 +87,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {language === 'he' ? 'כל משתמש רשאי לסובב את הגלגל פעם אחת בלבד.' : 'Each member is entitled to one spin of the lucky wheel.'}
           </p>
           <div className="p-6 bg-zinc-50 border border-zinc-100 italic">
-             {language === 'he' ? 'הפרס שלך:' : 'Your Reward:'} <span className="font-bold text-black uppercase ml-2">{user.wonPrize}</span>
+             {language === 'he' ? 'הפרס שלך:' : 'Your Reward:'} <span className="font-bold text-black uppercase ms-2">{user.wonPrize}</span>
           </div>
           <Button onClick={onClose} variant="ghost" className="uppercase tracking-widest text-[10px] font-bold">
              {t('admin.cancel')}
@@ -101,7 +101,7 @@ const LuckyWheel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       
       <button 
         onClick={onClose} 
-        className="absolute top-6 right-6 sm:top-10 sm:right-10 text-zinc-300 hover:text-black transition-colors z-30 p-2"
+        className="absolute top-6 end-6 sm:top-10 sm:end-10 text-zinc-300 hover:text-black transition-colors z-30 p-2"
         aria-label="Close"
       >
         <X className="w-6 h-6" />

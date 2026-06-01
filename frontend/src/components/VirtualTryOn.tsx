@@ -1,3 +1,6 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 import { X, Camera, RotateCcw, Maximize2, Minimize2, Upload, RefreshCw, Sparkles, Scissors, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';

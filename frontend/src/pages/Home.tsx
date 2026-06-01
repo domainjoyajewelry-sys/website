@@ -258,7 +258,7 @@ const Home: React.FC = () => {
               className="group flex items-center gap-6 text-[12px] uppercase tracking-[0.5em] font-bold text-black border-b border-zinc-200 pb-2 hover:border-black transition-all"
             >
               {t('home.viewAll')}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500" />
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-3 rtl:group-hover:-translate-x-3 rtl:rotate-180 transition-transform duration-500" />
             </Link>
           </div>
 
