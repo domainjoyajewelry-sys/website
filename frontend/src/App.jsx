@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
@@ -15,37 +15,46 @@ import Admin from './pages/admin/Admin';
 import AdminLayout from './layouts/AdminLayout';
 import PrivateRoute from './components/PrivateRoute';
 import ScrollToTopOnNav from './components/ScrollToTopOnNav';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
+  const [isInitialized, setIsInitialized] = useState(false);
+
   return (
     <>
-      <ScrollToTopOnNav />
-      <Routes>
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/products" element={<Layout><Products /></Layout>} />
-        <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
-        <Route path="/cart" element={<Layout><Cart /></Layout>} />
-        <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
-        <Route path="/orders" element={<Layout><Orders /></Layout>} />
-        <Route path="/profile" element={<Layout><Profile /></Layout>} />
-        <Route path="/login" element={<Layout><Login /></Layout>} />
-        <Route path="/gift-card" element={<Layout><GiftCardPurchase /></Layout>} />
-        
-        {/* Informational Pages */}
-        <Route path="/about" element={<Layout><InfoPage /></Layout>} />
-        <Route path="/shipping" element={<Layout><InfoPage /></Layout>} />
-        <Route path="/faqs" element={<Layout><InfoPage /></Layout>} />
-        <Route path="/care" element={<Layout><InfoPage /></Layout>} />
-        <Route path="/warranty" element={<Layout><InfoPage /></Layout>} />
-        <Route path="/contact" element={<Layout><InfoPage /></Layout>} />
+      <LoadingScreen onComplete={() => setIsInitialized(true)} />
+      
+      {isInitialized && (
+        <div className="animate-in fade-in duration-1000">
+          <ScrollToTopOnNav />
+          <Routes>
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/products" element={<Layout><Products /></Layout>} />
+            <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
+            <Route path="/cart" element={<Layout><Cart /></Layout>} />
+            <Route path="/checkout" element={<Layout><Checkout /></Layout>} />
+            <Route path="/orders" element={<Layout><Orders /></Layout>} />
+            <Route path="/profile" element={<Layout><Profile /></Layout>} />
+            <Route path="/login" element={<Layout><Login /></Layout>} />
+            <Route path="/gift-card" element={<Layout><GiftCardPurchase /></Layout>} />
+            
+            {/* Informational Pages */}
+            <Route path="/about" element={<Layout><InfoPage /></Layout>} />
+            <Route path="/shipping" element={<Layout><InfoPage /></Layout>} />
+            <Route path="/faqs" element={<Layout><InfoPage /></Layout>} />
+            <Route path="/care" element={<Layout><InfoPage /></Layout>} />
+            <Route path="/warranty" element={<Layout><InfoPage /></Layout>} />
+            <Route path="/contact" element={<Layout><InfoPage /></Layout>} />
 
-        <Route path="/unauthorized" element={<Layout><div>Unauthorized</div></Layout>} />
+            <Route path="/unauthorized" element={<Layout><div>Unauthorized</div></Layout>} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/*" element={<PrivateRoute isAdmin={true} />}>
-          <Route path="*" element={<AdminLayout><Admin /></AdminLayout>} />
-        </Route>
-      </Routes>
+            {/* Admin Routes */}
+            <Route path="/admin/*" element={<PrivateRoute isAdmin={true} />}>
+              <Route path="*" element={<AdminLayout><Admin /></AdminLayout>} />
+            </Route>
+          </Routes>
+        </div>
+      )}
     </>
   );
 }
