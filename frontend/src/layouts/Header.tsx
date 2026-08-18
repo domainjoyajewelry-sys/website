@@ -52,10 +52,12 @@ const Header: React.FC = () => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        !isHomePage || isScrolled 
-          ? 'bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md py-4 md:py-6 shadow-sm border-b border-zinc-100 dark:border-zinc-800/80 opacity-100 translate-y-0' 
-          : 'bg-transparent py-8 md:py-10 opacity-0 -translate-y-full pointer-events-none'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled 
+          ? 'bg-black/85 dark:bg-zinc-950/90 backdrop-blur-md py-4 shadow-xl border-b border-zinc-800/80 text-white' 
+          : isHomePage 
+            ? 'bg-gradient-to-b from-black/60 to-transparent py-5 text-white'
+            : 'bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md py-4 border-b border-zinc-100 dark:border-zinc-800 text-black dark:text-white'
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-12 max-w-screen-2xl relative h-10 md:h-12">
@@ -64,7 +66,7 @@ const Header: React.FC = () => {
           <div className="lg:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={`${!isHomePage || isScrolled ? 'text-black dark:text-white' : 'text-white'} hover:bg-transparent`}>
+                <Button variant="ghost" size="icon" className="text-current hover:bg-transparent">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -93,31 +95,37 @@ const Header: React.FC = () => {
           </div>
 
           <nav className="hidden lg:flex items-center gap-8 xl:gap-12">
-            <Link to="/products" className={`text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black dark:text-white hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>{t('nav.collections')}</Link>
-            <Link to="/products?new=true" className={`text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black dark:text-white hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>{t('nav.newArrivals')}</Link>
-            <Link to="/gift-card" className={`text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black dark:text-white hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>{t('nav.giftCard')}</Link>
+            <Link to="/products" className="text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-300 font-serif text-current hover:opacity-75">{t('nav.collections')}</Link>
+            <Link to="/products?new=true" className="text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-300 font-serif text-current hover:opacity-75">{t('nav.newArrivals')}</Link>
+            <Link to="/gift-card" className="text-[11px] xl:text-[13px] uppercase tracking-[0.2em] xl:tracking-[0.4em] font-bold transition-all duration-300 font-serif text-current hover:opacity-75">{t('nav.giftCard')}</Link>
           </nav>
         </div>
 
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <Link to="/" onClick={handleLogoClick} className="pointer-events-auto block">
-             <img src="/logo.png" alt="JOYA" className={`h-12 sm:h-16 md:h-20 lg:h-24 w-auto transition-all duration-700 ${isDarkMode ? 'invert brightness-200' : 'brightness-0'}`} />
+             <img 
+               src="/logo.png" 
+               alt="JOYA" 
+               className={`h-12 sm:h-16 md:h-20 lg:h-22 w-auto transition-all duration-500 ${
+                 isScrolled || isHomePage ? 'invert brightness-200' : isDarkMode ? 'invert brightness-200' : 'brightness-0'
+               }`} 
+             />
           </Link>
         </div>
 
         <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4 xl:gap-6">
-           <Button variant="ghost" size="sm" onClick={toggleTheme} className={`flex items-center gap-2 text-[11px] xl:text-[13px] font-bold tracking-[0.2em] transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black dark:text-white hover:text-zinc-400' : 'text-white hover:text-white/60'}`} title={isDarkMode ? 'Light Mode' : 'Dark Mode'}>
+           <Button variant="ghost" size="sm" onClick={toggleTheme} className="flex items-center gap-2 text-[11px] xl:text-[13px] font-bold tracking-[0.2em] transition-all duration-300 font-serif text-current hover:opacity-75" title={isDarkMode ? 'Light Mode' : 'Dark Mode'}>
              {isDarkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4" />}
              <span className="hidden xl:inline">{isDarkMode ? (language === 'he' ? 'בהיר' : 'Light') : (language === 'he' ? 'כהה' : 'Dark')}</span>
            </Button>
 
-           <Button variant="ghost" size="sm" onClick={toggleLanguage} className={`hidden sm:flex items-center gap-2 text-[11px] xl:text-[13px] font-bold tracking-[0.2em] transition-all duration-500 font-serif ${!isHomePage || isScrolled ? 'text-black dark:text-white hover:text-zinc-400' : 'text-white hover:text-white/60'}`}>
+           <Button variant="ghost" size="sm" onClick={toggleLanguage} className="hidden sm:flex items-center gap-2 text-[11px] xl:text-[13px] font-bold tracking-[0.2em] transition-all duration-300 font-serif text-current hover:opacity-75">
              <Globe className="h-4 w-4" />
              {language === 'en' ? 'HE' : 'EN'}
            </Button>
            
            <Link to="/cart" className="relative group p-2">
-              <ShoppingCart className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black dark:text-white group-hover:text-zinc-400' : 'text-white hover:opacity-60'}`} />
+              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 text-current hover:opacity-75" />
               {cartItemCount > 0 && (
                 <span className="absolute -top-1 -end-1 bg-amber-500 text-black text-[9px] font-bold font-mono w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
                   {cartItemCount}
@@ -128,7 +136,7 @@ const Header: React.FC = () => {
            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="hover:bg-transparent group p-2 focus:outline-none cursor-pointer">
-                  <User className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black dark:text-white group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 text-current hover:opacity-75" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800 text-black dark:text-white mt-6 min-w-[200px] sm:min-w-[240px] rounded-none shadow-2xl p-4">

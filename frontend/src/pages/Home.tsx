@@ -139,118 +139,12 @@ const Home: React.FC = () => {
     <div className="bg-white dark:bg-zinc-950 text-black dark:text-white transition-colors duration-300 relative">
       <Toaster position="top-center" />
       
-      {/* Redesigned Premium Hero - Dynamic Background with Embedded Nav */}
+      {/* Redesigned Premium Hero - Dynamic Background */}
       <section 
         ref={heroRef} 
         style={{ backgroundColor: activeBanner.bgColor || '#000000' }}
-        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-56 sm:pt-64 transition-colors duration-500"
+        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-32 sm:pt-40 transition-colors duration-500"
       >
-        
-        {/* Embedded Hero Navigation */}
-        <div className="absolute top-0 left-0 right-0 z-30 px-6 sm:px-12 py-10 flex items-center justify-between pointer-events-none">
-           
-           {/* Left Side: Mobile Menu OR Desktop Nav */}
-           <div className="flex-1 flex items-center">
-             {/* Mobile Menu Trigger */}
-             <div className="lg:hidden">
-               <Sheet open={isHeroMobileMenuOpen} onOpenChange={setIsHeroMobileMenuOpen}>
-                 <SheetTrigger asChild>
-                   <Button variant="ghost" size="icon" style={{ color: navTextColor }} className="hover:bg-transparent pointer-events-auto">
-                     <Menu className="h-5 w-5" />
-                   </Button>
-                 </SheetTrigger>
-                 <SheetContent side={language === 'he' ? 'right' : 'left'} className="bg-white dark:bg-zinc-950 border-none w-[80vw] sm:w-[400px] flex flex-col p-0 text-black dark:text-white">
-                    <div className="flex items-center justify-center h-28 border-b border-zinc-100 dark:border-zinc-800">
-                       <span className="text-2xl font-serif font-bold tracking-[0.4em] text-black dark:text-white">JOYA</span>
-                    </div>
-                    <nav className="flex flex-col p-10 gap-8">
-                       <button onClick={() => { setIsHeroMobileMenuOpen(false); navigate('/products'); }} className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right">{t('nav.collections')}</button>
-                       <button onClick={() => { setIsHeroMobileMenuOpen(false); navigate('/products?new=true'); }} className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right">{t('nav.newArrivals')}</button>
-                       <button onClick={() => { setIsHeroMobileMenuOpen(false); navigate('/gift-card'); }} className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right">{t('nav.giftCard')}</button>
-                       
-                       <div className="pt-8 border-t border-zinc-100 dark:border-zinc-800 flex flex-col gap-4">
-                         <Button variant="outline" onClick={toggleDarkMode} className="border-zinc-300 dark:border-zinc-700 text-black dark:text-white rounded-none py-6 text-[12px] uppercase tracking-[0.4em] font-bold flex items-center justify-center gap-3">
-                           {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-                           <span>{isDarkMode ? (language === 'he' ? 'מצב בהיר' : 'Light Mode') : (language === 'he' ? 'מצב כהה' : 'Dark Mode')}</span>
-                         </Button>
-
-                         <Button variant="outline" onClick={() => { toggleLanguage(); setIsHeroMobileMenuOpen(false); }} className="border-black dark:border-white text-black dark:text-white rounded-none py-6 text-[12px] uppercase tracking-[0.4em] font-bold">
-                           {language === 'en' ? 'עברית (HE)' : 'English (EN)'}
-                         </Button>
-                       </div>
-                    </nav>
-                 </SheetContent>
-               </Sheet>
-             </div>
-
-             {/* Desktop Nav Items */}
-             <nav className="hidden lg:flex items-center gap-10 pointer-events-auto">
-                <Link 
-                  to="/products" 
-                  style={{ color: navTextColor }}
-                  className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
-                >
-                  {t('nav.collections')}
-                </Link>
-                <Link 
-                  to="/products?new=true" 
-                  style={{ color: navTextColor }}
-                  className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
-                >
-                  {t('nav.newArrivals')}
-                </Link>
-             </nav>
-           </div>
-
-           {/* Center: Logo (1.5x Enlarged) */}
-           <div className="absolute left-1/2 top-6 sm:top-8 transform -translate-x-1/2 pointer-events-auto">
-              <Link to="/">
-                <img 
-                  src="/logo.png" 
-                  alt="JOYA" 
-                  className={`h-28 sm:h-40 md:h-52 lg:h-56 w-auto max-w-[85vw] object-contain transition-all drop-shadow-md ${isHeroNavLight ? 'invert-0' : 'invert brightness-200'}`} 
-                />
-              </Link>
-           </div>
-
-           {/* Right Side: Actions */}
-           <div className="flex-1 flex items-center justify-end gap-5 sm:gap-8 pointer-events-auto">
-              {/* Color Mode Toggle Button (Light / Dark) */}
-              <button 
-                onClick={toggleDarkMode}
-                style={{ color: navTextColor }}
-                className="flex items-center gap-2 text-[11px] font-bold tracking-[0.3em] font-serif uppercase opacity-80 hover:opacity-100 transition-all cursor-pointer"
-                title={isDarkMode ? (language === 'he' ? 'עבור למצב בהיר' : 'Switch to Light Mode') : (language === 'he' ? 'עבור למצב כהה' : 'Switch to Dark Mode')}
-              >
-                {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-                <span className="hidden sm:inline">{isDarkMode ? (language === 'he' ? 'בהיר' : 'Light') : (language === 'he' ? 'כהה' : 'Dark')}</span>
-              </button>
-
-              {/* Language Switcher */}
-              <button 
-                onClick={toggleLanguage} 
-                style={{ color: navTextColor }}
-                className="hidden sm:block text-[11px] font-bold tracking-[0.3em] font-serif uppercase opacity-80 hover:opacity-100 transition-all cursor-pointer"
-              >
-                {language === 'en' ? 'HE' : 'EN'}
-              </button>
-
-              {/* Cart Icon */}
-              <Link to="/cart" style={{ color: navTextColor }} className="relative opacity-80 hover:opacity-100 transition-all p-1">
-                <ShoppingBag className="w-5 h-5" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -end-1 bg-amber-500 text-black text-[9px] font-bold font-mono w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
-                    {cartItemCount}
-                  </span>
-                )}
-              </Link>
-
-              {/* Profile Icon */}
-              <Link to={user ? "/profile" : "/login"} style={{ color: navTextColor }} className="opacity-80 hover:opacity-100 transition-all">
-                <UserIcon className="w-5 h-5" />
-              </Link>
-           </div>
-        </div>
 
         {activeBanner.backgroundType === 'video' && activeBanner.video && activeBanner.videoActive !== false && (
           <div className="absolute inset-0 z-0">
