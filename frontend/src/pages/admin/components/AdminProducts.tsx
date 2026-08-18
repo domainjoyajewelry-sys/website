@@ -72,7 +72,8 @@ const AdminProducts: React.FC = () => {
   const resetForm = () => {
     setFormData({
       name: '', name_he: '', price: 0, countInStock: 0, 
-      category: '', materials: '', materials_he: '', 
+      category: '', subcategory: '', subcategory_he: '', subCategory: '',
+      materials: '', materials_he: '', 
       colors: '', colors_he: '', images: [''], description: '', description_he: '',
       variants: [],
       piercingSide: 'none',
@@ -86,6 +87,9 @@ const AdminProducts: React.FC = () => {
     setFormData({
       ...product,
       category: product.category?._id || product.category,
+      subcategory: product.subcategory || '',
+      subcategory_he: product.subcategory_he || '',
+      subCategory: product.subCategory?._id || product.subCategory || '',
       variants: product.variants || [],
       piercingSide: product.piercingSide || 'none',
       unitType: product.unitType || 'none',
@@ -203,19 +207,46 @@ const AdminProducts: React.FC = () => {
                   <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.stock')}</label>
                   <Input type="number" value={formData.countInStock} onChange={(e) => setFormData({...formData, countInStock: Number(e.target.value)})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
-               <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.category')}</label>
-                  <select 
-                    value={formData.category} 
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
-                  >
-                    <option value="">{t('admin.selectCategory')}</option>
-                    {categories.map((cat: any) => (
-                      <option key={cat._id} value={cat._id}>{getLocalizedField(cat, 'name')}</option>
-                    ))}
-                  </select>
-               </div>
+                <div className="space-y-4">
+                   <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.category')}</label>
+                   <select 
+                     value={formData.category} 
+                     onChange={(e) => setFormData({...formData, category: e.target.value, subCategory: ''})}
+                     className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
+                   >
+                     <option value="">{t('admin.selectCategory')}</option>
+                     {categories
+                       .filter((cat: any) => !cat.parent)
+                       .map((cat: any) => (
+                         <option key={cat._id} value={cat._id}>{getLocalizedField(cat, 'name')}</option>
+                       ))}
+                   </select>
+                </div>
+
+                <div className="space-y-4">
+                   <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.subcategory')}</label>
+                   <select 
+                     value={formData.subCategory || ''} 
+                     onChange={(e) => {
+                       const subId = e.target.value;
+                       const selectedSub = categories.find((c: any) => c._id === subId);
+                       setFormData({
+                         ...formData, 
+                         subCategory: subId,
+                         subcategory: selectedSub?.name || formData.subcategory,
+                         subcategory_he: selectedSub?.name_he || formData.subcategory_he
+                       });
+                     }}
+                     className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
+                   >
+                     <option value="">{t('admin.selectSubcategory')}</option>
+                     {categories
+                       .filter((cat: any) => cat.parent && (cat.parent?._id === formData.category || cat.parent === formData.category))
+                       .map((cat: any) => (
+                         <option key={cat._id} value={cat._id}>{getLocalizedField(cat, 'name')}</option>
+                       ))}
+                   </select>
+                </div>
                
                {/* Primary Image with Cloudinary Upload */}
                <div className="space-y-4">
@@ -355,8 +386,19 @@ const AdminProducts: React.FC = () => {
                 </TableCell>
                 <TableCell>
                    <div className="font-serif text-sm tracking-widest uppercase">{getLocalizedField(product, 'name')}</div>
-                   <div className="flex items-center gap-2 mt-1">
-                     <span className="text-[9px] text-zinc-400 tracking-widest uppercase">{getLocalizedField(product.category, 'name')}</span>
+                   <div className="flex flex-wrap items-center gap-2 mt-1">
+                     <span className="text-[9px] text-zinc-400 tracking-widest uppercase font-bold">
+                        {getLocalizedField(product.category, 'name')}
+                        {(product.subCategory || product.subcategory) && (
+                          <span className="text-zinc-600 dark:text-zinc-300">
+                            {' ➔ '}
+                            {product.subCategory 
+                              ? getLocalizedField(product.subCategory, 'name')
+                              : (language === 'he' ? (product.subcategory_he || product.subcategory) : product.subcategory)
+                            }
+                          </span>
+                        )}
+                      </span>
                      {product.variants && product.variants.length > 0 && (
                        <div className="flex gap-1.5 items-center">
                          {product.variants.map((v: any, idx: number) => (

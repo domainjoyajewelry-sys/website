@@ -26,6 +26,11 @@ const categorySchema = mongoose.Schema(
     image: {
       type: String, // URL to category image
     },
+    parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      default: null,
+    },
   },
   {
     timestamps: true,

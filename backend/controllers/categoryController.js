@@ -5,7 +5,7 @@ const Category = require('../models/categoryModel');
 // @route   GET /api/categories
 // @access  Public
 const getCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find({});
+  const categories = await Category.find({}).populate('parent', 'name name_he slug');
   res.json(categories);
 });
 
@@ -13,7 +13,7 @@ const getCategories = asyncHandler(async (req, res) => {
 // @route   GET /api/categories/:id
 // @access  Public
 const getCategoryById = asyncHandler(async (req, res) => {
-  const category = await Category.findById(req.params.id);
+  const category = await Category.findById(req.params.id).populate('parent', 'name name_he slug');
 
   if (category) {
     res.json(category);
@@ -27,7 +27,7 @@ const getCategoryById = asyncHandler(async (req, res) => {
 // @route   POST /api/categories
 // @access  Private/Admin
 const createCategory = asyncHandler(async (req, res) => {
-  const { name, name_he, description, description_he, slug, image } = req.body;
+  const { name, name_he, description, description_he, slug, image, parent } = req.body;
 
   const categoryExists = await Category.findOne({ slug });
 
@@ -43,6 +43,7 @@ const createCategory = asyncHandler(async (req, res) => {
     description_he,
     slug,
     image,
+    parent: parent || null,
   });
 
   const createdCategory = await category.save();
@@ -53,7 +54,7 @@ const createCategory = asyncHandler(async (req, res) => {
 // @route   PUT /api/categories/:id
 // @access  Private/Admin
 const updateCategory = asyncHandler(async (req, res) => {
-  const { name, name_he, description, description_he, slug, image } = req.body;
+  const { name, name_he, description, description_he, slug, image, parent } = req.body;
 
   const category = await Category.findById(req.params.id);
 
@@ -64,6 +65,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     category.description_he = description_he;
     category.slug = slug;
     category.image = image;
+    category.parent = parent || null;
 
     const updatedCategory = await category.save();
     res.json(updatedCategory);

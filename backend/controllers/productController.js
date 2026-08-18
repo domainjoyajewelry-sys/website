@@ -5,7 +5,7 @@ const Product = require('../models/productModel');
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).populate('category');
+  const products = await Product.find({}).populate('category').populate('subCategory');
   res.json(products);
 });
 
@@ -13,7 +13,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id).populate('category');
+  const product = await Product.findById(req.params.id).populate('category').populate('subCategory');
 
   if (product) {
     res.json(product);
@@ -50,12 +50,24 @@ const createProduct = asyncHandler(async (req, res) => {
     price,
     images,
     category,
+    subcategory,
+    subcategory_he,
+    subCategory,
     countInStock,
     featured,
+    isNewArrival,
     materials,
     materials_he,
     gemstones,
     gemstones_he,
+    colors,
+    colors_he,
+    bodyPart,
+    bodyPart_he,
+    variants,
+    piercingSide,
+    unitType,
+    pipeLength,
   } = req.body;
 
   const product = new Product({
@@ -64,15 +76,26 @@ const createProduct = asyncHandler(async (req, res) => {
     description: description || 'Sample description',
     description_he: description_he || 'תיאור לדוגמה',
     price: price || 0,
-    user: req.user._id,
     images: images || ['/images/sample.jpg'],
-    category: category || '60c72b2f9f1b2c001c8e4d2a', // Placeholder category ID
+    category,
+    subcategory: subcategory || '',
+    subcategory_he: subcategory_he || '',
+    subCategory: subCategory || null,
     countInStock: countInStock || 0,
     featured: featured || false,
+    isNewArrival: isNewArrival || false,
     materials: materials || 'Sample Materials',
     materials_he: materials_he || 'חומרים לדוגמה',
     gemstones: gemstones || '',
     gemstones_he: gemstones_he || '',
+    colors: colors || '',
+    colors_he: colors_he || '',
+    bodyPart: bodyPart || '',
+    bodyPart_he: bodyPart_he || '',
+    variants: variants || [],
+    piercingSide: piercingSide || 'none',
+    unitType: unitType || 'none',
+    pipeLength: pipeLength || '',
   });
 
   const createdProduct = await product.save();
@@ -91,12 +114,24 @@ const updateProduct = asyncHandler(async (req, res) => {
     price,
     images,
     category,
+    subcategory,
+    subcategory_he,
+    subCategory,
     countInStock,
     featured,
+    isNewArrival,
     materials,
     materials_he,
     gemstones,
     gemstones_he,
+    colors,
+    colors_he,
+    bodyPart,
+    bodyPart_he,
+    variants,
+    piercingSide,
+    unitType,
+    pipeLength,
   } = req.body;
 
   const product = await Product.findById(req.params.id);
@@ -109,12 +144,24 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.price = price;
     product.images = images;
     product.category = category;
+    product.subcategory = subcategory || '';
+    product.subcategory_he = subcategory_he || '';
+    product.subCategory = subCategory || null;
     product.countInStock = countInStock;
-    product.featured = featured;
+    product.featured = featured !== undefined ? featured : product.featured;
+    product.isNewArrival = isNewArrival !== undefined ? isNewArrival : product.isNewArrival;
     product.materials = materials;
     product.materials_he = materials_he;
     product.gemstones = gemstones;
     product.gemstones_he = gemstones_he;
+    product.colors = colors;
+    product.colors_he = colors_he;
+    product.bodyPart = bodyPart;
+    product.bodyPart_he = bodyPart_he;
+    product.variants = variants || product.variants;
+    product.piercingSide = piercingSide || product.piercingSide;
+    product.unitType = unitType || product.unitType;
+    product.pipeLength = pipeLength || product.pipeLength;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);

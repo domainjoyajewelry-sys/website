@@ -23,7 +23,8 @@ const AdminCategories: React.FC = () => {
     description: '',
     description_he: '',
     slug: '',
-    image: ''
+    image: '',
+    parent: ''
   });
 
   const { data: categories = [], isLoading } = useQuery({
@@ -65,7 +66,8 @@ const AdminCategories: React.FC = () => {
       description: '',
       description_he: '',
       slug: '',
-      image: ''
+      image: '',
+      parent: ''
     });
   };
 
@@ -74,10 +76,11 @@ const AdminCategories: React.FC = () => {
     setFormData({
       name: category.name,
       name_he: category.name_he,
-      description: category.description,
-      description_he: category.description_he,
+      description: category.description || '',
+      description_he: category.description_he || '',
       slug: category.slug,
-      image: category.image
+      image: category.image || '',
+      parent: category.parent?._id || category.parent || ''
     });
   };
 
@@ -119,10 +122,27 @@ const AdminCategories: React.FC = () => {
                   <Input value={formData.name_he} onChange={(e) => setFormData({...formData, name_he: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 text-right" />
                </div>
                <div className="space-y-4">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.parentCategory')}</label>
+                  <select
+                    value={formData.parent}
+                    onChange={(e) => setFormData({...formData, parent: e.target.value})}
+                    className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
+                  >
+                    <option value="">{t('admin.mainCategory')}</option>
+                    {categories
+                      .filter((c: any) => !editingCategory || c._id !== editingCategory._id)
+                      .map((c: any) => (
+                        <option key={c._id} value={c._id}>
+                          {language === 'he' ? c.name_he : c.name}
+                        </option>
+                      ))}
+                  </select>
+               </div>
+               <div className="space-y-4">
                   <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.slug')}</label>
                   <Input value={formData.slug} onChange={(e) => setFormData({...formData, slug: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
-               <div className="space-y-4">
+               <div className="space-y-4 md:col-span-2">
                   <div className="flex justify-between items-center">
                     <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.imageUrl')}</label>
                     <label className="text-[9px] uppercase font-bold tracking-widest cursor-pointer text-black dark:text-white hover:underline">
@@ -180,13 +200,14 @@ const AdminCategories: React.FC = () => {
             <TableRow className="border-zinc-100 dark:border-zinc-800">
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 dark:text-zinc-400">{t('admin.image')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 dark:text-zinc-400">{t('admin.name')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 dark:text-zinc-400">{t('admin.parentCategory')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 dark:text-zinc-400">{t('admin.slug')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 dark:text-zinc-400">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={4} className="text-center py-20 font-serif italic text-xl text-zinc-300 dark:text-zinc-600">{t('admin.synchronizing')}</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300 dark:text-zinc-600">{t('admin.synchronizing')}</TableCell></TableRow>
             ) : categories.map((category: any) => (
               <TableRow key={category._id} className="border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors">
                 <TableCell className="py-6 px-8">
@@ -194,6 +215,15 @@ const AdminCategories: React.FC = () => {
                 </TableCell>
                 <TableCell>
                    <div className="font-serif text-sm tracking-widest uppercase dark:text-zinc-200">{language === 'he' ? category.name_he : category.name}</div>
+                </TableCell>
+                <TableCell>
+                   {category.parent ? (
+                     <span className="inline-block bg-zinc-100 dark:bg-zinc-800 px-3 py-1 text-[10px] uppercase font-bold tracking-widest dark:text-zinc-300">
+                       ↳ {language === 'he' ? (category.parent.name_he || category.parent.name) : (category.parent.name || category.parent.name_he)}
+                     </span>
+                   ) : (
+                     <span className="text-[10px] text-zinc-400 uppercase font-bold tracking-widest">{language === 'he' ? 'ראשית' : 'Main'}</span>
+                   )}
                 </TableCell>
                 <TableCell className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500">{category.slug}</TableCell>
                 <TableCell className="text-right px-8">
