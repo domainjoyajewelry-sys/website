@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
 const User = require('../models/userModel');
+const { sendRegistrationWelcomeEmail } = require('../services/emailService');
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -50,6 +51,8 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
+    sendRegistrationWelcomeEmail(user.email, user.full_name).catch(err => console.error('Welcome email error:', err));
+
     res.status(201).json({
       _id: user._id,
       full_name: user.full_name,
@@ -59,7 +62,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new new Error('Invalid user data');
+    throw new Error('Invalid user data');
   }
 });
 

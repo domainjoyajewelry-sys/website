@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Prize = require('../models/prizeModel');
 const User = require('../models/userModel');
+const { sendPrizeCouponEmail } = require('../services/emailService');
 
 // @desc    Fetch all active prizes
 // @route   GET /api/prizes
@@ -83,6 +84,10 @@ const recordSpin = asyncHandler(async (req, res) => {
   const couponCode = `JOYA-${cleanLabel}-${Math.floor(1000 + Math.random() * 9000)}`;
 
   console.log(`[WHEEL PRIZE AWARDED] Recipient: ${recipientEmail || 'Guest'}, Code: ${couponCode}, Prize: ${prize.label}`);
+
+  if (recipientEmail) {
+    sendPrizeCouponEmail(recipientEmail, prize.label, couponCode).catch(err => console.error('Prize email error:', err));
+  }
 
   res.json({
     success: true,

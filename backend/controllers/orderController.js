@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Order = require('../models/orderModel');
+const { sendOrderConfirmationEmail } = require('../services/emailService');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -46,6 +47,13 @@ const addOrderItems = asyncHandler(async (req, res) => {
     });
 
     const createdOrder = await order.save();
+
+    // Trigger email sending
+    const targetEmail = shippingAddress?.email || (req.user && req.user.email);
+    sendOrderConfirmationEmail(createdOrder, targetEmail).catch(err => {
+      console.error('Email error:', err);
+    });
+
     res.status(201).json(createdOrder);
   }
 });
