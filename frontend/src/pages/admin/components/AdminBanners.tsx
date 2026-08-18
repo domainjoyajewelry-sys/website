@@ -89,6 +89,9 @@ const AdminBanners: React.FC = () => {
       videoActive: true,
       backgroundType: 'image', 
       bgColor: '#000000',
+      bgGradient: '#18181b',
+      overlayOpacity: 40,
+      textColor: '#ffffff',
       link: '', 
       isActive: true 
     });
@@ -104,6 +107,9 @@ const AdminBanners: React.FC = () => {
       videoActive: banner.videoActive !== undefined ? banner.videoActive : true,
       backgroundType: banner.backgroundType || 'image',
       bgColor: banner.bgColor || '#000000',
+      bgGradient: banner.bgGradient || '#18181b',
+      overlayOpacity: banner.overlayOpacity !== undefined ? banner.overlayOpacity : 40,
+      textColor: banner.textColor || '#ffffff',
       link: banner.link, 
       isActive: banner.isActive 
     });
@@ -171,16 +177,17 @@ const AdminBanners: React.FC = () => {
                   onChange={(e) => setFormData({...formData, backgroundType: e.target.value})}
                   className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-300 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white font-bold uppercase tracking-widest"
                 >
-                  <option value="image">{t('admin.staticImage')}</option>
-                  <option value="video">{t('admin.backgroundVideo')}</option>
-                  <option value="solid">{language === 'he' ? 'צבע חלק' : 'Solid Color'}</option>
+                  <option value="image">🖼️ {t('admin.staticImage')}</option>
+                  <option value="video">🎥 {t('admin.backgroundVideo')}</option>
+                  <option value="solid">🎨 {language === 'he' ? 'צבע חלק מותאם אישית' : 'Solid Custom Color'}</option>
+                  <option value="gradient">🌈 {language === 'he' ? 'מעבר צבעים (גרדיאנט)' : 'Linear Gradient'}</option>
                 </select>
               </div>
 
-              {/* Custom Hero Background Color Picker */}
+              {/* Primary Hero Background Color Picker */}
               <div className="space-y-4">
                 <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white flex items-center gap-2">
-                  <span>🎨</span> {language === 'he' ? 'צבע רקע ל-Hero' : 'Hero Background Color'}
+                  <span>🎨</span> {language === 'he' ? 'צבע רקע ראשי ל-Hero' : 'Hero Background Color'}
                 </label>
                 <div className="flex items-center gap-3">
                   <input 
@@ -207,6 +214,86 @@ const AdminBanners: React.FC = () => {
                       style={{ backgroundColor: color }}
                       title={color}
                     />
+                  ))}
+                </div>
+              </div>
+
+              {/* Secondary Gradient Color (If Gradient Selected) */}
+              {formData.backgroundType === 'gradient' && (
+                <div className="space-y-4">
+                  <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white flex items-center gap-2">
+                    <span>🌈</span> {language === 'he' ? 'צבע משני (גרדיאנט)' : 'Gradient Secondary Color'}
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input 
+                      type="color" 
+                      value={formData.bgGradient || '#18181b'} 
+                      onChange={(e) => setFormData({...formData, bgGradient: e.target.value})}
+                      className="w-12 h-12 rounded-none cursor-pointer border border-zinc-300 dark:border-zinc-700 bg-transparent p-1"
+                    />
+                    <Input 
+                      value={formData.bgGradient || '#18181b'} 
+                      onChange={(e) => setFormData({...formData, bgGradient: e.target.value})}
+                      className="rounded-none border-zinc-300 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 uppercase font-mono text-[12px]" 
+                      placeholder="#18181b"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Hero Dark Overlay Opacity Slider */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white flex items-center gap-2">
+                    <span>🎚️</span> {language === 'he' ? 'שקיפות שכבת כיסוי (Overlay)' : 'Hero Overlay Opacity'}
+                  </label>
+                  <span className="text-[11px] font-mono font-bold dark:text-zinc-300">{formData.overlayOpacity ?? 40}%</span>
+                </div>
+                <input 
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={formData.overlayOpacity ?? 40}
+                  onChange={(e) => setFormData({...formData, overlayOpacity: Number(e.target.value)})}
+                  className="w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-black dark:accent-white"
+                />
+              </div>
+
+              {/* Hero Text & Button Color Picker */}
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white flex items-center gap-2">
+                  <span>✍️</span> {language === 'he' ? 'צבע טקסט וכפתורים ב-Hero' : 'Hero Text & Button Color'}
+                </label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={formData.textColor || '#ffffff'} 
+                    onChange={(e) => setFormData({...formData, textColor: e.target.value})}
+                    className="w-12 h-12 rounded-none cursor-pointer border border-zinc-300 dark:border-zinc-700 bg-transparent p-1"
+                  />
+                  <Input 
+                    value={formData.textColor || '#ffffff'} 
+                    onChange={(e) => setFormData({...formData, textColor: e.target.value})}
+                    className="rounded-none border-zinc-300 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 uppercase font-mono text-[12px]" 
+                    placeholder="#ffffff"
+                  />
+                </div>
+                <div className="flex gap-2 pt-1">
+                  {[
+                    { name: 'White', color: '#ffffff' },
+                    { name: 'Warm Cream', color: '#f5f5dc' },
+                    { name: 'Luxury Gold', color: '#d4af37' },
+                    { name: 'Champagne', color: '#f3e5ab' },
+                    { name: 'Platinum', color: '#e0e0e0' }
+                  ].map((preset) => (
+                    <button
+                      key={preset.color}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, textColor: preset.color })}
+                      className="px-3 py-1.5 border border-zinc-300 dark:border-zinc-700 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-200 hover:border-black dark:hover:border-white transition-all"
+                    >
+                      {preset.name}
+                    </button>
                   ))}
                 </div>
               </div>

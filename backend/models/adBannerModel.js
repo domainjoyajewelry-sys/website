@@ -29,12 +29,24 @@ const adBannerSchema = mongoose.Schema(
     },
     backgroundType: {
       type: String,
-      enum: ['image', 'video', 'solid'],
+      enum: ['image', 'video', 'solid', 'gradient'],
       default: 'image',
     },
     bgColor: {
       type: String,
       default: '#000000',
+    },
+    bgGradient: {
+      type: String,
+      default: '#18181b',
+    },
+    overlayOpacity: {
+      type: Number,
+      default: 40,
+    },
+    textColor: {
+      type: String,
+      default: '#ffffff',
     },
     link: {
       type: String,

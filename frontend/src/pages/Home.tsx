@@ -156,7 +156,7 @@ const Home: React.FC = () => {
             >
               <source src={activeBanner.video} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="absolute inset-0 bg-black" style={{ opacity: (activeBanner.overlayOpacity ?? 40) / 100 }}></div>
           </div>
         )}
 
@@ -167,12 +167,19 @@ const Home: React.FC = () => {
               className="w-full h-full object-cover"
               alt="JOYA Hero"
             />
-            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-black" style={{ opacity: (activeBanner.overlayOpacity ?? 40) / 100 }}></div>
           </motion.div>
         )}
 
-        {(activeBanner.backgroundType === 'solid' || (activeBanner.backgroundType === 'video' && activeBanner.videoActive === false)) && (
-           <div className="absolute inset-0 z-0" style={{ backgroundColor: activeBanner.bgColor || '#000000' }}></div>
+        {activeBanner.backgroundType === 'solid' && (
+           <div className="absolute inset-0 z-0 transition-colors duration-500" style={{ backgroundColor: activeBanner.bgColor || '#000000' }}></div>
+        )}
+
+        {activeBanner.backgroundType === 'gradient' && (
+           <div 
+             className="absolute inset-0 z-0 transition-all duration-500" 
+             style={{ backgroundImage: `linear-gradient(135deg, ${activeBanner.bgColor || '#000000'}, ${activeBanner.bgGradient || '#18181b'})` }}
+           ></div>
         )}
         
         <div className="relative z-10 text-center px-6 mb-20">
@@ -182,21 +189,28 @@ const Home: React.FC = () => {
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center"
           >
-            <span className="text-white text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90">
+            <span className="text-[12px] sm:text-[14px] uppercase tracking-[1em] sm:tracking-[1.2em] mb-10 font-light block opacity-90" style={{ color: activeBanner.textColor || '#ffffff' }}>
               {t('home.luxuryHouse')}
             </span>
-            <p className="text-white text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-70 max-w-2xl font-light tracking-widest leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl font-body italic mb-14 opacity-80 max-w-2xl font-light tracking-widest leading-relaxed" style={{ color: activeBanner.textColor || '#ffffff' }}>
               {t('home.timelessElegance')}
             </p>
             <div className="flex flex-col sm:flex-row gap-8">
               <Link to={activeBanner.link || "/products"}>
-                <Button className="bg-[#f5f5dc] text-black hover:bg-[#e8e8c8] transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold border-none">
+                <Button 
+                  style={{ backgroundColor: activeBanner.textColor || '#f5f5dc', color: '#000000' }}
+                  className="transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold border-none shadow-lg hover:opacity-90"
+                >
                   {t('home.shopCollection')}
                 </Button>
               </Link>
               <PiercingBooking 
                 trigger={
-                  <Button variant="outline" className="text-[#f5f5dc] border-[#f5f5dc]/40 hover:border-[#f5f5dc] hover:bg-[#f5f5dc]/5 transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold">
+                  <Button 
+                    variant="outline" 
+                    style={{ color: activeBanner.textColor || '#f5f5dc', borderColor: activeBanner.textColor || '#f5f5dc' }}
+                    className="hover:bg-white/10 transition-all duration-700 rounded-none px-10 py-7 text-[12px] sm:text-[14px] uppercase tracking-[0.4em] font-bold"
+                  >
                     {t('home.bookNow')}
                   </Button>
                 }

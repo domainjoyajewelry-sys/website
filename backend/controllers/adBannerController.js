@@ -27,7 +27,7 @@ const getAdBannerById = asyncHandler(async (req, res) => {
 // @route   POST /api/adbanners
 // @access  Private/Admin
 const createAdBanner = asyncHandler(async (req, res) => {
-  const { title, title_he, subtitle, subtitle_he, image, video, videoActive, backgroundType, bgColor, link, isActive, order } = req.body;
+  const { title, title_he, subtitle, subtitle_he, image, video, videoActive, backgroundType, bgColor, bgGradient, overlayOpacity, textColor, link, isActive, order } = req.body;
 
   const adBanner = new AdBanner({
     title,
@@ -39,6 +39,9 @@ const createAdBanner = asyncHandler(async (req, res) => {
     videoActive,
     backgroundType,
     bgColor: bgColor || '#000000',
+    bgGradient: bgGradient || '#18181b',
+    overlayOpacity: overlayOpacity !== undefined ? overlayOpacity : 40,
+    textColor: textColor || '#ffffff',
     link,
     isActive,
     order,
@@ -52,7 +55,7 @@ const createAdBanner = asyncHandler(async (req, res) => {
 // @route   PUT /api/adbanners/:id
 // @access  Private/Admin
 const updateAdBanner = asyncHandler(async (req, res) => {
-  const { title, title_he, subtitle, subtitle_he, image, video, videoActive, backgroundType, bgColor, link, isActive, order } = req.body;
+  const { title, title_he, subtitle, subtitle_he, image, video, videoActive, backgroundType, bgColor, bgGradient, overlayOpacity, textColor, link, isActive, order } = req.body;
 
   const adBanner = await AdBanner.findById(req.params.id);
 
@@ -66,6 +69,9 @@ const updateAdBanner = asyncHandler(async (req, res) => {
     adBanner.videoActive = videoActive !== undefined ? videoActive : adBanner.videoActive;
     adBanner.backgroundType = backgroundType;
     adBanner.bgColor = bgColor || adBanner.bgColor || '#000000';
+    adBanner.bgGradient = bgGradient || adBanner.bgGradient || '#18181b';
+    adBanner.overlayOpacity = overlayOpacity !== undefined ? overlayOpacity : (adBanner.overlayOpacity !== undefined ? adBanner.overlayOpacity : 40);
+    adBanner.textColor = textColor || adBanner.textColor || '#ffffff';
     adBanner.link = link;
     adBanner.isActive = isActive;
     adBanner.order = order;
