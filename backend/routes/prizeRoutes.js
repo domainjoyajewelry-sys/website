@@ -8,7 +8,7 @@ const {
   recordSpin,
   deletePrize
 } = require('../controllers/prizeController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, admin, optionalAuth } = require('../middleware/authMiddleware');
 
 router.route('/')
   .get(getPrizes)
@@ -18,7 +18,7 @@ router.route('/admin')
   .get(protect, admin, getAdminPrizes);
 
 router.route('/spin')
-  .post(protect, recordSpin);
+  .post(optionalAuth, recordSpin);
 
 router.route('/:id')
   .put(protect, admin, updatePrize)

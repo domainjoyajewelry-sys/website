@@ -50,23 +50,11 @@ const updatePrize = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Record a spin and award a prize
+// @desc    Record a spin and award a prize (Supports Guests & Registered Users)
 // @route   POST /api/prizes/spin
-// @access  Private
+// @access  Public / Optional Auth
 const recordSpin = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (!user) {
-    res.status(404);
-    throw new Error('User not found');
-  }
-
-  if (user.hasSpunWheel) {
-    res.status(400);
-    throw new Error('You have already used your spin');
-  }
-
-  const { prizeId } = req.body;
+  const { prizeId, email, name } = req.body;
   const prize = await Prize.findById(prizeId);
 
   if (!prize) {
@@ -74,11 +62,36 @@ const recordSpin = asyncHandler(async (req, res) => {
     throw new Error('Prize not found');
   }
 
-  user.hasSpunWheel = true;
-  user.wonPrize = prize.label;
-  await user.save();
+  let recipientEmail = email;
 
-  res.json({ message: 'Spin recorded', prize: prize.label });
+  if (req.user) {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      if (user.hasSpunWheel) {
+        res.status(400);
+        throw new Error('You have already used your spin');
+      }
+      user.hasSpunWheel = true;
+      user.wonPrize = prize.label;
+      await user.save();
+      recipientEmail = user.email;
+    }
+  }
+
+  // Generate unique prize coupon code
+  const cleanLabel = (prize.value || prize.label || 'GIFT').toString().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const couponCode = `JOYA-${cleanLabel}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+  console.log(`[WHEEL PRIZE AWARDED] Recipient: ${recipientEmail || 'Guest'}, Code: ${couponCode}, Prize: ${prize.label}`);
+
+  res.json({
+    success: true,
+    message: 'Prize recorded successfully',
+    prize: prize.label,
+    prize_he: prize.label_he,
+    couponCode: couponCode,
+    email: recipientEmail
+  });
 });
 
 // @desc    Delete a prize
