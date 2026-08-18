@@ -186,7 +186,36 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
       {/* Main Content Area */}
       <div className={`flex flex-col flex-1 transition-all duration-300 ${language === 'he' ? 'lg:mr-64' : 'lg:ml-64'}`}>
-        <main className={`flex-1 p-4 sm:p-8 lg:p-16 min-h-screen mt-16 lg:mt-0 transition-colors duration-300 ${isDarkMode ? 'bg-zinc-950 text-white' : 'bg-white text-black'}`}>
+        {/* Desktop Top Navbar Header with Language & Dark Mode Controls */}
+        <header className="hidden lg:flex items-center justify-between h-20 px-12 border-b border-zinc-100 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 transition-colors duration-300">
+          <div className="flex items-center gap-4">
+            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-zinc-400 dark:text-zinc-500 font-serif">
+              JOYA BOUTIQUE ADMIN
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Dark Mode / Light Mode Toggle Button */}
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center gap-2.5 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-4 py-2.5 text-[10px] uppercase font-bold tracking-widest text-zinc-700 dark:text-zinc-300 hover:border-black dark:hover:border-zinc-500 transition-all rounded-none cursor-pointer"
+            >
+              {isDarkMode ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />}
+              <span>{isDarkMode ? t('admin.lightMode') : t('admin.darkMode')}</span>
+            </button>
+
+            {/* Language Switcher Toggle Button */}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-4 py-2.5 text-[10px] uppercase font-bold tracking-widest text-zinc-700 dark:text-zinc-300 hover:border-black dark:hover:border-zinc-500 transition-all rounded-none cursor-pointer"
+            >
+              <span>🌐</span>
+              <span>{language === 'he' ? 'English' : 'עברית'}</span>
+            </button>
+          </div>
+        </header>
+
+        <main className={`flex-1 p-4 sm:p-8 lg:p-12 min-h-screen mt-16 lg:mt-0 transition-colors duration-300 ${isDarkMode ? 'bg-zinc-950 text-white' : 'bg-white text-black'}`}>
           <div className="max-w-screen-xl mx-auto w-full overflow-x-hidden">
             {children}
           </div>
