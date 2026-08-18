@@ -88,6 +88,7 @@ const AdminBanners: React.FC = () => {
       video: '', 
       videoActive: true,
       backgroundType: 'image', 
+      bgColor: '#000000',
       link: '', 
       isActive: true 
     });
@@ -102,6 +103,7 @@ const AdminBanners: React.FC = () => {
       video: banner.video || '', 
       videoActive: banner.videoActive !== undefined ? banner.videoActive : true,
       backgroundType: banner.backgroundType || 'image',
+      bgColor: banner.bgColor || '#000000',
       link: banner.link, 
       isActive: banner.isActive 
     });
@@ -171,8 +173,42 @@ const AdminBanners: React.FC = () => {
                 >
                   <option value="image">{t('admin.staticImage')}</option>
                   <option value="video">{t('admin.backgroundVideo')}</option>
-                  <option value="solid">{t('admin.solidBlack')}</option>
+                  <option value="solid">{language === 'he' ? 'צבע חלק' : 'Solid Color'}</option>
                 </select>
+              </div>
+
+              {/* Custom Hero Background Color Picker */}
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white flex items-center gap-2">
+                  <span>🎨</span> {language === 'he' ? 'צבע רקע ל-Hero' : 'Hero Background Color'}
+                </label>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    value={formData.bgColor || '#000000'} 
+                    onChange={(e) => setFormData({...formData, bgColor: e.target.value})}
+                    className="w-12 h-12 rounded-none cursor-pointer border border-zinc-300 dark:border-zinc-700 bg-transparent p-1"
+                  />
+                  <Input 
+                    value={formData.bgColor || '#000000'} 
+                    onChange={(e) => setFormData({...formData, bgColor: e.target.value})}
+                    className="rounded-none border-zinc-300 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 uppercase font-mono text-[12px]" 
+                    placeholder="#000000"
+                  />
+                </div>
+                {/* Preset Color Swatches */}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {['#000000', '#0f172a', '#1c1917', '#2b1020', '#022c22', '#18181b', '#1e1b4b', '#450a0a', '#09090b'].map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, bgColor: color })}
+                      className="w-7 h-7 rounded-none border border-zinc-400 dark:border-zinc-700 transition-transform hover:scale-110 cursor-pointer shadow-sm"
+                      style={{ backgroundColor: color }}
+                      title={color}
+                    />
+                  ))}
+                </div>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">

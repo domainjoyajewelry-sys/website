@@ -106,7 +106,11 @@ const Home: React.FC = () => {
       <Toaster position="top-center" />
       
       {/* Redesigned Premium Hero - Dynamic Background with Embedded Nav */}
-      <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-48 bg-black">
+      <section 
+        ref={heroRef} 
+        style={{ backgroundColor: activeBanner.bgColor || '#000000' }}
+        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-48 transition-colors duration-500"
+      >
         
         {/* Embedded Hero Navigation */}
         <div className="absolute top-0 left-0 right-0 z-30 px-6 sm:px-12 py-10 flex items-center justify-between pointer-events-none">
@@ -168,7 +172,7 @@ const Home: React.FC = () => {
         )}
 
         {(activeBanner.backgroundType === 'solid' || (activeBanner.backgroundType === 'video' && activeBanner.videoActive === false)) && (
-           <div className="absolute inset-0 bg-black z-0"></div>
+           <div className="absolute inset-0 z-0" style={{ backgroundColor: activeBanner.bgColor || '#000000' }}></div>
         )}
         
         <div className="relative z-10 text-center px-6 mb-20">

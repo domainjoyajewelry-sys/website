@@ -32,6 +32,10 @@ const adBannerSchema = mongoose.Schema(
       enum: ['image', 'video', 'solid'],
       default: 'image',
     },
+    bgColor: {
+      type: String,
+      default: '#000000',
+    },
     link: {
       type: String,
     },
