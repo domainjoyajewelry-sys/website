@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 
 import { useQuery } from '@tanstack/react-query';
 import { getSettings, createOrder } from '../services/api';
+import api from '../services/api';
 
 const Checkout: React.FC = () => {
   const { t, language } = useLanguage();
@@ -62,14 +63,34 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
-    const returnedOrderId = params.get('orderId');
+    const returnedOrderId = params.get('orderId') || sessionStorage.getItem('pending_joya_order_id');
 
     if (status === 'success') {
-      const finalOrderId = returnedOrderId || 'JOYA-' + Math.floor(100000 + Math.random() * 900000);
-      setOrderNumber(finalOrderId);
-      setIsOrderPlaced(true);
-      clearCart();
-      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      const finishRedirect = async () => {
+        let finalDisplayId = returnedOrderId ? `JOYA-${returnedOrderId.slice(-6).toUpperCase()}` : 'JOYA-' + Math.floor(100000 + Math.random() * 900000);
+        
+        // Ensure order exists in MongoDB & marked as paid
+        const pendingData = sessionStorage.getItem('pending_joya_order_data');
+        if (pendingData) {
+          try {
+            const parsedOrder = JSON.parse(pendingData);
+            const created = await createOrder(parsedOrder);
+            if (created?._id) {
+              finalDisplayId = `JOYA-${created._id.slice(-6).toUpperCase()}`;
+            }
+          } catch (e) {
+            console.error('Error creating order from return session:', e);
+          }
+        }
+
+        setOrderNumber(finalDisplayId);
+        setIsOrderPlaced(true);
+        clearCart();
+        sessionStorage.removeItem('pending_joya_order_data');
+        sessionStorage.removeItem('pending_joya_order_id');
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      };
+      finishRedirect();
     } else if (status === 'error') {
       toast.error(language === 'he' ? 'התשלום בוטל או נכשל. אנא נסה שנית.' : 'Payment was cancelled or failed. Please try again.');
     }
@@ -175,8 +196,32 @@ const Checkout: React.FC = () => {
 
     setIsProcessing(true);
     try {
-      const res = await axios.post('/api/payments/cardcom/create-session', {
+      // 1. Pre-create order in MongoDB FIRST
+      let dbOrderId = '';
+      const orderPayload = {
+        orderItems: displayItems,
+        shippingAddress: shippingInfo,
+        paymentMethod: 'Cardcom',
+        totalPrice: total,
+        survey: survey
+      };
+
+      try {
+        const created = await createOrder(orderPayload);
+        if (created?._id) {
+          dbOrderId = created._id;
+          sessionStorage.setItem('pending_joya_order_id', created._id);
+        }
+      } catch (err) {
+        console.warn('Could not pre-create order, fallback to session storage:', err);
+      }
+
+      sessionStorage.setItem('pending_joya_order_data', JSON.stringify(orderPayload));
+
+      // 2. Request Cardcom Payment Session with orderId
+      const res = await api.post('/payments/cardcom/create-session', {
         amount: total,
+        orderId: dbOrderId,
         customerName: shippingInfo.fullName,
         email: shippingInfo.email,
         phone: shippingInfo.phone

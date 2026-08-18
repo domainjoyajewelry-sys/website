@@ -67,15 +67,28 @@ exports.createCardcomSession = async (req, res) => {
   }
 };
 
+const Order = require('../models/orderModel');
+
 // Webhook Indicator for Cardcom payment confirmation
 exports.handleCardcomIndicator = async (req, res) => {
   try {
     const { ResponseCode, ReturnValue, TransactionId } = req.body || req.query;
     console.log('Cardcom Webhook Notification received:', { ResponseCode, ReturnValue, TransactionId });
 
-    if (ResponseCode === '0') {
-      // Payment Successful
-      // Update order status if orderId exists
+    if (ResponseCode === '0' && ReturnValue) {
+      // Find order in MongoDB by ReturnValue (orderId)
+      const order = await Order.findById(ReturnValue).catch(() => null);
+      if (order) {
+        order.isPaid = true;
+        order.paidAt = Date.now();
+        order.paymentResult = {
+          id: TransactionId || 'CARDCOM-' + Date.now(),
+          status: 'success',
+          update_time: new Date().toISOString(),
+        };
+        await order.save();
+        console.log(`[CARDCOM SUCCESS] Order #${order._id} marked as Paid in MongoDB`);
+      }
       return res.send('OK');
     }
     res.send('FAILED');
