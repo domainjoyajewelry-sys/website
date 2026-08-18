@@ -17,10 +17,13 @@ const Header: React.FC = () => {
   const { language, toggleLanguage, t } = useLanguage();
   const { user, logout } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
+  const { cartItems } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const isHomePage = location.pathname === '/';
 
@@ -113,7 +116,12 @@ const Header: React.FC = () => {
            </Button>
            
            <Link to="/cart" className="relative group p-2">
-              <ShoppingCart className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black dark:text-white group-hover:text-zinc-400' : 'text-white group-hover:text-white/60'}`} />
+              <ShoppingCart className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-500 ${!isHomePage || isScrolled ? 'text-black dark:text-white group-hover:text-zinc-400' : 'text-white hover:opacity-60'}`} />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -end-1 bg-amber-500 text-black text-[9px] font-bold font-mono w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
+                  {cartItemCount}
+                </span>
+              )}
            </Link>
 
            <DropdownMenu>

@@ -222,4 +222,12 @@ export const updateSettings = async (settingsData: any) => {
   return data;
 };
 
+// UPLOAD API
+export const uploadImage = async (formData: FormData) => {
+  const { data } = await api.post('/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
 export default api;

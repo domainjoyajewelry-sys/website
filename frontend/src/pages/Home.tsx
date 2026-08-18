@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
@@ -90,6 +91,8 @@ const Home: React.FC = () => {
   const isHeroNavLight = activeBanner.navTheme === 'light' || (!isDarkMode && activeBanner.bgColor === '#ffffff');
   const navTextColor = isHeroNavLight ? '#000000' : '#ffffff';
   const [isHeroMobileMenuOpen, setIsHeroMobileMenuOpen] = useState(false);
+  const { cartItems } = useCart();
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Logic to randomize "Featured" products each time
   const featuredProducts = useMemo(() => {
@@ -232,8 +235,13 @@ const Home: React.FC = () => {
               </button>
 
               {/* Cart Icon */}
-              <Link to="/cart" style={{ color: navTextColor }} className="opacity-80 hover:opacity-100 transition-all">
+              <Link to="/cart" style={{ color: navTextColor }} className="relative opacity-80 hover:opacity-100 transition-all p-1">
                 <ShoppingBag className="w-5 h-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -end-1 bg-amber-500 text-black text-[9px] font-bold font-mono w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-in zoom-in">
+                    {cartItemCount}
+                  </span>
+                )}
               </Link>
 
               {/* Profile Icon */}

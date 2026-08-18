@@ -13,7 +13,7 @@ import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 
 import { useQuery } from '@tanstack/react-query';
-import { getSettings } from '../services/api';
+import { getSettings, createOrder } from '../services/api';
 
 const Checkout: React.FC = () => {
   const { t, language } = useLanguage();
@@ -105,7 +105,7 @@ const Checkout: React.FC = () => {
     if (!shippingInfo.phone.trim()) {
       newErrors.phone = language === 'he' ? 'מספר טלפון הינו שדה חובה' : 'Phone number is required';
     } else if (shippingInfo.phone.replace(/\D/g, '').length < 9) {
-      newErrors.phone = language === 'he' ? 'מספר טלפון תקין חייב להכיל לפחות 9 ספרות' : 'Valid phone number must contain at least 9 digits';
+      newErrors.phone = language === 'he' ? 'מספר טלפון חייב להכיל לפחות 9 ספרות' : 'Phone number must have at least 9 digits';
     }
 
     if (!shippingInfo.address.trim()) {
@@ -116,13 +116,13 @@ const Checkout: React.FC = () => {
       newErrors.city = language === 'he' ? 'עיר הינה שדה חובה' : 'City is required';
     }
 
-    setErrors(newErrors);
-
     if (Object.keys(newErrors).length > 0) {
-      toast.error(language === 'he' ? 'אנא מילאו את כל שדות החובה המסומנים באדום' : 'Please fill in all required fields marked in red');
+      setErrors(newErrors);
+      toast.error(language === 'he' ? 'אנא מלא את כל שדות החובה המסומנים' : 'Please fill in all required fields');
       return false;
     }
 
+    setErrors({});
     return true;
   };
 
@@ -143,18 +143,23 @@ const Checkout: React.FC = () => {
     const newOrderNum = 'JOYA-' + Math.floor(100000 + Math.random() * 900000);
 
     try {
-      // Save order to backend DB if possible
-      await axios.post('/api/orders', {
+      // Save order to MongoDB database
+      const created = await createOrder({
         orderItems: displayItems,
         shippingAddress: shippingInfo,
         paymentMethod: 'Cardcom',
         totalPrice: total,
         survey: survey
       });
+      if (created?._id) {
+        setOrderNumber(`JOYA-${created._id.slice(-6).toUpperCase()}`);
+      } else {
+        setOrderNumber(newOrderNum);
+      }
     } catch (err) {
       console.log('Backend order save fallback:', err);
-    } finally {
       setOrderNumber(newOrderNum);
+    } finally {
       setIsOrderPlaced(true);
       setIsProcessing(false);
       clearCart();

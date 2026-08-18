@@ -102,6 +102,7 @@ const allTranslations: Translations = {
   "productDetail.lifetimeWarranty": { en: "Lifetime Warranty", he: "אחריות לכל החיים" },
   "productDetail.completeTheLook": { en: "Complete the Look", he: "השלימו את הלוק" },
   "productCard.addToBag": { en: "Add to Bag", he: "הוסף לסל" },
+  "productCard.addedToCart": { en: "Item added to bag", he: "הפריט התווסף לסל הקניות" },
   "productCard.outOfStock": { en: "Out of Stock", he: "אזל מהמלאי" },
   "products.allJewelry": { en: "All Jewelry", he: "כל התכשיטים" },
   "products.allJewelrySubtitle": { en: "Explore our exquisite collection of fine jewelry, crafted with passion and precision.", he: "גלו את קולקציית התכשיטים המעולה שלנו, המעוצבת בתשוקה ובדיוק." },

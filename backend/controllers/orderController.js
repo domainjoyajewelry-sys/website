@@ -3,7 +3,7 @@ const Order = require('../models/orderModel');
 
 // @desc    Create new order
 // @route   POST /api/orders
-// @access  Private
+// @access  Public / Optional Auth
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
@@ -15,27 +15,37 @@ const addOrderItems = asyncHandler(async (req, res) => {
     totalPrice,
   } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
+  if (!orderItems || orderItems.length === 0) {
     res.status(400);
     throw new Error('No order items');
   } else {
     const order = new Order({
       orderItems: orderItems.map((x) => ({
-        ...x,
-        product: x._id,
-        _id: undefined,
+        name: x.name || x.name_he || 'Jewelry Item',
+        qty: x.qty || x.quantity || 1,
+        image: x.image || (x.images && x.images[0]) || '/logo.png',
+        price: x.price || 0,
+        product: (x.productId && x.productId.length === 24) ? x.productId : ((x._id && x._id.length === 24) ? x._id : undefined),
       })),
-      user: req.user._id,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      shippingPrice,
-      taxPrice,
-      totalPrice,
+      user: req.user ? req.user._id : undefined,
+      shippingAddress: {
+        fullName: shippingAddress?.fullName || 'Customer',
+        address: shippingAddress?.address || 'N/A',
+        city: shippingAddress?.city || 'Israel',
+        postalCode: shippingAddress?.postalCode || '',
+        country: shippingAddress?.country || 'Israel',
+        phone: shippingAddress?.phone || 'N/A',
+      },
+      paymentMethod: paymentMethod || 'Cardcom',
+      itemsPrice: itemsPrice || totalPrice || 0,
+      shippingPrice: shippingPrice || 0,
+      taxPrice: taxPrice || 0,
+      totalPrice: totalPrice || 0,
+      isPaid: true,
+      paidAt: Date.now(),
     });
 
     const createdOrder = await order.save();
-
     res.status(201).json(createdOrder);
   }
 });

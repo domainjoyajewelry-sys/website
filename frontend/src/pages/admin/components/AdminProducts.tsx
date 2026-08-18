@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getProducts, createProduct, updateProduct, deleteProduct, getCategories } from '../../../services/api';
+import { getProducts, createProduct, updateProduct, deleteProduct, getCategories, uploadImage } from '../../../services/api';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
@@ -157,14 +157,14 @@ const AdminProducts: React.FC = () => {
 
     setUploading(true);
     try {
-      const res = await axios.post('/api/upload', data);
-      if (res.data?.url) {
-        onSuccess(res.data.url);
+      const res = await uploadImage(data);
+      if (res?.url) {
+        onSuccess(res.url);
         toast.success(language === 'he' ? 'תמונה הועלתה בהצלחה!' : 'Image uploaded successfully!');
       }
     } catch (err: any) {
       console.error('Upload failed:', err);
-      toast.error(language === 'he' ? 'שגיאה בהעלאה' : 'Upload failed');
+      toast.error(language === 'he' ? 'שגיאה בהעלאת התמונה' : 'Upload failed');
     } finally {
       setUploading(false);
     }
