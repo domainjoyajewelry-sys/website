@@ -12,12 +12,20 @@ const prizeRoutes = require('./routes/prizeRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
+const { trackVisitor } = require('./utils/visitorTracker');
+
 dotenv.config();
 
 // Connect to Database
 connectDB();
 
 const app = express();
+
+// Track active visitors
+app.use((req, res, next) => {
+  trackVisitor(req);
+  next();
+});
 
 // Absolute CORS permit with explicit headers
 app.use((req, res, next) => {

@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
 const User = require('../models/userModel');
+const { getOnlineVisitorsCount } = require('../utils/visitorTracker');
 
 // @desc    Get dashboard stats
 // @route   GET /api/dashboard/stats
@@ -16,9 +17,8 @@ const getDashboardStats = asyncHandler(async (req, res) => {
   const productsCount = await Product.countDocuments();
   const usersCount = await User.countDocuments();
 
-  // For real-time visitors, we'll simulate a number for now
-  // In a real app, this could come from a session store or redis
-  const onlineVisitors = Math.floor(Math.random() * 50) + 10;
+  // Get real-time count of active unique visitors (active within last 5 minutes)
+  const onlineVisitors = getOnlineVisitorsCount(5);
 
   res.json({
     revenue: totalRevenue.length > 0 ? totalRevenue[0].total : 0,
