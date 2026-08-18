@@ -18,6 +18,9 @@ exports.createCardcomSession = async (req, res) => {
       });
     }
 
+    const origin = req.get('origin') || req.get('referer')?.replace(/\/$/, '') || `${req.protocol}://${req.get('host')}`;
+    const cleanOrderId = orderId || 'JOYA-' + Math.floor(100000 + Math.random() * 900000);
+
     // Cardcom LowProfile Create API Request
     const cardcomUrl = 'https://secure.cardcom.solutions/Interface/LowProfile.aspx';
     const params = new URLSearchParams({
@@ -29,11 +32,11 @@ exports.createCardcomSession = async (req, res) => {
       SumToBill: amount.toString(),
       CoinID: '1', // 1 = NIS (₪)
       Language: 'he',
-      ProductName: `JOYA Order #${orderId || 'NEW'}`,
-      ReturnValue: orderId || 'temp_order',
-      SuccessRedirectUrl: `${req.protocol}://${req.get('host')}/checkout?status=success&orderId=${orderId}`,
-      ErrorRedirectUrl: `${req.protocol}://${req.get('host')}/checkout?status=error`,
-      IndicatorUrl: `${req.protocol}://${req.get('host')}/api/payments/cardcom/indicator`
+      ProductName: `JOYA Order #${cleanOrderId}`,
+      ReturnValue: cleanOrderId,
+      SuccessRedirectUrl: `${origin}/checkout?status=success&orderId=${cleanOrderId}`,
+      ErrorRedirectUrl: `${origin}/checkout?status=error`,
+      IndicatorUrl: `${origin}/api/payments/cardcom/indicator`
     });
 
     const response = await axios.post(cardcomUrl, params.toString(), {

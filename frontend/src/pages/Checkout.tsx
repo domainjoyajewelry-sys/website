@@ -38,6 +38,23 @@ const Checkout: React.FC = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
+  // Handle Cardcom Redirect Back (URL Query Status)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const returnedOrderId = params.get('orderId');
+
+    if (status === 'success') {
+      const finalOrderId = returnedOrderId || 'JOYA-' + Math.floor(100000 + Math.random() * 900000);
+      setOrderNumber(finalOrderId);
+      setIsOrderPlaced(true);
+      clearCart();
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    } else if (status === 'error') {
+      toast.error(language === 'he' ? 'התשלום בוטל או נכשל. אנא נסה שנית.' : 'Payment was cancelled or failed. Please try again.');
+    }
+  }, []);
+
   // Pre-fill user details if logged in
   useEffect(() => {
     if (user) {
