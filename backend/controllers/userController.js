@@ -194,6 +194,77 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Google OAuth login / signup
+// @route   POST /api/users/google-login
+// @access  Public
+const googleLogin = asyncHandler(async (req, res) => {
+  const { email, name, googleId } = req.body;
+
+  if (!email) {
+    res.status(400);
+    throw new Error('Email is required from Google login');
+  }
+
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    // Create new user via Google
+    user = await User.create({
+      full_name: name || email.split('@')[0],
+      email,
+      password: Math.random().toString(36).slice(-12) + 'J!9', // Secure random password
+      googleId: googleId || 'GOOGLE_' + Date.now(),
+    });
+    sendRegistrationWelcomeEmail(user.email, user.full_name).catch(err => console.error('Welcome email error:', err));
+  } else if (!user.googleId && googleId) {
+    user.googleId = googleId;
+    await user.save();
+  }
+
+  res.json({
+    _id: user._id,
+    full_name: user.full_name,
+    email: user.email,
+    role: user.role,
+    token: generateToken(user._id),
+  });
+});
+
+// @desc    Facebook OAuth login / signup
+// @route   POST /api/users/facebook-login
+// @access  Public
+const facebookLogin = asyncHandler(async (req, res) => {
+  const { email, name, facebookId } = req.body;
+
+  const targetEmail = email || `fb_${facebookId || Date.now()}@joyajewelry.com`;
+
+  let user = await User.findOne({ email: targetEmail });
+
+  if (!user) {
+    // Create new user via Facebook
+    user = await User.create({
+      full_name: name || 'Facebook Member',
+      email: targetEmail,
+      password: Math.random().toString(36).slice(-12) + 'F!9',
+      facebookId: facebookId || 'FB_' + Date.now(),
+    });
+    if (email) {
+      sendRegistrationWelcomeEmail(user.email, user.full_name).catch(err => console.error('Welcome email error:', err));
+    }
+  } else if (!user.facebookId && facebookId) {
+    user.facebookId = facebookId;
+    await user.save();
+  }
+
+  res.json({
+    _id: user._id,
+    full_name: user.full_name,
+    email: user.email,
+    role: user.role,
+    token: generateToken(user._id),
+  });
+});
+
 module.exports = {
   authUser,
   registerUser,
@@ -203,4 +274,6 @@ module.exports = {
   deleteUser,
   getUserById,
   updateUser,
+  googleLogin,
+  facebookLogin,
 };

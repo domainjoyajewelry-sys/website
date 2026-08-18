@@ -7,7 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
-import { loginUser } from '../services/api';
+import { loginUser, googleLoginApi, facebookLoginApi } from '../services/api';
 import { Eye, EyeOff } from 'lucide-react';
 
 const Login: React.FC = () => {
@@ -48,15 +48,38 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSocialLogin = (platform: string) => {
+  const handleSocialLogin = async (platform: string) => {
     toast.info(language === 'he' ? `מתחבר באמצעות ${platform}...` : `Connecting via ${platform}...`);
-    
-    // Simulate Social OAuth redirect and success
-    setTimeout(() => {
-       login({ id: 'social-123', name: `${platform} User`, email: `user@${platform.toLowerCase()}.com`, role: 'user', token: 'fake-social-jwt' });
-       toast.success(language === 'he' ? 'התחברת בהצלחה' : 'Logged in successfully');
-       navigate('/');
-    }, 1500);
+    try {
+      let data;
+      if (platform.toLowerCase() === 'google') {
+        data = await googleLoginApi({
+          email: 'customer@gmail.com',
+          name: 'Google Member',
+          googleId: 'GOOGLE_' + Date.now()
+        });
+      } else {
+        data = await facebookLoginApi({
+          name: 'Facebook Member',
+          facebookId: 'FB_' + Date.now()
+        });
+      }
+
+      if (data?._id) {
+        login({
+          id: data._id,
+          name: data.full_name,
+          email: data.email,
+          role: data.role,
+          token: data.token
+        });
+        toast.success(language === 'he' ? 'התחברת בהצלחה!' : 'Logged in successfully!');
+        if (data.role === 'admin') navigate('/admin');
+        else navigate('/');
+      }
+    } catch (err: any) {
+      toast.error(language === 'he' ? `שגיאת התחברות עם ${platform}` : `Social login with ${platform} failed`);
+    }
   };
 
   return (

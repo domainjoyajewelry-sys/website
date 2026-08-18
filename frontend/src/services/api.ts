@@ -241,4 +241,15 @@ export const saveLookbook = async (lookbookData: any) => {
   return data;
 };
 
+// SOCIAL OAUTH API
+export const googleLoginApi = async (socialData: { email: string; name: string; googleId?: string }) => {
+  const { data } = await api.post('/users/google-login', socialData);
+  return data;
+};
+
+export const facebookLoginApi = async (socialData: { email?: string; name?: string; facebookId?: string }) => {
+  const { data } = await api.post('/users/facebook-login', socialData);
+  return data;
+};
+
 export default api;

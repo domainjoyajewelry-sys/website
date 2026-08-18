@@ -9,11 +9,15 @@ const {
   deleteUser,
   getUserById,
   updateUser,
+  googleLogin,
+  facebookLogin,
 } = require('../controllers/userController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 router.route('/').post(registerUser).get(protect, admin, getUsers);
 router.post('/login', authUser);
+router.post('/google-login', googleLogin);
+router.post('/facebook-login', facebookLogin);
 router
   .route('/profile')
   .get(protect, getUserProfile)
