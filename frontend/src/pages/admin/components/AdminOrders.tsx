@@ -22,7 +22,7 @@ const AdminOrders: React.FC = () => {
             {t('admin.manageOrders')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-            {t('admin.viewingRecent').replace('recent transactions', `${orders.length} ${t('admin.viewingRecent').includes('transactions') ? 'transactions' : ''}`)}
+            {t('admin.viewingRecent')}
           </p>
         </div>
         <div className="w-16 h-16 bg-zinc-50 flex items-center justify-center border border-zinc-100">
@@ -65,7 +65,7 @@ const AdminOrders: React.FC = () => {
                      order.status === 'Delivered' ? 'bg-green-50 text-green-600' :
                      order.status === 'Processing' ? 'bg-blue-50 text-blue-600' : 'bg-zinc-100 text-zinc-500'
                    }`}>
-                     {order.status}
+                     {order.status === 'Delivered' ? t('admin.delivered') : order.status === 'Processing' ? t('admin.processing') : t('admin.pending')}
                    </span>
                 </TableCell>
                 <TableCell className="text-right px-8">

@@ -32,7 +32,7 @@ const AdminCustomers: React.FC = () => {
             {t('admin.customers')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-            Manage your boutique's clientele
+            {t('admin.manageCustomers')}
           </p>
         </div>
         <div className="w-16 h-16 bg-zinc-50 flex items-center justify-center border border-zinc-100">
@@ -45,8 +45,8 @@ const AdminCustomers: React.FC = () => {
           <TableHeader className="bg-zinc-50">
             <TableRow className="border-zinc-100">
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">{t('admin.customer')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Email</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Role</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.email')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.role')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>
@@ -57,7 +57,7 @@ const AdminCustomers: React.FC = () => {
               <TableRow key={user._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
                 <TableCell className="py-6 px-8">
                    <div className="font-serif text-sm tracking-widest uppercase text-black">{user.full_name}</div>
-                   <div className="text-[9px] text-zinc-400 tracking-widest">{user.phone || 'No phone'}</div>
+                   <div className="text-[9px] text-zinc-400 tracking-widest">{user.phone || t('admin.noPhone')}</div>
                 </TableCell>
                 <TableCell className="text-[11px] font-mono text-zinc-500">{user.email}</TableCell>
                 <TableCell>
@@ -67,7 +67,7 @@ const AdminCustomers: React.FC = () => {
                 </TableCell>
                 <TableCell className="text-right px-8">
                   {user.role !== 'admin' && (
-                    <button onClick={() => { if(window.confirm('Are you sure?')) deleteMutation.mutate(user._id) }} className="text-zinc-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                    <button onClick={() => { if(window.confirm(t('admin.confirmDeleteUser'))) deleteMutation.mutate(user._id) }} className="text-zinc-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
                   )}
                 </TableCell>
               </TableRow>

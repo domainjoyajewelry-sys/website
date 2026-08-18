@@ -188,32 +188,32 @@ const AdminProducts: React.FC = () => {
                {isEarringOrPiercing && (
                  <>
                   <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Piercing Side</label>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.piercingSide')}</label>
                     <select 
                       value={formData.piercingSide} 
                       onChange={(e) => setFormData({...formData, piercingSide: e.target.value})}
                       className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
                     >
-                      <option value="none">None</option>
-                      <option value="right">Right</option>
-                      <option value="left">Left</option>
-                      <option value="both">Both</option>
+                      <option value="none">{t('admin.none')}</option>
+                      <option value="right">{t('admin.right')}</option>
+                      <option value="left">{t('admin.left')}</option>
+                      <option value="both">{t('admin.both')}</option>
                     </select>
                   </div>
                   <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Unit Type</label>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.unitType')}</label>
                     <select 
                       value={formData.unitType} 
                       onChange={(e) => setFormData({...formData, unitType: e.target.value})}
                       className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
                     >
-                      <option value="none">None</option>
-                      <option value="single">Single Earring</option>
-                      <option value="pair">2 Pair (Set)</option>
+                      <option value="none">{t('admin.none')}</option>
+                      <option value="single">{t('admin.singleEarring')}</option>
+                      <option value="pair">{t('admin.pairSet')}</option>
                     </select>
                   </div>
                   <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Pipe Length (e.g. 1cm)</label>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.pipeLength')}</label>
                     <Input value={formData.pipeLength} onChange={(e) => setFormData({...formData, pipeLength: e.target.value})} className="rounded-none border-zinc-200 h-12" />
                   </div>
                  </>
@@ -222,7 +222,7 @@ const AdminProducts: React.FC = () => {
 
             {/* Metal Color Variants */}
             <div className="space-y-6 pt-6 border-t border-zinc-100">
-               <label className="text-[12px] uppercase tracking-[0.2em] font-bold text-black font-serif">Available Metal Colors & Images</label>
+               <label className="text-[12px] uppercase tracking-[0.2em] font-bold text-black font-serif">{t('admin.metalColorsAndImages')}</label>
                <div className="flex flex-wrap gap-10">
                   {METALS.map((metal) => (
                     <div key={metal.id} className="space-y-4 min-w-[200px]">
@@ -237,8 +237,8 @@ const AdminProducts: React.FC = () => {
                           <span className="text-[11px] uppercase tracking-widest font-bold">{language === 'he' ? metal.name_he : metal.name}</span>
                        </div>
                        {formData.variants.some((v: any) => v.color === metal.name) && (
-                         <div className="space-y-2 pl-7">
-                            <label className="text-[9px] uppercase tracking-widest text-zinc-400 block">Variant Image URL</label>
+                         <div className="space-y-2 rtl:pr-7 ltr:pl-7">
+                            <label className="text-[9px] uppercase tracking-widest text-zinc-400 block">{t('admin.variantImageUrl')}</label>
                             <Input 
                               value={formData.variants.find((v: any) => v.color === metal.name)?.image || ''} 
                               onChange={(e) => handleVariantImageChange(metal.name, e.target.value)}
@@ -254,8 +254,8 @@ const AdminProducts: React.FC = () => {
 
             <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
               <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingProduct(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
-              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">
-                <Save className="w-4 h-4 mr-3" /> {t('admin.savePiece')}
+              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
+                <Save className="w-4 h-4" /> {t('admin.savePiece')}
               </Button>
             </div>
           </motion.div>
@@ -266,11 +266,11 @@ const AdminProducts: React.FC = () => {
         <Table>
           <TableHeader className="bg-zinc-50">
             <TableRow className="border-zinc-100">
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">Image</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Name</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">Price</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">Stock</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">Actions</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">{t('admin.image')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.name')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.price')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.stock')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

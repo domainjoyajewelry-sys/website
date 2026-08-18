@@ -52,7 +52,7 @@ const AdminDashboard: React.FC = () => {
       color: 'text-zinc-900'
     },
     { 
-      title: 'Online Visitors', 
+      title: t('admin.onlineVisitors'), 
       value: stats ? stats.onlineVisitors : '0', 
       icon: Activity,
       color: 'text-green-600'
@@ -78,7 +78,7 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="flex items-center gap-3 bg-zinc-50 px-4 py-2 border border-zinc-100">
            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-           <span className="text-[9px] uppercase tracking-widest font-bold text-zinc-500">Live System Status</span>
+           <span className="text-[9px] uppercase tracking-widest font-bold text-zinc-500">{t('admin.liveSystemStatus')}</span>
         </div>
       </div>
 
@@ -94,7 +94,7 @@ const AdminDashboard: React.FC = () => {
               <div className={`text-3xl font-body italic mb-1 ${stat.color}`}>{stat.value}</div>
               <div className="flex items-center gap-2">
                  <TrendingUp className="w-3 h-3 text-green-600" />
-                 <span className="text-[9px] uppercase tracking-widest text-green-600 font-bold">Updated Live</span>
+                 <span className="text-[9px] uppercase tracking-widest text-green-600 font-bold">{t('admin.updatedLive')}</span>
               </div>
             </CardContent>
           </Card>
@@ -104,7 +104,7 @@ const AdminDashboard: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <Card className="rounded-none border-zinc-100 shadow-none p-8">
-           <h3 className="text-sm font-serif uppercase tracking-widest mb-10 border-b border-zinc-50 pb-4">Revenue Performance (Last 30 Days)</h3>
+           <h3 className="text-sm font-serif uppercase tracking-widest mb-10 border-b border-zinc-50 pb-4">{t('admin.revenuePerformance')}</h3>
            <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={salesData}>
@@ -132,7 +132,7 @@ const AdminDashboard: React.FC = () => {
         </Card>
 
         <Card className="rounded-none border-zinc-100 shadow-none p-8">
-           <h3 className="text-sm font-serif uppercase tracking-widest mb-10 border-b border-zinc-50 pb-4">Order Volume Trends</h3>
+           <h3 className="text-sm font-serif uppercase tracking-widest mb-10 border-b border-zinc-50 pb-4">{t('admin.orderVolumeTrends')}</h3>
            <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={salesData}>
@@ -167,17 +167,17 @@ const AdminDashboard: React.FC = () => {
             </TableHeader>
             <TableBody>
               {recentOrders.length === 0 ? (
-                <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">No orders found yet.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">{t('admin.noOrdersYet')}</TableCell></TableRow>
               ) : recentOrders.map((order: any) => (
                 <TableRow key={order._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
                   <TableCell className="py-6 px-8 font-mono text-[10px] text-zinc-400 uppercase">#{order._id.slice(-6)}</TableCell>
-                  <TableCell className="font-serif text-sm tracking-widest uppercase">{order.user?.full_name || 'Guest'}</TableCell>
-                  <TableCell className="text-[10px] uppercase tracking-widest text-zinc-500">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell className="font-serif text-sm tracking-widest uppercase">{order.user?.full_name || t('admin.guest')}</TableCell>
+                  <TableCell className="text-[10px] uppercase tracking-widest text-zinc-500">{new Date(order.createdAt).toLocaleDateString(language === 'he' ? 'he-IL' : 'en-US')}</TableCell>
                   <TableCell className="text-center">
                     <span className={`px-3 py-1 text-[8px] uppercase tracking-widest font-bold rounded-full
                       ${order.isDelivered ? 'bg-green-50 text-green-700' :
                         order.isPaid ? 'bg-blue-50 text-blue-700' : 'bg-yellow-50 text-yellow-700'}`}>
-                      {order.isDelivered ? 'Delivered' : order.isPaid ? 'Paid' : 'Pending'}
+                      {order.isDelivered ? t('admin.delivered') : order.isPaid ? t('admin.paid') : t('admin.pending')}
                     </span>
                   </TableCell>
                   <TableCell className="text-right px-8 font-body text-lg italic text-black">

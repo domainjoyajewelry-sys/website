@@ -94,12 +94,12 @@ const AdminCategories: React.FC = () => {
             {t('admin.categories')}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
-            Manage product collections
+            {t('admin.manageCategories')}
           </p>
         </div>
         <Button onClick={() => { resetForm(); setIsAdding(true); }} className="bg-black text-white rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 flex gap-4">
           <Plus className="w-4 h-4" />
-          {language === 'he' ? 'הוסף קטגוריה חדשה' : 'Add New Category'}
+          {t('admin.addNewCategory')}
         </Button>
       </div>
 
@@ -116,7 +116,7 @@ const AdminCategories: React.FC = () => {
                   <Input value={formData.name_he} onChange={(e) => setFormData({...formData, name_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Slug</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.slug')}</label>
                   <Input value={formData.slug} onChange={(e) => setFormData({...formData, slug: e.target.value})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4">
@@ -124,18 +124,18 @@ const AdminCategories: React.FC = () => {
                   <Input value={formData.image} onChange={(e) => setFormData({...formData, image: e.target.value})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4 md:col-span-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Description (EN)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.descriptionEn')}</label>
                   <Input value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} className="rounded-none border-zinc-200 h-12" />
                </div>
                <div className="space-y-4 md:col-span-2">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">Description (HE)</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.descriptionHe')}</label>
                   <Input value={formData.description_he} onChange={(e) => setFormData({...formData, description_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
                </div>
             </div>
             <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
               <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingCategory(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
-              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">
-                <Save className="w-4 h-4 mr-3" /> {language === 'he' ? 'שמור קטגוריה' : 'Save Category'}
+              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
+                <Save className="w-4 h-4" /> {t('admin.saveCategory')}
               </Button>
             </div>
           </motion.div>
@@ -148,7 +148,7 @@ const AdminCategories: React.FC = () => {
             <TableRow className="border-zinc-100">
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">{t('admin.image')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.name')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Slug</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.slug')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>

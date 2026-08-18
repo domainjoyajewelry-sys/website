@@ -141,19 +141,19 @@ const AdminBanners: React.FC = () => {
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Background Type</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">{t('admin.backgroundType')}</label>
                 <select 
                   value={formData.backgroundType} 
                   onChange={(e) => setFormData({...formData, backgroundType: e.target.value})}
                   className="w-full bg-white border border-zinc-300 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black font-bold uppercase tracking-widest"
                 >
-                  <option value="image">Static Image</option>
-                  <option value="video">Background Video</option>
-                  <option value="solid">Solid Black Color</option>
+                  <option value="image">{t('admin.staticImage')}</option>
+                  <option value="video">{t('admin.backgroundVideo')}</option>
+                  <option value="solid">{t('admin.solidBlack')}</option>
                 </select>
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Main Image / Video Poster</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">{t('admin.mainImagePoster')}</label>
                 <Input 
                   value={formData.image} 
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
@@ -162,7 +162,7 @@ const AdminBanners: React.FC = () => {
                 />
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Video URL (MP4)</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">{t('admin.videoUrl')}</label>
                 <div className="flex gap-4 items-center">
                   <Input 
                     value={formData.video} 
@@ -179,13 +179,13 @@ const AdminBanners: React.FC = () => {
                          onChange={(e) => setFormData({...formData, videoActive: e.target.checked})}
                          className="w-4 h-4 accent-black"
                        />
-                       <span className="text-[9px] font-bold uppercase tracking-widest">Active</span>
+                       <span className="text-[9px] font-bold uppercase tracking-widest">{t('admin.active')}</span>
                     </div>
                   )}
                 </div>
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">Target Link</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black">{t('admin.targetLink')}</label>
                 <Input 
                   value={formData.link} 
                   onChange={(e) => setFormData({...formData, link: e.target.value})}
@@ -196,8 +196,8 @@ const AdminBanners: React.FC = () => {
             </div>
             <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
               <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingBanner(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
-              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold">
-                <Save className="w-4 h-4 mr-3" /> {t('admin.saveChanges')}
+              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
+                <Save className="w-4 h-4" /> {t('admin.saveChanges')}
               </Button>
             </div>
           </motion.div>
@@ -210,7 +210,7 @@ const AdminBanners: React.FC = () => {
             <TableRow className="border-zinc-100">
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 w-40">{t('admin.preview')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.name')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">Type</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.type')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center w-32">{t('admin.status')}</TableHead>
               <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 w-40">{t('admin.actions')}</TableHead>
             </TableRow>
