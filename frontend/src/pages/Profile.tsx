@@ -158,7 +158,7 @@ const Profile: React.FC = () => {
     <div className="bg-white min-h-screen pt-40 pb-20 px-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-5xl font-serif text-black text-center mb-16 uppercase tracking-widest">
-          {t('profile.personalInfo')}
+          {t('profile.myAccount')}
         </h1>
 
       <Tabs defaultValue="personalInfo" className="w-full">
