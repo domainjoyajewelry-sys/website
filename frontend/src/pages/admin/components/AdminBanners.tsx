@@ -57,6 +57,29 @@ const AdminBanners: React.FC = () => {
     }
   });
 
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.append('image', file);
+
+    setUploading(true);
+    try {
+      const res = await axios.post('/api/upload', data);
+      if (res.data?.url) {
+        setFormData(prev => ({ ...prev, image: res.data.url }));
+        toast.success(language === 'he' ? 'תמונה הועלתה בהצלחה!' : 'Image uploaded successfully!');
+      }
+    } catch (err) {
+      toast.error(language === 'he' ? 'שגיאה בהעלאה' : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const resetForm = () => {
     setFormData({ 
       title: '', 
@@ -152,12 +175,24 @@ const AdminBanners: React.FC = () => {
                 </select>
               </div>
               <div className="space-y-4">
-                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white">{t('admin.mainImagePoster')}</label>
+                <div className="flex justify-between items-center">
+                  <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white">{t('admin.mainImagePoster')}</label>
+                  <label className="text-[9px] uppercase font-bold tracking-widest cursor-pointer text-black dark:text-white hover:underline">
+                    {uploading ? (language === 'he' ? 'מעלה...' : 'Uploading...') : (language === 'he' ? '📤 העלה קובץ' : '📤 Upload File')}
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      disabled={uploading}
+                      onChange={handleImageUpload} 
+                    />
+                  </label>
+                </div>
                 <Input 
                   value={formData.image} 
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
                   className="rounded-none border-zinc-300 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 focus-visible:ring-black dark:focus-visible:ring-white" 
-                  placeholder="/images/hero.jpg"
+                  placeholder="https://..."
                 />
               </div>
               <div className="space-y-4">

@@ -142,6 +142,30 @@ const AdminProducts: React.FC = () => {
     return colorName;
   };
 
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, onSuccess: (url: string) => void) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.append('image', file);
+
+    setUploading(true);
+    try {
+      const res = await axios.post('/api/upload', data);
+      if (res.data?.url) {
+        onSuccess(res.data.url);
+        toast.success(language === 'he' ? 'תמונה הועלתה בהצלחה!' : 'Image uploaded successfully!');
+      }
+    } catch (err: any) {
+      console.error('Upload failed:', err);
+      toast.error(language === 'he' ? 'שגיאה בהעלאה' : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="space-y-12">
       <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-8">
@@ -192,9 +216,23 @@ const AdminProducts: React.FC = () => {
                     ))}
                   </select>
                </div>
+               
+               {/* Primary Image with Cloudinary Upload */}
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.imageUrl')} (Primary)</label>
-                  <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
+                  <div className="flex justify-between items-center">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.imageUrl')} (Primary)</label>
+                    <label className="text-[9px] uppercase font-bold tracking-widest cursor-pointer text-black dark:text-white hover:underline">
+                      {uploading ? (language === 'he' ? 'מעלה...' : 'Uploading...') : (language === 'he' ? '📤 העלה קובץ' : '📤 Upload File')}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        disabled={uploading}
+                        onChange={(e) => handleImageUpload(e, (url) => setFormData({...formData, images: [url]}))} 
+                      />
+                    </label>
+                  </div>
+                  <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" placeholder="https://..." />
                </div>
 
                <div className="space-y-4">
@@ -260,7 +298,19 @@ const AdminProducts: React.FC = () => {
                        </div>
                        {formData.variants.some((v: any) => v.color === metal.name) && (
                          <div className="space-y-2 rtl:pr-7 ltr:pl-7">
-                            <label className="text-[9px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500 block">{t('admin.variantImageUrl')}</label>
+                            <div className="flex justify-between items-center">
+                              <label className="text-[9px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500 block">{t('admin.variantImageUrl')}</label>
+                              <label className="text-[8px] uppercase font-bold tracking-widest cursor-pointer text-black dark:text-white hover:underline">
+                                📤 {language === 'he' ? 'העלה' : 'Upload'}
+                                <input 
+                                  type="file" 
+                                  accept="image/*" 
+                                  className="hidden" 
+                                  disabled={uploading}
+                                  onChange={(e) => handleImageUpload(e, (url) => handleVariantImageChange(metal.name, url))} 
+                                />
+                              </label>
+                            </div>
                             <Input 
                               value={formData.variants.find((v: any) => v.color === metal.name)?.image || ''} 
                               onChange={(e) => handleVariantImageChange(metal.name, e.target.value)}

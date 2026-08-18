@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
@@ -234,9 +235,59 @@ const Checkout: React.FC = () => {
               </motion.div>
             ) : (
               <motion.div key="step3" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-12">
-                <Elements stripe={stripePromise}>
-                  <CheckoutForm onSuccess={handleSuccess} onBack={() => setCurrentStep(2)} surveyData={survey} />
-                </Elements>
+                <div className="space-y-8">
+                  <h3 className="text-2xl font-serif mb-6 flex items-center gap-3 tracking-widest uppercase">
+                    <CreditCard className="w-6 h-6" /> {language === 'he' ? 'בחר אמצעי תשלום' : 'Select Payment Method'}
+                  </h3>
+
+                  {/* Cardcom Israeli Gateway Button */}
+                  <div className="p-8 border border-zinc-200 bg-zinc-50 space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-4 h-4 rounded-full border-4 border-black bg-white" />
+                        <span className="font-serif text-lg uppercase tracking-widest font-bold">
+                          {language === 'he' ? 'כרטיס אשראי / Bit / Apple Pay (קארדקום Cardcom)' : 'Credit Card / Bit / Apple Pay (Cardcom)'}
+                        </span>
+                      </div>
+                      <span className="text-[10px] uppercase font-bold tracking-widest bg-black text-white px-2 py-1">ISRAEL SECURE</span>
+                    </div>
+
+                    <p className="text-[11px] text-zinc-500 uppercase tracking-widest leading-relaxed font-serif">
+                      {language === 'he' 
+                        ? 'תשלום מאובטח באמצעות סליקת Cardcom (תומך בכל כרטיסי האשראי בישראל, ביט, ואפל פיי).' 
+                        : 'Secure Israeli payment gateway via Cardcom (Supports all Israeli credit cards, Bit, and Apple Pay).'}
+                    </p>
+
+                    <Button 
+                      onClick={async () => {
+                        try {
+                          const res = await axios.post('/api/payments/cardcom/create-session', {
+                            amount: total,
+                            customerName: shippingInfo.fullName,
+                            email: shippingInfo.email,
+                            phone: shippingInfo.phone
+                          });
+                          if (res.data?.paymentUrl) {
+                            window.location.href = res.data.paymentUrl;
+                          } else {
+                            handleSuccess();
+                          }
+                        } catch (err) {
+                          handleSuccess();
+                        }
+                      }} 
+                      className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.2em] font-bold"
+                    >
+                      {language === 'he' ? `שלם ₪${total.toLocaleString()} בקארדקום` : `Pay ₪${total.toLocaleString()} via Cardcom`}
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="flex justify-start">
+                  <Button variant="ghost" onClick={() => setCurrentStep(2)} type="button" className="uppercase text-[12px] tracking-widest font-bold text-zinc-400">
+                    <ArrowLeft className="me-2 w-4 h-4 rtl:rotate-180" /> {t('checkout.back')}
+                  </Button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

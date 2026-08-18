@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../../../services/api';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
-import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Upload } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 const AdminCategories: React.FC = () => {
   const { t, language } = useLanguage();
   const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [editingCategory, setEditingCategory] = useState<any>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     name_he: '',
@@ -120,8 +123,37 @@ const AdminCategories: React.FC = () => {
                   <Input value={formData.slug} onChange={(e) => setFormData({...formData, slug: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.imageUrl')}</label>
-                  <Input value={formData.image} onChange={(e) => setFormData({...formData, image: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
+                  <div className="flex justify-between items-center">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.imageUrl')}</label>
+                    <label className="text-[9px] uppercase font-bold tracking-widest cursor-pointer text-black dark:text-white hover:underline">
+                      {uploading ? (language === 'he' ? 'מעלה...' : 'Uploading...') : (language === 'he' ? '📤 העלה קובץ' : '📤 Upload File')}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        disabled={uploading}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const data = new FormData();
+                          data.append('image', file);
+                          setUploading(true);
+                          try {
+                            const res = await axios.post('/api/upload', data);
+                            if (res.data?.url) {
+                              setFormData({ ...formData, image: res.data.url });
+                              toast.success(language === 'he' ? 'תמונה הועלתה בהצלחה!' : 'Image uploaded successfully!');
+                            }
+                          } catch (err) {
+                            toast.error(language === 'he' ? 'שגיאה בהעלאה' : 'Upload failed');
+                          } finally {
+                            setUploading(false);
+                          }
+                        }} 
+                      />
+                    </label>
+                  </div>
+                  <Input value={formData.image} onChange={(e) => setFormData({...formData, image: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" placeholder="https://..." />
                </div>
                <div className="space-y-4 md:col-span-2">
                   <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.descriptionEn')}</label>

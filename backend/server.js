@@ -55,6 +55,8 @@ app.use('/api/giftcards', giftCardRoutes);
 app.use('/api/prizes', prizeRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/bookings', require('./routes/bookingRoutes'));
+app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use('/api/payments', require('./routes/paymentRoutes'));
 
 app.use(notFound);
 app.use(errorHandler);
