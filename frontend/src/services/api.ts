@@ -211,4 +211,15 @@ export const getSalesData = async () => {
   return data;
 };
 
+// SETTINGS API (SHIPPING & DELIVERY)
+export const getSettings = async () => {
+  const { data } = await api.get('/settings');
+  return data;
+};
+
+export const updateSettings = async (settingsData: any) => {
+  const { data } = await api.put('/settings', settingsData);
+  return data;
+};
+
 export default api;

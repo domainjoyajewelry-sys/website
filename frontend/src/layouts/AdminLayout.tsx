@@ -13,7 +13,8 @@ import {
   Gift,
   Sun,
   Moon,
-  Calendar
+  Calendar,
+  Truck
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { Button } from '../components/ui/button';
@@ -41,6 +42,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     },
     { name: t('admin.orders'), icon: ShoppingCart, link: '/admin/orders' },
     { name: language === 'he' ? 'תורים' : 'Bookings', icon: Calendar, link: '/admin/bookings' },
+    { name: language === 'he' ? 'משלוחים' : 'Shipping', icon: Truck, link: '/admin/shipping' },
     { name: t('admin.customers'), icon: Users, link: '/admin/customers' },
     { name: t('admin.banners'), icon: Image, link: '/admin/banners' },
     { name: t('admin.prizes'), icon: Gift, link: '/admin/prizes' },

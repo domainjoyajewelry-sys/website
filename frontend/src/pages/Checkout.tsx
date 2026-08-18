@@ -12,10 +12,30 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 
+import { useQuery } from '@tanstack/react-query';
+import { getSettings } from '../services/api';
+
 const Checkout: React.FC = () => {
   const { t, language } = useLanguage();
   const { user } = useAuth();
   const { cartItems, clearCart, subtotal: cartSubtotal } = useCart();
+
+  const subtotal = cartSubtotal;
+
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: getSettings,
+  });
+
+  let shippingCost = 0;
+  if (settings) {
+    if (settings.shippingType === 'flat') {
+      shippingCost = settings.shippingFee || 0;
+    } else if (settings.shippingType === 'threshold') {
+      shippingCost = subtotal >= (settings.freeShippingThreshold || 500) ? 0 : (settings.shippingFee || 0);
+    }
+  }
+  const total = subtotal + shippingCost;
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
@@ -117,9 +137,6 @@ const Checkout: React.FC = () => {
   const displayItems = cartItems.length > 0 ? cartItems : [
     { productId: 'demo1', name: 'Diamond Solitaire Ring', name_he: 'טבעת יהלום סוליטר', price: 4500, quantity: 1, image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2940', countInStock: 10 }
   ];
-
-  const subtotal = cartItems.length > 0 ? cartSubtotal : 4500;
-  const total = subtotal;
 
   const handleSuccess = async () => {
     setIsProcessing(true);
@@ -464,7 +481,7 @@ const Checkout: React.FC = () => {
              </div>
               <div className="flex justify-between text-zinc-500 dark:text-zinc-400 text-[12px] uppercase tracking-widest font-bold">
                 <span>{t('cart.shipping')}</span>
-                <span className="text-black dark:text-white font-bold">{language === 'he' ? 'חינם' : 'FREE'}</span>
+                <span className="text-black dark:text-white font-bold">{shippingCost === 0 ? (language === 'he' ? 'חינם' : 'FREE') : `₪${shippingCost}`}</span>
               </div>
              <div className="flex justify-between text-black text-2xl font-serif pt-6 mt-4 border-t border-zinc-200 tracking-widest">
                <span className="uppercase">{t('cart.total')}</span>

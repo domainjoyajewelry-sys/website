@@ -7,12 +7,27 @@ import { Card } from '../components/ui/card';
 import { Plus, Minus, X, ShoppingBag, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useQuery } from '@tanstack/react-query';
+import { getSettings } from '../services/api';
+
 const Cart: React.FC = () => {
   const { t, language, getLocalizedField } = useLanguage();
   const { cartItems, removeFromCart, updateQuantity, subtotal } = useCart();
 
-  const shippingCost = 0;
-  const total = subtotal;
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: getSettings,
+  });
+
+  let shippingCost = 0;
+  if (settings) {
+    if (settings.shippingType === 'flat') {
+      shippingCost = settings.shippingFee || 0;
+    } else if (settings.shippingType === 'threshold') {
+      shippingCost = subtotal >= (settings.freeShippingThreshold || 500) ? 0 : (settings.shippingFee || 0);
+    }
+  }
+  const total = subtotal + shippingCost;
 
   if (cartItems.length === 0) {
     return (
