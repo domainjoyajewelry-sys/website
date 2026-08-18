@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../context/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Package, ShoppingCart, Users, DollarSign, Activity, TrendingUp } from 'lucide-react';
+import { Package, ShoppingCart, Users, DollarSign, Activity, TrendingUp, Truck, ArrowRight } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { useQuery } from '@tanstack/react-query';
 import { getDashboardStats, getSalesData, getOrders } from '../../../services/api';
@@ -148,6 +149,26 @@ const AdminDashboard: React.FC = () => {
            </div>
         </Card>
       </div>
+
+      {/* Quick Action: Delivery & Shipping Settings Banner */}
+      <Link to="/admin/shipping" className="block bg-zinc-900 dark:bg-zinc-900 border border-zinc-800 p-6 hover:border-amber-500 transition-all group shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-amber-500/10 text-amber-500">
+              <Truck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-serif uppercase tracking-widest text-white text-sm font-bold">
+                {language === 'he' ? 'הגדרות דמי משלוח ומחירים' : 'Delivery & Shipping Pricing Settings'}
+              </h4>
+              <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-serif mt-1">
+                {language === 'he' ? 'לחץ כאן להגדרת משלוח חינם, מחיר משלוח קבוע (₪) או התניית סכום רכישה' : 'Click here to configure free shipping, flat delivery fee, or order threshold'}
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-amber-500 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-all" />
+        </div>
+      </Link>
 
       {/* Recent Orders */}
       <div className="space-y-8">
