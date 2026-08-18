@@ -11,8 +11,8 @@ const Cart: React.FC = () => {
   const { t, language, getLocalizedField } = useLanguage();
   const { cartItems, removeFromCart, updateQuantity, subtotal } = useCart();
 
-  const shippingCost = subtotal >= 500 ? 0 : 50;
-  const total = subtotal + shippingCost;
+  const shippingCost = 0;
+  const total = subtotal;
 
   if (cartItems.length === 0) {
     return (

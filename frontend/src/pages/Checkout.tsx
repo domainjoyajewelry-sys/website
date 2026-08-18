@@ -462,10 +462,10 @@ const Checkout: React.FC = () => {
                <span>{t('cart.subtotal')}</span>
                <span>₪{subtotal.toLocaleString()}</span>
              </div>
-             <div className="flex justify-between text-zinc-500 text-[12px] uppercase tracking-widest font-bold">
-               <span>{t('cart.shipping')}</span>
-               <span className="text-black font-bold">{language === 'he' ? 'חינם' : 'FREE'}</span>
-             </div>
+              <div className="flex justify-between text-zinc-500 dark:text-zinc-400 text-[12px] uppercase tracking-widest font-bold">
+                <span>{t('cart.shipping')}</span>
+                <span className="text-black dark:text-white font-bold">{language === 'he' ? 'חינם' : 'FREE'}</span>
+              </div>
              <div className="flex justify-between text-black text-2xl font-serif pt-6 mt-4 border-t border-zinc-200 tracking-widest">
                <span className="uppercase">{t('cart.total')}</span>
                <span>₪{total.toLocaleString()}</span>

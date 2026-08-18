@@ -26,7 +26,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 // Placeholder for all translations
 const allTranslations: Translations = {
   "app.title": { en: "Joya - Luxury Jewelry", he: "ג'ויה - תכשיטי יוקרה" },
-  "header.topBanner": { en: "Complimentary Shipping on Orders Over ₪500", he: "משלוח חינם בהזמנות מעל ₪500" },
+  "header.topBanner": { en: "Complimentary Express Shipping on All Orders", he: "משלוח מהיר חינם על כל ההזמנות" },
   "nav.newArrivals": { en: "New Arrivals", he: "מהדורות חדשות" },
   "nav.collections": { en: "Collections", he: "קולקציות" },
   "nav.more": { en: "More", he: "עוד" },
@@ -285,8 +285,8 @@ const allTranslations: Translations = {
   },
   "info.shippingTitle": { en: "Shipping & Delivery", he: "משלוחים ואספקה" },
   "info.shippingText": {
-    en: "We offer complimentary insured shipping on all orders over ₪500. Standard delivery typically takes 3-5 business days within Israel. For international orders, please allow 7-14 business days. Every JOYA piece arrives in our signature luxury packaging, ready for gifting.",
-    he: "אנו מציעים משלוח מבוטח חינם לכל ההזמנות מעל ₪500. משלוח סטנדרטי לוקח בדרך כלל 3-5 ימי עסקים בתוך ישראל. להזמנות בינלאומיות, אנא המתינו 7-14 ימי עסקים. כל פריט של JOYA מגיע באריזת היוקרה המזוהה שלנו, מוכן להענקה כמתנה."
+    en: "We offer complimentary insured express shipping on all orders. Standard delivery typically takes 2-4 business days within Israel. Every JOYA piece arrives in our signature luxury packaging, ready for gifting.",
+    he: "אנו מציעים משלוח מהיר ומבוטח חינם על כל ההזמנות ללא מינימום. משלוח לוקח בדרך כלל 2-4 ימי עסקים בתוך ישראל. כל פריט של JOYA מגיע באריזת היוקרה המזוהה שלנו, מוכן כמתנה."
   },
   "info.faqTitle": { en: "Frequently Asked Questions", he: "שאלות נפוצות" },
   "info.faqText": {
