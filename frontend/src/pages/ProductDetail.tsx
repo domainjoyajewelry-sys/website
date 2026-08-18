@@ -73,32 +73,33 @@ const ProductDetail: React.FC = () => {
     .slice(0, 4);
 
   return (
-    <div className="bg-white min-h-screen pt-40 pb-20 px-6">
+    <div className="bg-white dark:bg-zinc-950 text-black dark:text-white min-h-screen pt-40 pb-32 px-6 transition-colors duration-300">
       <div className="max-w-screen-2xl mx-auto">
-        {/* Breadcrumb */}
-        <nav className="mb-16 flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-zinc-400 font-serif">
-          <Link to="/" className="hover:text-black transition-colors">{t('home.home')}</Link>
+        
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-zinc-400 dark:text-zinc-500 mb-16 font-serif">
+          <Link to="/" className="hover:text-black dark:hover:text-white transition-colors">{t('home.home')}</Link>
           <span className="opacity-30">/</span>
-          <Link to="/products" className="hover:text-black transition-colors">{t('products.allJewelry')}</Link>
+          <Link to="/products" className="hover:text-black dark:hover:text-white transition-colors">{t('products.allJewelry')}</Link>
           <span className="opacity-30">/</span>
-          <span className="text-black font-bold">{getLocalizedField(product, 'name')}</span>
+          <span className="text-black dark:text-white font-bold">{getLocalizedField(product, 'name')}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-32 items-start">
           
-          {/* Column - Product Info (Order-2 on desktop, first for RTL alignment to right) */}
+          {/* Column - Product Info */}
           <div className="flex flex-col lg:order-2 rtl:lg:order-1 rtl:text-right">
             <div className="mb-12">
-               <span className="text-[10px] uppercase tracking-[0.6em] text-zinc-400 mb-6 block font-serif">
+               <span className="text-[10px] uppercase tracking-[0.6em] text-zinc-400 dark:text-zinc-500 mb-6 block font-serif">
                  {getLocalizedField(product.category, 'name')}
                </span>
-               <h1 className="text-4xl md:text-6xl font-serif text-black mb-8 uppercase tracking-[0.1em] font-medium leading-tight">
+               <h1 className="text-4xl md:text-6xl font-serif text-black dark:text-white mb-8 uppercase tracking-[0.1em] font-medium leading-tight">
                  {getLocalizedField(product, 'name')}
                </h1>
-               <p className="text-3xl font-body italic text-black mb-12 tracking-widest">
+               <p className="text-3xl font-body italic text-black dark:text-white mb-12 tracking-widest">
                  ₪{product.price.toLocaleString()}
                </p>
-               <div className="text-[11px] text-zinc-500 leading-relaxed uppercase tracking-widest font-body max-w-xl">
+               <div className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed uppercase tracking-widest font-body max-w-xl">
                  {getLocalizedField(product, 'description')}
                </div>
             </div>

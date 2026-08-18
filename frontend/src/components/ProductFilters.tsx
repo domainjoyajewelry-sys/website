@@ -112,30 +112,30 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters, setFilters }) 
   };
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-12 text-black dark:text-white">
       {/* New Arrivals Toggle */}
-      <div className="flex items-center justify-between pb-6 border-b border-zinc-100">
-         <Label htmlFor="new-arrivals" className="text-[12px] uppercase tracking-[0.4em] font-bold text-black font-serif">
+      <div className="flex items-center justify-between pb-6 border-b border-zinc-100 dark:border-zinc-800">
+         <Label htmlFor="new-arrivals" className="text-[12px] uppercase tracking-[0.4em] font-bold text-black dark:text-white font-serif">
            {t('products.newCollection')}
          </Label>
          <Checkbox 
            id="new-arrivals" 
            checked={filters.isNewArrival} 
            onCheckedChange={(checked: boolean) => toggleNewArrival(checked)}
-           className="border-zinc-300 rounded-none w-4 h-4"
+           className="border-zinc-300 dark:border-zinc-700 rounded-none w-4 h-4"
          />
       </div>
 
       {/* Category Filter */}
       <div className="space-y-6">
-        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 font-serif">{t('products.category')}</Label>
+        <Label className="uppercase text-[12px] tracking-[0.4em] font-bold text-zinc-400 dark:text-zinc-500 font-serif">{t('products.category')}</Label>
         {isLoadingCategories ? (
           <div className="animate-pulse text-[12px] uppercase tracking-widest">{t('global.loadingData')}</div>
         ) : (
           <RadioGroup value={filters.category} onValueChange={handleCategoryChange} className="space-y-4">
             <div className="flex items-center gap-4 group">
-              <RadioGroupItem value="all" id="cat-all" className="border-zinc-300 w-3 h-3" />
-              <Label htmlFor="cat-all" className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black transition-colors">{t('products.allJewelry')}</Label>
+              <RadioGroupItem value="all" id="cat-all" className="border-zinc-300 dark:border-zinc-700 w-3 h-3" />
+              <Label htmlFor="cat-all" className="text-[12px] uppercase tracking-[0.2em] font-medium cursor-pointer group-hover:text-black dark:group-hover:text-white transition-colors">{t('products.allJewelry')}</Label>
             </div>
             {categories.map((cat: any) => (
               <div key={cat._id} className="flex items-center gap-4 group">

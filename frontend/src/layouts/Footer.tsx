@@ -9,41 +9,41 @@ const Footer: React.FC = () => {
   const { t, language } = useLanguage();
 
   return (
-    <footer className="bg-white border-t border-zinc-100 pt-32 pb-12">
+    <footer className="bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800 text-black dark:text-white pt-32 pb-12 transition-colors duration-300">
       <div className="container mx-auto px-6 lg:px-12 max-w-screen-2xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 lg:gap-8 mb-32">
           
           {/* Brand & Description */}
           <div className="lg:col-span-2 space-y-8 rtl:text-right">
-            <Link to="/" className="text-4xl font-serif font-bold uppercase tracking-[0.6em] text-black block">
+            <Link to="/" className="text-4xl font-serif font-bold uppercase tracking-[0.6em] text-black dark:text-white block">
               JOYA
             </Link>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-400 leading-loose max-w-md font-body">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 leading-loose max-w-md font-body">
               {t('footer.brandDescription')}
             </p>
             
             {/* Store Location & Phone Info */}
-            <div className="space-y-3 pt-2 text-[10px] uppercase tracking-widest font-serif border-t border-zinc-100">
-              <div className="flex items-center gap-3 text-black font-bold">
-                <MapPin className="w-4 h-4 text-black flex-shrink-0" />
+            <div className="space-y-3 pt-2 text-[10px] uppercase tracking-widest font-serif border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex items-center gap-3 text-black dark:text-white font-bold">
+                <MapPin className="w-4 h-4 text-black dark:text-white flex-shrink-0" />
                 <span>{language === 'he' ? 'קרית ביאליק, דרך עכו 192, קריון' : 'Kiryat Bialik, 192 Akko Road, Krayion Mall'}</span>
               </div>
-              <div className="flex items-center gap-3 text-black font-bold">
-                <Phone className="w-4 h-4 text-black flex-shrink-0" />
+              <div className="flex items-center gap-3 text-black dark:text-white font-bold">
+                <Phone className="w-4 h-4 text-black dark:text-white flex-shrink-0" />
                 <a href="tel:+972585077575" className="hover:underline">+972 58-507-7575</a>
               </div>
             </div>
 
             <div className="flex gap-8 justify-start pt-2">
-              <a href="#" className="text-zinc-300 hover:text-black transition-colors"><Instagram className="w-5 h-5" /></a>
-              <a href="#" className="text-zinc-300 hover:text-black transition-colors"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="text-zinc-300 hover:text-black transition-colors"><Twitter className="w-5 h-5" /></a>
+              <a href="#" className="text-zinc-300 dark:text-zinc-600 hover:text-black dark:hover:text-white transition-colors"><Instagram className="w-5 h-5" /></a>
+              <a href="#" className="text-zinc-300 dark:text-zinc-600 hover:text-black dark:hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
+              <a href="#" className="text-zinc-300 dark:text-zinc-600 hover:text-black dark:hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
             </div>
           </div>
 
           {/* Collections */}
           <div className="space-y-10 rtl:text-right">
-            <h3 className="text-[11px] font-serif uppercase tracking-[0.4em] font-bold text-black">{t('nav.collections')}</h3>
+            <h3 className="text-[11px] font-serif uppercase tracking-[0.4em] font-bold text-black dark:text-white">{t('nav.collections')}</h3>
             <ul className="space-y-6">
               {['rings', 'necklaces', 'earrings', 'bracelets', 'piercing'].map((slug) => (
                 <li key={slug}>

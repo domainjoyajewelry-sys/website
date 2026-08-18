@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { Camera } from 'lucide-react';
@@ -32,6 +33,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { t, language, getLocalizedField } = useLanguage();
   const { addToCart } = useCart();
+  const { isDarkMode } = useTheme();
   const [showTryOn, setShowTryOn] = useState(false);
   
   // Track selected variant
@@ -54,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       quantity: 1,
       countInStock: product.countInStock
     });
-    toast.success(language === 'he' ? 'התווסף לסל הקניות' : 'Added to bag');
+    toast.success(t('productCard.addedToCart'));
   };
 
   const handleVariantClick = (e: React.MouseEvent, variant: Variant) => {
@@ -70,14 +72,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   const isEarringOrPiercing = 
-    (product.category?.slug === 'earrings' || product.category?.slug === 'piercing') ||
-    (typeof product.category === 'string' && (product.category.includes('ear') || product.category.includes('pierc'))) ||
-    (getLocalizedField(product.category, 'name')?.toLowerCase().includes('ear')) ||
-    (getLocalizedField(product.category, 'name')?.toLowerCase().includes('pierc'));
+    product.category?.name?.toLowerCase().includes('earring') || 
+    product.category?.name?.toLowerCase().includes('piercing') ||
+    product.name?.toLowerCase().includes('earring') ||
+    product.name?.toLowerCase().includes('piercing');
 
   return (
-    <div className="group relative flex flex-col">
-      <div className="relative aspect-[3/4] overflow-hidden bg-zinc-50 border border-zinc-100">
+    <div className="group flex flex-col justify-between h-full">
+      <div className="relative aspect-[3/4] overflow-hidden bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80">
         <Link to={`/product/${product._id}`} className="block w-full h-full">
           <AnimatePresence mode="wait">
             <motion.img
@@ -89,7 +91,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               src={currentImage}
               alt={getLocalizedField(product, 'name')}
               className="w-full h-full object-cover"
-              style={{ mixBlendMode: 'multiply' }}
+              style={{ mixBlendMode: isDarkMode ? 'normal' : 'multiply' }}
             />
           </AnimatePresence>
         </Link>
@@ -153,13 +155,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
 
-        <span className="text-[9px] uppercase tracking-[0.5em] text-zinc-400 mb-4 font-serif">
+        <span className="text-[9px] uppercase tracking-[0.5em] text-zinc-400 dark:text-zinc-500 mb-4 font-serif">
           {product.category ? getLocalizedField(product.category, 'name') : 'Premium Selection'}
         </span>
-        <h3 className="text-lg font-serif uppercase tracking-[0.1em] text-black mb-3 group-hover:text-zinc-500 transition-colors font-medium">
+        <h3 className="text-lg font-serif uppercase tracking-[0.1em] text-black dark:text-white mb-3 group-hover:text-zinc-500 dark:group-hover:text-zinc-300 transition-colors font-medium">
           {getLocalizedField(product, 'name')}
         </h3>
-        <p className="text-base font-body italic text-zinc-600 tracking-widest">
+        <p className="text-base font-body italic text-zinc-600 dark:text-zinc-400 tracking-widest">
           ₪{product.price.toLocaleString()}
         </p>
       </div>

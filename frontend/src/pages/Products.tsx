@@ -88,15 +88,15 @@ const Products: React.FC = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen pt-40 pb-20 px-6">
+    <div className="bg-white dark:bg-zinc-950 text-black dark:text-white min-h-screen pt-40 pb-32 px-6 transition-colors duration-300">
       <div className="max-w-screen-2xl mx-auto">
         
         {/* Page Header */}
-        <div className="text-center mb-24">
+        <div className="text-center mb-24 space-y-4">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-serif mb-8 text-black tracking-tight"
+            className="text-5xl md:text-7xl font-serif uppercase tracking-[0.2em] font-medium text-black dark:text-white"
           >
             {t('products.allJewelry')}
           </motion.h1>

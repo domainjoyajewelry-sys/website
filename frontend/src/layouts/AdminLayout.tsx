@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { Button } from '../components/ui/button';
+import { useTheme } from '../context/ThemeContext';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -24,25 +25,7 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { t, language, toggleLanguage } = useLanguage();
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    return localStorage.getItem('admin_theme') === 'dark';
-  });
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => {
-      const next = !prev;
-      localStorage.setItem('admin_theme', next ? 'dark' : 'light');
-      return next;
-    });
-  };
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+  const { isDarkMode, toggleTheme: toggleDarkMode } = useTheme();
 
   const navItems = [
     {
