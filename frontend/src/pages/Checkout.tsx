@@ -7,9 +7,10 @@ import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { CheckCircle2, Lock, ArrowLeft, ArrowRight, CreditCard, HelpCircle } from 'lucide-react';
+import { CheckCircle2, Lock, ArrowLeft, ArrowRight, CreditCard, HelpCircle, Phone, Mail, User as UserIcon, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { toast } from 'sonner';
 
 const Checkout: React.FC = () => {
   const { t, language } = useLanguage();
@@ -25,6 +26,8 @@ const Checkout: React.FC = () => {
     fullName: '', email: '', phone: '', address: '', city: '', postalCode: '',
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const [survey, setSurvey] = useState({
     source: '',
     gift: false,
@@ -34,6 +37,64 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentStep]);
+
+  // Pre-fill user details if logged in
+  useEffect(() => {
+    if (user) {
+      setShippingInfo(prev => ({
+        fullName: prev.fullName || (user as any).full_name || user.name || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || (user as any).phone || '',
+        address: prev.address || (user as any).address || '',
+        city: prev.city || (user as any).city || '',
+        postalCode: prev.postalCode || (user as any).postalCode || '',
+      }));
+    }
+  }, [user]);
+
+  const validateStep1 = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!shippingInfo.fullName.trim()) {
+      newErrors.fullName = language === 'he' ? 'שם מלא הינו שדה חובה' : 'Full name is required';
+    }
+
+    if (!shippingInfo.email.trim()) {
+      newErrors.email = language === 'he' ? 'כתובת אימייל הינה שדה חובה' : 'Email address is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shippingInfo.email.trim())) {
+      newErrors.email = language === 'he' ? 'כתובת אימייל לא תקינה (דוגמה: name@domain.com)' : 'Invalid email address';
+    }
+
+    if (!shippingInfo.phone.trim()) {
+      newErrors.phone = language === 'he' ? 'מספר טלפון הינו שדה חובה' : 'Phone number is required';
+    } else if (shippingInfo.phone.replace(/\D/g, '').length < 9) {
+      newErrors.phone = language === 'he' ? 'מספר טלפון תקין חייב להכיל לפחות 9 ספרות' : 'Valid phone number must contain at least 9 digits';
+    }
+
+    if (!shippingInfo.address.trim()) {
+      newErrors.address = language === 'he' ? 'כתובת למשלוח הינה שדה חובה' : 'Shipping address is required';
+    }
+
+    if (!shippingInfo.city.trim()) {
+      newErrors.city = language === 'he' ? 'עיר הינה שדה חובה' : 'City is required';
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast.error(language === 'he' ? 'אנא מילאו את כל שדות החובה המסומנים באדום' : 'Please fill in all required fields marked in red');
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleProceedToStep2 = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateStep1()) {
+      setCurrentStep(2);
+    }
+  };
 
   // Use cart items from Context, or demo fallback if cart is empty
   const displayItems = cartItems.length > 0 ? cartItems : [
@@ -68,6 +129,11 @@ const Checkout: React.FC = () => {
   };
 
   const handleCardcomPayment = async () => {
+    if (!validateStep1()) {
+      setCurrentStep(1);
+      return;
+    }
+
     setIsProcessing(true);
     try {
       const res = await axios.post('/api/payments/cardcom/create-session', {
@@ -132,34 +198,129 @@ const Checkout: React.FC = () => {
 
           <AnimatePresence mode="wait">
             {currentStep === 1 ? (
-              <motion.div key="step1" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.fullName')}</Label>
-                    <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.fullName} onChange={(e) => setShippingInfo({...shippingInfo, fullName: e.target.value})} />
+              <motion.div key="step1" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}>
+                <form onSubmit={handleProceedToStep2} className="space-y-8" noValidate>
+                  
+                  {/* Full Name & Phone */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-600 dark:text-zinc-400 font-serif flex items-center gap-1.5">
+                        <UserIcon className="w-3.5 h-3.5" />
+                        <span>{t('checkout.fullName')}</span>
+                        <span className="text-red-500 font-bold">*</span>
+                      </Label>
+                      <Input 
+                        className={`rounded-none h-14 transition-all ${errors.fullName ? 'border-red-500 focus-visible:ring-red-500' : 'border-zinc-200'}`} 
+                        required 
+                        placeholder={language === 'he' ? 'ישראל ישראלי' : 'Jane Doe'}
+                        value={shippingInfo.fullName} 
+                        onChange={(e) => {
+                          setShippingInfo({...shippingInfo, fullName: e.target.value});
+                          if (errors.fullName) setErrors({...errors, fullName: ''});
+                        }} 
+                      />
+                      {errors.fullName && <span className="text-[10px] text-red-500 font-serif font-bold uppercase tracking-widest block pt-0.5">{errors.fullName}</span>}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-600 dark:text-zinc-400 font-serif flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5" />
+                        <span>{t('checkout.phone')}</span>
+                        <span className="text-red-500 font-bold">*</span>
+                      </Label>
+                      <Input 
+                        className={`rounded-none h-14 transition-all ${errors.phone ? 'border-red-500 focus-visible:ring-red-500' : 'border-zinc-200'}`} 
+                        type="tel"
+                        required 
+                        placeholder="050-1234567"
+                        value={shippingInfo.phone} 
+                        onChange={(e) => {
+                          setShippingInfo({...shippingInfo, phone: e.target.value});
+                          if (errors.phone) setErrors({...errors, phone: ''});
+                        }} 
+                      />
+                      {errors.phone && <span className="text-[10px] text-red-500 font-serif font-bold uppercase tracking-widest block pt-0.5">{errors.phone}</span>}
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.email')}</Label>
-                    <Input className="rounded-none border-zinc-200 h-14" type="email" required value={shippingInfo.email} onChange={(e) => setShippingInfo({...shippingInfo, email: e.target.value})} />
+
+                  {/* Email & City */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-600 dark:text-zinc-400 font-serif flex items-center gap-1.5">
+                        <Mail className="w-3.5 h-3.5" />
+                        <span>{t('checkout.email')}</span>
+                        <span className="text-red-500 font-bold">*</span>
+                      </Label>
+                      <Input 
+                        className={`rounded-none h-14 transition-all ${errors.email ? 'border-red-500 focus-visible:ring-red-500' : 'border-zinc-200'}`} 
+                        type="email" 
+                        required 
+                        placeholder="name@example.com"
+                        value={shippingInfo.email} 
+                        onChange={(e) => {
+                          setShippingInfo({...shippingInfo, email: e.target.value});
+                          if (errors.email) setErrors({...errors, email: ''});
+                        }} 
+                      />
+                      {errors.email && <span className="text-[10px] text-red-500 font-serif font-bold uppercase tracking-widest block pt-0.5">{errors.email}</span>}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-600 dark:text-zinc-400 font-serif flex items-center gap-1.5">
+                        <span>{t('checkout.city')}</span>
+                        <span className="text-red-500 font-bold">*</span>
+                      </Label>
+                      <Input 
+                        className={`rounded-none h-14 transition-all ${errors.city ? 'border-red-500 focus-visible:ring-red-500' : 'border-zinc-200'}`} 
+                        required 
+                        placeholder={language === 'he' ? 'תל אביב, תל אביב-יפו' : 'Tel Aviv'}
+                        value={shippingInfo.city} 
+                        onChange={(e) => {
+                          setShippingInfo({...shippingInfo, city: e.target.value});
+                          if (errors.city) setErrors({...errors, city: ''});
+                        }} 
+                      />
+                      {errors.city && <span className="text-[10px] text-red-500 font-serif font-bold uppercase tracking-widest block pt-0.5">{errors.city}</span>}
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.address')}</Label>
-                  <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.address} onChange={(e) => setShippingInfo({...shippingInfo, address: e.target.value})} />
-                </div>
-                <div className="grid grid-cols-2 gap-6">
+
+                  {/* Shipping Address */}
                   <div className="space-y-2">
-                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.city')}</Label>
-                    <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.city} onChange={(e) => setShippingInfo({...shippingInfo, city: e.target.value})} />
+                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-600 dark:text-zinc-400 font-serif flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span>{t('checkout.address')}</span>
+                      <span className="text-red-500 font-bold">*</span>
+                    </Label>
+                    <Input 
+                      className={`rounded-none h-14 transition-all ${errors.address ? 'border-red-500 focus-visible:ring-red-500' : 'border-zinc-200'}`} 
+                      required 
+                      placeholder={language === 'he' ? 'רחוב, דירה, קומה' : 'Street name, apartment, floor'}
+                      value={shippingInfo.address} 
+                      onChange={(e) => {
+                        setShippingInfo({...shippingInfo, address: e.target.value});
+                        if (errors.address) setErrors({...errors, address: ''});
+                      }} 
+                    />
+                    {errors.address && <span className="text-[10px] text-red-500 font-serif font-bold uppercase tracking-widest block pt-0.5">{errors.address}</span>}
                   </div>
+
+                  {/* Postal Code */}
                   <div className="space-y-2">
-                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-400 font-serif">{t('checkout.postalCode')}</Label>
-                    <Input className="rounded-none border-zinc-200 h-14" required value={shippingInfo.postalCode} onChange={(e) => setShippingInfo({...shippingInfo, postalCode: e.target.value})} />
+                    <Label className="uppercase text-[12px] tracking-widest font-bold text-zinc-600 dark:text-zinc-400 font-serif">
+                      {t('checkout.postalCode')} <span className="text-[10px] text-zinc-400 font-normal">({language === 'he' ? 'רשות' : 'Optional'})</span>
+                    </Label>
+                    <Input 
+                      className="rounded-none border-zinc-200 h-14" 
+                      placeholder="1234567"
+                      value={shippingInfo.postalCode} 
+                      onChange={(e) => setShippingInfo({...shippingInfo, postalCode: e.target.value})} 
+                    />
                   </div>
-                </div>
-                <Button onClick={() => setCurrentStep(2)} className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.3em] font-bold">
-                  {language === 'he' ? 'המשך לשאלון' : 'Continue to Survey'} <ArrowRight className="ms-4 w-5 h-4 rtl:rotate-180" />
-                </Button>
+
+                  <Button type="submit" className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.3em] font-bold shadow-md cursor-pointer">
+                    {language === 'he' ? 'המשך לשאלון' : 'Continue to Survey'} <ArrowRight className="ms-4 w-5 h-4 rtl:rotate-180" />
+                  </Button>
+                </form>
               </motion.div>
             ) : currentStep === 2 ? (
               <motion.div key="step2" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-12">
