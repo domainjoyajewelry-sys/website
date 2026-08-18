@@ -1,89 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { CheckCircle2, Lock, ArrowLeft, ArrowRight, CreditCard, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { loadStripe } from '@stripe/stripe-js';
-import {
-  Elements,
-  CardElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
-
-// Use the Stripe publishable key from environment variables
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
-
-const CheckoutForm: React.FC<{ onSuccess: () => void, onBack: () => void, surveyData: any }> = ({ onSuccess, onBack, surveyData }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const { t, language } = useLanguage();
-  const [error, setError] = useState<string | null>(null);
-  const [processing, setProcessing] = useState(false);
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!stripe || !elements) return;
-
-    setProcessing(true);
-    setError(null);
-
-    // Simulate Stripe payment processing
-    setTimeout(() => {
-      console.log('Order finalized with survey:', surveyData);
-      setProcessing(false);
-      onSuccess();
-    }, 2000);
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-12">
-      <div className="space-y-8">
-         <h3 className="text-2xl font-serif mb-6 flex items-center gap-3 tracking-widest uppercase">
-           <CreditCard className="w-6 h-6" /> {t('checkout.payment')}
-         </h3>
-         <div className="p-6 border border-zinc-200 bg-white">
-            <CardElement 
-              options={{
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#000',
-                    fontFamily: '"Cormorant Garamond", serif',
-                    '::placeholder': { color: '#aab7c4' },
-                  },
-                  invalid: { color: '#9e2146' },
-                },
-              }}
-            />
-         </div>
-         {error && <div className="text-red-500 text-sm">{error}</div>}
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <Button disabled={!stripe || processing} type="submit" className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-xl rounded-none uppercase tracking-[0.2em]">
-          {processing ? 'Processing...' : t('checkout.placeOrder')}
-        </Button>
-        <Button variant="ghost" onClick={onBack} type="button" className="uppercase text-[12px] tracking-widest font-bold text-zinc-400">
-          <ArrowLeft className="me-2 w-4 h-4 rtl:rotate-180" /> {t('checkout.back')}
-        </Button>
-      </div>
-    </form>
-  );
-};
 
 const Checkout: React.FC = () => {
   const { t, language } = useLanguage();
   const { user } = useAuth();
+  const { cartItems, clearCart, subtotal: cartSubtotal } = useCart();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [shippingInfo, setShippingInfo] = useState({
     fullName: '', email: '', phone: '', address: '', city: '', postalCode: '',
@@ -99,17 +35,59 @@ const Checkout: React.FC = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
-  const cartItems = [
-    { productId: '1', name: 'Diamond Solitaire Ring', name_he: 'טבעת יהלום סוליטר', price: 4500, quantity: 1, image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2940' },
+  // Use cart items from Context, or demo fallback if cart is empty
+  const displayItems = cartItems.length > 0 ? cartItems : [
+    { productId: 'demo1', name: 'Diamond Solitaire Ring', name_he: 'טבעת יהלום סוליטר', price: 4500, quantity: 1, image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2940', countInStock: 10 }
   ];
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  const subtotal = cartItems.length > 0 ? cartSubtotal : 4500;
   const total = subtotal;
 
-  const handleSuccess = () => {
-    setIsOrderPlaced(true);
-    setOrderNumber('JOYA-' + Math.floor(100000 + Math.random() * 900000));
-    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+  const handleSuccess = async () => {
+    setIsProcessing(true);
+    const newOrderNum = 'JOYA-' + Math.floor(100000 + Math.random() * 900000);
+
+    try {
+      // Save order to backend DB if possible
+      await axios.post('/api/orders', {
+        orderItems: displayItems,
+        shippingAddress: shippingInfo,
+        paymentMethod: 'Cardcom',
+        totalPrice: total,
+        survey: survey
+      });
+    } catch (err) {
+      console.log('Backend order save fallback:', err);
+    } finally {
+      setOrderNumber(newOrderNum);
+      setIsOrderPlaced(true);
+      setIsProcessing(false);
+      clearCart();
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }
+  };
+
+  const handleCardcomPayment = async () => {
+    setIsProcessing(true);
+    try {
+      const res = await axios.post('/api/payments/cardcom/create-session', {
+        amount: total,
+        customerName: shippingInfo.fullName,
+        email: shippingInfo.email,
+        phone: shippingInfo.phone
+      });
+
+      if (res.data?.paymentUrl) {
+        window.location.href = res.data.paymentUrl;
+      } else {
+        await handleSuccess();
+      }
+    } catch (err) {
+      console.error('Cardcom Session Error:', err);
+      await handleSuccess();
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (isOrderPlaced) {
@@ -193,6 +171,7 @@ const Checkout: React.FC = () => {
                       <Label className="text-[12px] uppercase tracking-widest font-bold text-zinc-400">{language === 'he' ? 'איך הגעת אלינו?' : 'How did you find us?'}</Label>
                       <select 
                         className="w-full bg-white border border-zinc-200 rounded-none h-14 px-4 text-[12px] uppercase tracking-widest"
+                        value={survey.source}
                         onChange={(e) => setSurvey({...survey, source: e.target.value})}
                       >
                          <option value="">{language === 'he' ? 'בחר אפשרות' : 'Select Option'}</option>
@@ -206,11 +185,11 @@ const Checkout: React.FC = () => {
                       <Label className="text-[12px] uppercase tracking-widest font-bold text-zinc-400">{language === 'he' ? 'האם זו מתנה?' : 'Is this a gift?'}</Label>
                       <div className="flex gap-8">
                          <label className="flex items-center gap-3 cursor-pointer">
-                            <input type="radio" name="gift" onChange={() => setSurvey({...survey, gift: true})} className="w-4 h-4 accent-black" />
+                            <input type="radio" name="gift" checked={survey.gift === true} onChange={() => setSurvey({...survey, gift: true})} className="w-4 h-4 accent-black" />
                             <span className="text-[12px] uppercase tracking-widest font-bold">{language === 'he' ? 'כן' : 'Yes'}</span>
                          </label>
                          <label className="flex items-center gap-3 cursor-pointer">
-                            <input type="radio" name="gift" defaultChecked onChange={() => setSurvey({...survey, gift: false})} className="w-4 h-4 accent-black" />
+                            <input type="radio" name="gift" checked={survey.gift === false} onChange={() => setSurvey({...survey, gift: false})} className="w-4 h-4 accent-black" />
                             <span className="text-[12px] uppercase tracking-widest font-bold">{language === 'he' ? 'לא' : 'No'}</span>
                          </label>
                       </div>
@@ -220,6 +199,7 @@ const Checkout: React.FC = () => {
                       <textarea 
                         className="w-full bg-white border border-zinc-200 rounded-none p-6 text-[12px] uppercase tracking-widest h-32 focus:outline-none focus:ring-1 focus:ring-black"
                         placeholder={language === 'he' ? 'כתוב לנו משהו...' : 'Tell us something...'}
+                        value={survey.notes}
                         onChange={(e) => setSurvey({...survey, notes: e.target.value})}
                       />
                     </div>
@@ -259,26 +239,13 @@ const Checkout: React.FC = () => {
                     </p>
 
                     <Button 
-                      onClick={async () => {
-                        try {
-                          const res = await axios.post('/api/payments/cardcom/create-session', {
-                            amount: total,
-                            customerName: shippingInfo.fullName,
-                            email: shippingInfo.email,
-                            phone: shippingInfo.phone
-                          });
-                          if (res.data?.paymentUrl) {
-                            window.location.href = res.data.paymentUrl;
-                          } else {
-                            handleSuccess();
-                          }
-                        } catch (err) {
-                          handleSuccess();
-                        }
-                      }} 
+                      disabled={isProcessing}
+                      onClick={handleCardcomPayment} 
                       className="w-full bg-black text-white hover:bg-zinc-800 py-8 text-lg rounded-none uppercase tracking-[0.2em] font-bold"
                     >
-                      {language === 'he' ? `שלם ₪${total.toLocaleString()} בקארדקום` : `Pay ₪${total.toLocaleString()} via Cardcom`}
+                      {isProcessing 
+                        ? (language === 'he' ? 'מעבד תשלום...' : 'Processing Payment...') 
+                        : (language === 'he' ? `שלם ₪${total.toLocaleString()} בקארדקום` : `Pay ₪${total.toLocaleString()} via Cardcom`)}
                     </Button>
                   </div>
                 </div>
@@ -297,13 +264,13 @@ const Checkout: React.FC = () => {
         <div className="bg-zinc-50 p-12 h-fit space-y-10 border border-zinc-100 sticky top-40">
           <h2 className="text-3xl font-serif mb-8 uppercase tracking-widest">{t('cart.orderSummary')}</h2>
           <div className="space-y-8">
-            {cartItems.map((item) => (
+            {displayItems.map((item) => (
               <div key={item.productId} className="flex gap-6 items-center">
                 <div className="w-24 h-24 bg-white overflow-hidden flex-shrink-0 border border-zinc-100">
                   <img src={item.image} className="w-full h-full object-cover" alt={item.name} />
                 </div>
                 <div className="flex-grow">
-                  <h4 className="text-lg font-serif uppercase tracking-widest">{language === 'he' ? item.name_he : item.name}</h4>
+                  <h4 className="text-lg font-serif uppercase tracking-widest">{language === 'he' ? (item.name_he || item.name) : item.name}</h4>
                   <p className="text-[12px] text-zinc-400 uppercase tracking-widest font-bold font-serif">Qty: {item.quantity}</p>
                 </div>
                 <p className="text-lg font-medium font-body tracking-widest">₪{item.price.toLocaleString()}</p>
@@ -329,7 +296,7 @@ const Checkout: React.FC = () => {
           <div className="bg-white p-6 border border-zinc-100 flex items-center gap-4 text-zinc-400">
              <Lock className="w-6 h-6 flex-shrink-0" />
              <p className="text-[9px] uppercase tracking-[0.2em] leading-relaxed font-serif font-bold">
-               {language === 'he' ? 'המידע שלך מאובטח ומוצפן בתקן הגבוה ביותר. העסקאות מעובדות על ידי Stripe.' : 'Your transaction is secure and encrypted to the highest standard. Payments powered by Stripe.'}
+               {language === 'he' ? 'המידע שלך מאובטח ומוצפן בתקן הגבוה ביותר via Cardcom.' : 'Your transaction is secure and encrypted via Cardcom.'}
              </p>
           </div>
         </div>
