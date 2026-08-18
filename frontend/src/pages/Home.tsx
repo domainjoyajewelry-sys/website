@@ -1,10 +1,10 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles, Menu, User as UserIcon, Globe } from 'lucide-react';
+import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles, Menu, User as UserIcon, Globe, Sun, Moon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts, getAdBanners } from '../services/api';
@@ -37,6 +37,31 @@ const Home: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const heroRef = useRef(null);
+
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem('joya_theme') === 'dark' || document.documentElement.classList.contains('dark');
+  });
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('joya_theme', next ? 'dark' : 'light');
+      if (next) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -60,6 +85,9 @@ const Home: React.FC = () => {
     image: '/images/new/p1.jpeg',
     title: 'Luxury Jewelry House'
   };
+
+  const isHeroNavLight = activeBanner.navTheme === 'light' || (!isDarkMode && activeBanner.bgColor === '#ffffff');
+  const navTextColor = isHeroNavLight ? '#000000' : '#ffffff';
 
   // Logic to randomize "Featured" products each time
   const featuredProducts = useMemo(() => {
@@ -102,7 +130,7 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white relative">
+    <div className="bg-white dark:bg-zinc-950 text-black dark:text-white transition-colors duration-300 relative">
       <Toaster position="top-center" />
       
       {/* Redesigned Premium Hero - Dynamic Background with Embedded Nav */}
@@ -116,10 +144,18 @@ const Home: React.FC = () => {
         <div className="absolute top-0 left-0 right-0 z-30 px-6 sm:px-12 py-10 flex items-center justify-between pointer-events-none">
            {/* Left: Collections & New */}
            <nav className="hidden lg:flex items-center gap-10 pointer-events-auto">
-              <Link to="/products" className="text-[11px] uppercase tracking-[0.4em] font-bold text-white/60 hover:text-white transition-all font-serif">
+              <Link 
+                to="/products" 
+                style={{ color: navTextColor }}
+                className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
+              >
                 {t('nav.collections')}
               </Link>
-              <Link to="/products?new=true" className="text-[11px] uppercase tracking-[0.4em] font-bold text-white/60 hover:text-white transition-all font-serif">
+              <Link 
+                to="/products?new=true" 
+                style={{ color: navTextColor }}
+                className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
+              >
                 {t('nav.newArrivals')}
               </Link>
            </nav>
@@ -127,19 +163,43 @@ const Home: React.FC = () => {
            {/* Center: Logo */}
            <div className="absolute left-1/2 top-10 transform -translate-x-1/2 pointer-events-auto">
               <Link to="/">
-                <img src="/logo.png" alt="JOYA" className="h-20 sm:h-28 md:h-36 w-auto invert brightness-200" />
+                <img 
+                  src="/logo.png" 
+                  alt="JOYA" 
+                  className={`h-20 sm:h-28 md:h-36 w-auto transition-all ${isHeroNavLight ? 'invert-0' : 'invert brightness-200'}`} 
+                />
               </Link>
            </div>
 
-           {/* Right: Actions */}
-           <div className="flex items-center gap-6 sm:gap-8 pointer-events-auto">
-              <button onClick={toggleLanguage} className="hidden sm:block text-[11px] font-bold tracking-[0.3em] text-white/60 hover:text-white font-serif uppercase">
+           {/* Right: Actions (Language, Theme Toggle, Cart, Profile) */}
+           <div className="flex items-center gap-5 sm:gap-8 pointer-events-auto">
+              {/* Color Mode Toggle Button (Light / Dark) */}
+              <button 
+                onClick={toggleDarkMode}
+                style={{ color: navTextColor }}
+                className="flex items-center gap-2 text-[11px] font-bold tracking-[0.3em] font-serif uppercase opacity-80 hover:opacity-100 transition-all cursor-pointer"
+                title={isDarkMode ? (language === 'he' ? 'עבור למצב בהיר' : 'Switch to Light Mode') : (language === 'he' ? 'עבור למצב כהה' : 'Switch to Dark Mode')}
+              >
+                {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+                <span className="hidden sm:inline">{isDarkMode ? (language === 'he' ? 'בהיר' : 'Light') : (language === 'he' ? 'כהה' : 'Dark')}</span>
+              </button>
+
+              {/* Language Switcher */}
+              <button 
+                onClick={toggleLanguage} 
+                style={{ color: navTextColor }}
+                className="hidden sm:block text-[11px] font-bold tracking-[0.3em] font-serif uppercase opacity-80 hover:opacity-100 transition-all cursor-pointer"
+              >
                 {language === 'en' ? 'HE' : 'EN'}
               </button>
-              <Link to="/cart" className="text-white/60 hover:text-white transition-all">
+
+              {/* Cart Icon */}
+              <Link to="/cart" style={{ color: navTextColor }} className="opacity-80 hover:opacity-100 transition-all">
                 <ShoppingBag className="w-5 h-5" />
               </Link>
-              <Link to={user ? "/profile" : "/login"} className="text-white/60 hover:text-white transition-all">
+
+              {/* Profile Icon */}
+              <Link to={user ? "/profile" : "/login"} style={{ color: navTextColor }} className="opacity-80 hover:opacity-100 transition-all">
                 <UserIcon className="w-5 h-5" />
               </Link>
            </div>

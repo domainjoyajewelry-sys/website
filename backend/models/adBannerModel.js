@@ -48,6 +48,11 @@ const adBannerSchema = mongoose.Schema(
       type: String,
       default: '#ffffff',
     },
+    navTheme: {
+      type: String,
+      enum: ['dark', 'light'],
+      default: 'dark',
+    },
     link: {
       type: String,
     },

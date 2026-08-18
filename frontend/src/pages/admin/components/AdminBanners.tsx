@@ -92,6 +92,7 @@ const AdminBanners: React.FC = () => {
       bgGradient: '#18181b',
       overlayOpacity: 40,
       textColor: '#ffffff',
+      navTheme: 'dark',
       link: '', 
       isActive: true 
     });
@@ -110,6 +111,7 @@ const AdminBanners: React.FC = () => {
       bgGradient: banner.bgGradient || '#18181b',
       overlayOpacity: banner.overlayOpacity !== undefined ? banner.overlayOpacity : 40,
       textColor: banner.textColor || '#ffffff',
+      navTheme: banner.navTheme || 'dark',
       link: banner.link, 
       isActive: banner.isActive 
     });
@@ -296,6 +298,21 @@ const AdminBanners: React.FC = () => {
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Hero Navbar Color Mode */}
+              <div className="space-y-4">
+                <label className="text-[10px] uppercase tracking-widest font-bold font-serif text-black dark:text-white flex items-center gap-2">
+                  <span>☀️/🌙</span> {language === 'he' ? 'ערכת נושא לתפריט העליון (Hero Navbar Mode)' : 'Hero Navbar Color Mode'}
+                </label>
+                <select 
+                  value={formData.navTheme || 'dark'} 
+                  onChange={(e) => setFormData({...formData, navTheme: e.target.value})}
+                  className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-300 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white font-bold uppercase tracking-widest"
+                >
+                  <option value="dark">🌙 Dark Mode (White Logo & Text / טקסט ולוגו לבן)</option>
+                  <option value="light">☀️ Light Mode (Black Logo & Text / טקסט ולוגו שחור)</option>
+                </select>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
