@@ -29,7 +29,7 @@ const GiftCardPurchase: React.FC = () => {
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
       toast.success(language === 'he' ? 'כרטיס המתנה נרכש בהצלחה!' : 'Gift card purchased successfully!');
     } catch (error) {
-      toast.error('Failed to purchase gift card');
+      toast.error(language === 'he' ? 'שגיאה ברכישת כרטיס המתנה' : 'Failed to purchase gift card');
     } finally {
       setIsProcessing(false);
     }

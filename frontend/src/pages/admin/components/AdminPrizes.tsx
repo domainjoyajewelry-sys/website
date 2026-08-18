@@ -27,7 +27,7 @@ const AdminPrizes: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['prizes-admin'] });
       setIsAdding(false);
       setFormData({ label: '', label_he: '', value: '', chance: 1, isActive: true });
-      toast.success('Prize created');
+      toast.success(language === 'he' ? 'פרס נוצר בהצלחה' : 'Prize created');
     }
   });
 
@@ -36,7 +36,7 @@ const AdminPrizes: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['prizes-admin'] });
       setEditingPrize(null);
-      toast.success('Prize updated');
+      toast.success(language === 'he' ? 'פרס עודכן בהצלחה' : 'Prize updated');
     }
   });
 
@@ -44,7 +44,7 @@ const AdminPrizes: React.FC = () => {
     mutationFn: deletePrize,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['prizes-admin'] });
-      toast.success('Prize deleted');
+      toast.success(language === 'he' ? 'פרס נמחק בהצלחה' : 'Prize deleted');
     }
   });
 

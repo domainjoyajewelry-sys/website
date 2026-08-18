@@ -78,10 +78,10 @@ const Profile: React.FC = () => {
     mutationFn: updateUserProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-      toast.success('Profile updated successfully!');
+      toast.success(language === 'he' ? 'הפרופיל עודכן בהצלחה!' : 'Profile updated successfully!');
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || 'Failed to update profile.');
+      toast.error(err.response?.data?.message || (language === 'he' ? 'שגיאה בעדכון הפרופיל' : 'Failed to update profile.'));
     },
   });
 
