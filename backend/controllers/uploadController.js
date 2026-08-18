@@ -1,7 +1,11 @@
 const cloudinary = require('cloudinary').v2;
 
 // Configure Cloudinary if credentials exist in .env
-if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+if (process.env.CLOUDINARY_URL) {
+  cloudinary.config({
+    cloudinary_url: process.env.CLOUDINARY_URL,
+  });
+} else if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -16,7 +20,9 @@ exports.uploadImage = async (req, res) => {
     }
 
     // Check if Cloudinary is configured
-    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+    const isCloudinaryConfigured = process.env.CLOUDINARY_URL || (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
+
+    if (isCloudinaryConfigured) {
       const result = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           { folder: 'joya_boutique' },
