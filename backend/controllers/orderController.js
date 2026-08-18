@@ -131,7 +131,12 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Public / Admin / Optional Auth
 const getOrders = asyncHandler(async (req, res) => {
-  let orders = await Order.find({}).sort({ createdAt: -1 }).populate('user', 'id full_name email');
+  let orders = [];
+  try {
+    orders = await Order.find({}).sort({ createdAt: -1 });
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+  }
 
   if (!orders || orders.length === 0) {
     try {
@@ -177,7 +182,7 @@ const getOrders = asyncHandler(async (req, res) => {
       ];
 
       await Order.insertMany(seedOrders);
-      orders = await Order.find({}).sort({ createdAt: -1 }).populate('user', 'id full_name email');
+      orders = await Order.find({}).sort({ createdAt: -1 });
     } catch (e) {
       console.error('Seed orders error:', e);
     }
