@@ -129,6 +129,19 @@ const AdminProducts: React.FC = () => {
   const selectedCategory = categories.find((c: any) => c._id === formData.category);
   const isEarringOrPiercing = selectedCategory?.slug === 'earrings' || selectedCategory?.slug === 'piercing';
 
+  const getLocalizedColorName = (colorName: string, colorHe?: string) => {
+    if (language === 'he') {
+      if (colorHe) return colorHe;
+      const lower = (colorName || '').toLowerCase().replace(/\s+/g, '');
+      if (lower === 'gold') return 'זהב';
+      if (lower === 'silver') return 'כסף';
+      if (lower === 'rosegold') return 'רוז גולד';
+      if (lower === 'whitegold') return 'זהב לבן';
+      if (lower === 'black') return 'שחור';
+    }
+    return colorName;
+  };
+
   return (
     <div className="space-y-12">
       <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
@@ -182,6 +195,15 @@ const AdminProducts: React.FC = () => {
                <div className="space-y-4">
                   <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.imageUrl')} (Primary)</label>
                   <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 h-12" />
+               </div>
+
+               <div className="space-y-4">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.materialsEn')}</label>
+                  <Input value={formData.materials} onChange={(e) => setFormData({...formData, materials: e.target.value})} className="rounded-none border-zinc-200 h-12" placeholder="14K Gold, Premium" />
+               </div>
+               <div className="space-y-4">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.materialsHe')}</label>
+                  <Input value={formData.materials_he} onChange={(e) => setFormData({...formData, materials_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" placeholder="זהב 14K, עבודת יד" />
                </div>
                
                {/* Piercing Specific Fields */}
@@ -283,7 +305,18 @@ const AdminProducts: React.FC = () => {
                 </TableCell>
                 <TableCell>
                    <div className="font-serif text-sm tracking-widest uppercase">{getLocalizedField(product, 'name')}</div>
-                   <span className="text-[9px] text-zinc-400 tracking-widest uppercase">{getLocalizedField(product.category, 'name')}</span>
+                   <div className="flex items-center gap-2 mt-1">
+                     <span className="text-[9px] text-zinc-400 tracking-widest uppercase">{getLocalizedField(product.category, 'name')}</span>
+                     {product.variants && product.variants.length > 0 && (
+                       <div className="flex gap-1.5 items-center">
+                         {product.variants.map((v: any, idx: number) => (
+                           <span key={idx} className="text-[8px] font-bold px-1.5 py-0.5 bg-zinc-100 text-zinc-600 rounded">
+                             {getLocalizedColorName(v.color, v.color_he)}
+                           </span>
+                         ))}
+                       </div>
+                     )}
+                   </div>
                 </TableCell>
                 <TableCell className="text-center font-body text-lg italic">₪{product.price.toLocaleString()}</TableCell>
                 <TableCell className="text-center"><span className="text-[10px] font-bold px-3 py-1 border border-zinc-100">{product.countInStock}</span></TableCell>
