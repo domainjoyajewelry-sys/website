@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Button } from '../components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles, Menu, User as UserIcon, Globe, Sun, Moon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { useQuery } from '@tanstack/react-query';
@@ -88,6 +89,7 @@ const Home: React.FC = () => {
 
   const isHeroNavLight = activeBanner.navTheme === 'light' || (!isDarkMode && activeBanner.bgColor === '#ffffff');
   const navTextColor = isHeroNavLight ? '#000000' : '#ffffff';
+  const [isHeroMobileMenuOpen, setIsHeroMobileMenuOpen] = useState(false);
 
   // Logic to randomize "Featured" products each time
   const featuredProducts = useMemo(() => {
@@ -142,23 +144,59 @@ const Home: React.FC = () => {
         
         {/* Embedded Hero Navigation */}
         <div className="absolute top-0 left-0 right-0 z-30 px-6 sm:px-12 py-10 flex items-center justify-between pointer-events-none">
-           {/* Left: Collections & New */}
-           <nav className="hidden lg:flex items-center gap-10 pointer-events-auto">
-              <Link 
-                to="/products" 
-                style={{ color: navTextColor }}
-                className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
-              >
-                {t('nav.collections')}
-              </Link>
-              <Link 
-                to="/products?new=true" 
-                style={{ color: navTextColor }}
-                className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
-              >
-                {t('nav.newArrivals')}
-              </Link>
-           </nav>
+           
+           {/* Left Side: Mobile Menu OR Desktop Nav */}
+           <div className="flex-1 flex items-center">
+             {/* Mobile Menu Trigger */}
+             <div className="lg:hidden">
+               <Sheet open={isHeroMobileMenuOpen} onOpenChange={setIsHeroMobileMenuOpen}>
+                 <SheetTrigger asChild>
+                   <Button variant="ghost" size="icon" style={{ color: navTextColor }} className="hover:bg-transparent pointer-events-auto">
+                     <Menu className="h-5 w-5" />
+                   </Button>
+                 </SheetTrigger>
+                 <SheetContent side={language === 'he' ? 'right' : 'left'} className="bg-white dark:bg-zinc-950 border-none w-[80vw] sm:w-[400px] flex flex-col p-0 text-black dark:text-white">
+                    <div className="flex items-center justify-center h-28 border-b border-zinc-100 dark:border-zinc-800">
+                       <span className="text-2xl font-serif font-bold tracking-[0.4em] text-black dark:text-white">JOYA</span>
+                    </div>
+                    <nav className="flex flex-col p-10 gap-8">
+                       <button onClick={() => { setIsHeroMobileMenuOpen(false); navigate('/products'); }} className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right">{t('nav.collections')}</button>
+                       <button onClick={() => { setIsHeroMobileMenuOpen(false); navigate('/products?new=true'); }} className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right">{t('nav.newArrivals')}</button>
+                       <button onClick={() => { setIsHeroMobileMenuOpen(false); navigate('/gift-card'); }} className="text-3xl font-serif hover:text-zinc-400 transition-colors uppercase tracking-tight text-left rtl:text-right">{t('nav.giftCard')}</button>
+                       
+                       <div className="pt-8 border-t border-zinc-100 dark:border-zinc-800 flex flex-col gap-4">
+                         <Button variant="outline" onClick={toggleDarkMode} className="border-zinc-300 dark:border-zinc-700 text-black dark:text-white rounded-none py-6 text-[12px] uppercase tracking-[0.4em] font-bold flex items-center justify-center gap-3">
+                           {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+                           <span>{isDarkMode ? (language === 'he' ? 'מצב בהיר' : 'Light Mode') : (language === 'he' ? 'מצב כהה' : 'Dark Mode')}</span>
+                         </Button>
+
+                         <Button variant="outline" onClick={() => { toggleLanguage(); setIsHeroMobileMenuOpen(false); }} className="border-black dark:border-white text-black dark:text-white rounded-none py-6 text-[12px] uppercase tracking-[0.4em] font-bold">
+                           {language === 'en' ? 'עברית (HE)' : 'English (EN)'}
+                         </Button>
+                       </div>
+                    </nav>
+                 </SheetContent>
+               </Sheet>
+             </div>
+
+             {/* Desktop Nav Items */}
+             <nav className="hidden lg:flex items-center gap-10 pointer-events-auto">
+                <Link 
+                  to="/products" 
+                  style={{ color: navTextColor }}
+                  className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
+                >
+                  {t('nav.collections')}
+                </Link>
+                <Link 
+                  to="/products?new=true" 
+                  style={{ color: navTextColor }}
+                  className="text-[11px] uppercase tracking-[0.4em] font-bold opacity-75 hover:opacity-100 transition-all font-serif"
+                >
+                  {t('nav.newArrivals')}
+                </Link>
+             </nav>
+           </div>
 
            {/* Center: Logo (1.5x Enlarged) */}
            <div className="absolute left-1/2 top-6 sm:top-8 transform -translate-x-1/2 pointer-events-auto">
@@ -171,8 +209,8 @@ const Home: React.FC = () => {
               </Link>
            </div>
 
-           {/* Right: Actions (Language, Theme Toggle, Cart, Profile) */}
-           <div className="flex items-center gap-5 sm:gap-8 pointer-events-auto">
+           {/* Right Side: Actions */}
+           <div className="flex-1 flex items-center justify-end gap-5 sm:gap-8 pointer-events-auto">
               {/* Color Mode Toggle Button (Light / Dark) */}
               <button 
                 onClick={toggleDarkMode}
