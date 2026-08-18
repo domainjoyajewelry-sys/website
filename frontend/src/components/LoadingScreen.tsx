@@ -8,10 +8,10 @@ const LoadingScreen: React.FC<{ onComplete?: () => void }> = ({ onComplete }) =>
     const timer = setTimeout(() => {
       setLoading(false);
       if (onComplete) onComplete();
-    }, 2500); // Luxury 2.5s loading time
+    }, 1500); // 1.5s smooth intro splash
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, []);
 
   return (
     <AnimatePresence>
