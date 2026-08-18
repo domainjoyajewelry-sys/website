@@ -245,6 +245,8 @@ const allTranslations: Translations = {
   "admin.value": { en: "Value", he: "ערך" },
   "admin.weight": { en: "Weight", he: "משקל" },
   "admin.label": { en: "Label", he: "תווית" },
+  "admin.darkMode": { en: "Dark Mode", he: "מצב כהה" },
+  "admin.lightMode": { en: "Light Mode", he: "מצב בהיר" },
   "booking.title": { en: "Schedule Your Piercing", he: "תאמו את הפירסינג שלכם" },
   "booking.name": { en: "Full Name", he: "שם מלא" },
   "booking.phone": { en: "Phone Number", he: "מספר טלפון" },

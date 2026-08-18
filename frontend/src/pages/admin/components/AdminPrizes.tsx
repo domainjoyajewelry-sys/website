@@ -63,16 +63,16 @@ const AdminPrizes: React.FC = () => {
 
   return (
     <div className="space-y-12">
-      <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
+      <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-8">
         <div>
-          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-black">
+          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-black dark:text-white">
             {t('admin.prizes')}
           </h2>
-          <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
+          <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 dark:text-zinc-500 mt-4">
             {t('admin.managePrizes')}
           </p>
         </div>
-        <Button onClick={() => setIsAdding(true)} className="bg-black text-white rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 flex gap-4">
+        <Button onClick={() => setIsAdding(true)} className="bg-black text-white dark:bg-white dark:text-black rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 flex gap-4">
           <Plus className="w-4 h-4" />
           {t('admin.addNewPrize')}
         </Button>
@@ -80,28 +80,28 @@ const AdminPrizes: React.FC = () => {
 
       <AnimatePresence>
         {(isAdding || editingPrize) && (
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-zinc-50 p-10 border border-zinc-100 space-y-10">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-zinc-50 dark:bg-zinc-900 p-10 border border-zinc-100 dark:border-zinc-800 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.labelEn')}</label>
-                  <Input value={formData.label} onChange={(e) => setFormData({...formData, label: e.target.value})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.labelEn')}</label>
+                  <Input value={formData.label} onChange={(e) => setFormData({...formData, label: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.labelHe')}</label>
-                  <Input value={formData.label_he} onChange={(e) => setFormData({...formData, label_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.labelHe')}</label>
+                  <Input value={formData.label_he} onChange={(e) => setFormData({...formData, label_he: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 text-right" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.couponValue')}</label>
-                  <Input value={formData.value} onChange={(e) => setFormData({...formData, value: e.target.value})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.couponValue')}</label>
+                  <Input value={formData.value} onChange={(e) => setFormData({...formData, value: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.weightChance')}</label>
-                  <Input type="number" value={formData.chance} onChange={(e) => setFormData({...formData, chance: Number(e.target.value)})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.weightChance')}</label>
+                  <Input type="number" value={formData.chance} onChange={(e) => setFormData({...formData, chance: Number(e.target.value)})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
             </div>
-            <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
-              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingPrize(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
-              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
+            <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingPrize(null); }} className="uppercase text-[10px] tracking-widest font-bold dark:text-zinc-400 dark:hover:text-white">{t('admin.cancel')}</Button>
+              <Button onClick={handleSave} className="bg-black text-white dark:bg-white dark:text-black rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
                 <Save className="w-4 h-4" /> {t('admin.savePrize')}
               </Button>
             </div>
@@ -109,35 +109,35 @@ const AdminPrizes: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="bg-white border border-zinc-100 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-sm overflow-hidden">
         <Table>
-          <TableHeader className="bg-zinc-50">
-            <TableRow className="border-zinc-100">
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">{t('admin.label')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.value')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.weight')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.status')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">{t('admin.actions')}</TableHead>
+          <TableHeader className="bg-zinc-50 dark:bg-zinc-900/80">
+            <TableRow className="border-zinc-100 dark:border-zinc-800">
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 dark:text-zinc-400">{t('admin.label')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 dark:text-zinc-400">{t('admin.value')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center dark:text-zinc-400">{t('admin.weight')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center dark:text-zinc-400">{t('admin.status')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 dark:text-zinc-400">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300">{t('global.loadingPrizes')}</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center py-20 font-serif italic text-xl text-zinc-300 dark:text-zinc-600">{t('global.loadingPrizes')}</TableCell></TableRow>
             ) : prizes.map((prize: any) => (
-              <TableRow key={prize._id} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
-                <TableCell className="py-6 px-8 font-serif text-sm tracking-widest uppercase">
+              <TableRow key={prize._id} className="border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+                <TableCell className="py-6 px-8 font-serif text-sm tracking-widest uppercase dark:text-zinc-200">
                   {language === 'he' ? prize.label_he : prize.label}
                 </TableCell>
-                <TableCell className="text-[11px] font-mono">{prize.value}</TableCell>
-                <TableCell className="text-center font-bold">{prize.chance}</TableCell>
+                <TableCell className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400">{prize.value}</TableCell>
+                <TableCell className="text-center font-bold dark:text-zinc-300">{prize.chance}</TableCell>
                 <TableCell className="text-center">
-                   <span className={`text-[8px] font-bold px-3 py-1 rounded-full uppercase tracking-widest ${prize.isActive ? 'bg-green-50 text-green-600' : 'bg-zinc-100 text-zinc-400'}`}>
+                   <span className={`text-[8px] font-bold px-3 py-1 rounded-full uppercase tracking-widest ${prize.isActive ? 'bg-green-50 text-green-600 dark:bg-green-950/60 dark:text-green-400' : 'bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500'}`}>
                      {prize.isActive ? t('admin.active') : t('admin.inactive')}
                    </span>
                 </TableCell>
                 <TableCell className="text-right px-8">
                   <div className="flex justify-end gap-6">
-                    <button onClick={() => handleEdit(prize)} className="text-zinc-400 hover:text-black transition-colors"><Edit className="w-4 h-4" /></button>
+                    <button onClick={() => handleEdit(prize)} className="text-zinc-400 hover:text-black dark:hover:text-white transition-colors"><Edit className="w-4 h-4" /></button>
                     <button onClick={() => deleteMutation.mutate(prize._id)} className="text-zinc-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </TableCell>

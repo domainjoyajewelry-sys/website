@@ -144,16 +144,16 @@ const AdminProducts: React.FC = () => {
 
   return (
     <div className="space-y-12">
-      <div className="flex justify-between items-center border-b border-zinc-100 pb-8">
+      <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-8">
         <div>
-          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-black">
+          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-black dark:text-white">
             {t('admin.manageProducts')}
           </h2>
-          <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 mt-4">
+          <p className="text-[10px] uppercase tracking-[0.5em] text-zinc-400 dark:text-zinc-500 mt-4">
             {products.length} {t('admin.itemsInCatalog')}
           </p>
         </div>
-        <Button onClick={() => { resetForm(); setIsAdding(true); }} className="bg-black text-white rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 flex gap-4">
+        <Button onClick={() => { resetForm(); setIsAdding(true); }} className="bg-black text-white dark:bg-white dark:text-black rounded-none px-10 py-7 text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 flex gap-4">
           <Plus className="w-4 h-4" />
           {t('admin.addNewProduct')}
         </Button>
@@ -161,30 +161,30 @@ const AdminProducts: React.FC = () => {
 
       <AnimatePresence>
         {(isAdding || editingProduct) && (
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-zinc-50 p-10 border border-zinc-100 space-y-10">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-zinc-50 dark:bg-zinc-900 p-10 border border-zinc-100 dark:border-zinc-800 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.nameEn')}</label>
-                  <Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.nameEn')}</label>
+                  <Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.nameHe')}</label>
-                  <Input value={formData.name_he} onChange={(e) => setFormData({...formData, name_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.nameHe')}</label>
+                  <Input value={formData.name_he} onChange={(e) => setFormData({...formData, name_he: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 text-right" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.price')} (₪)</label>
-                  <Input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: Number(e.target.value)})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.price')} (₪)</label>
+                  <Input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: Number(e.target.value)})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.stock')}</label>
-                  <Input type="number" value={formData.countInStock} onChange={(e) => setFormData({...formData, countInStock: Number(e.target.value)})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.stock')}</label>
+                  <Input type="number" value={formData.countInStock} onChange={(e) => setFormData({...formData, countInStock: Number(e.target.value)})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.category')}</label>
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.category')}</label>
                   <select 
                     value={formData.category} 
                     onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
                   >
                     <option value="">{t('admin.selectCategory')}</option>
                     {categories.map((cat: any) => (
@@ -193,28 +193,28 @@ const AdminProducts: React.FC = () => {
                   </select>
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.imageUrl')} (Primary)</label>
-                  <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 h-12" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.imageUrl')} (Primary)</label>
+                  <Input value={formData.images[0]} onChange={(e) => setFormData({...formData, images: [e.target.value]})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                </div>
 
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.materialsEn')}</label>
-                  <Input value={formData.materials} onChange={(e) => setFormData({...formData, materials: e.target.value})} className="rounded-none border-zinc-200 h-12" placeholder="14K Gold, Premium" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.materialsEn')}</label>
+                  <Input value={formData.materials} onChange={(e) => setFormData({...formData, materials: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" placeholder="14K Gold, Premium" />
                </div>
                <div className="space-y-4">
-                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.materialsHe')}</label>
-                  <Input value={formData.materials_he} onChange={(e) => setFormData({...formData, materials_he: e.target.value})} className="rounded-none border-zinc-200 h-12 text-right" placeholder="זהב 14K, עבודת יד" />
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.materialsHe')}</label>
+                  <Input value={formData.materials_he} onChange={(e) => setFormData({...formData, materials_he: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12 text-right" placeholder="זהב 14K, עבודת יד" />
                </div>
                
                {/* Piercing Specific Fields */}
                {isEarringOrPiercing && (
                  <>
                   <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.piercingSide')}</label>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.piercingSide')}</label>
                     <select 
                       value={formData.piercingSide} 
                       onChange={(e) => setFormData({...formData, piercingSide: e.target.value})}
-                      className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                      className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
                     >
                       <option value="none">{t('admin.none')}</option>
                       <option value="right">{t('admin.right')}</option>
@@ -223,11 +223,11 @@ const AdminProducts: React.FC = () => {
                     </select>
                   </div>
                   <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.unitType')}</label>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.unitType')}</label>
                     <select 
                       value={formData.unitType} 
                       onChange={(e) => setFormData({...formData, unitType: e.target.value})}
-                      className="w-full bg-white border border-zinc-200 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black"
+                      className="w-full bg-white dark:bg-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-none h-12 px-4 text-[12px] focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
                     >
                       <option value="none">{t('admin.none')}</option>
                       <option value="single">{t('admin.singleEarring')}</option>
@@ -235,16 +235,16 @@ const AdminProducts: React.FC = () => {
                     </select>
                   </div>
                   <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400">{t('admin.pipeLength')}</label>
-                    <Input value={formData.pipeLength} onChange={(e) => setFormData({...formData, pipeLength: e.target.value})} className="rounded-none border-zinc-200 h-12" />
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-400 dark:text-zinc-400">{t('admin.pipeLength')}</label>
+                    <Input value={formData.pipeLength} onChange={(e) => setFormData({...formData, pipeLength: e.target.value})} className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-12" />
                   </div>
                  </>
                )}
             </div>
 
             {/* Metal Color Variants */}
-            <div className="space-y-6 pt-6 border-t border-zinc-100">
-               <label className="text-[12px] uppercase tracking-[0.2em] font-bold text-black font-serif">{t('admin.metalColorsAndImages')}</label>
+            <div className="space-y-6 pt-6 border-t border-zinc-100 dark:border-zinc-800">
+               <label className="text-[12px] uppercase tracking-[0.2em] font-bold text-black dark:text-white font-serif">{t('admin.metalColorsAndImages')}</label>
                <div className="flex flex-wrap gap-10">
                   {METALS.map((metal) => (
                     <div key={metal.id} className="space-y-4 min-w-[200px]">
@@ -253,18 +253,18 @@ const AdminProducts: React.FC = () => {
                             type="checkbox" 
                             checked={formData.variants.some((v: any) => v.color === metal.name)}
                             onChange={() => handleVariantToggle(metal)}
-                            className="w-4 h-4 accent-black"
+                            className="w-4 h-4 accent-black dark:accent-white"
                           />
-                          <div className="w-4 h-4 rounded-full border border-zinc-200" style={{ backgroundColor: metal.hex }}></div>
-                          <span className="text-[11px] uppercase tracking-widest font-bold">{language === 'he' ? metal.name_he : metal.name}</span>
+                          <div className="w-4 h-4 rounded-full border border-zinc-200 dark:border-zinc-700" style={{ backgroundColor: metal.hex }}></div>
+                          <span className="text-[11px] uppercase tracking-widest font-bold dark:text-zinc-200">{language === 'he' ? metal.name_he : metal.name}</span>
                        </div>
                        {formData.variants.some((v: any) => v.color === metal.name) && (
                          <div className="space-y-2 rtl:pr-7 ltr:pl-7">
-                            <label className="text-[9px] uppercase tracking-widest text-zinc-400 block">{t('admin.variantImageUrl')}</label>
+                            <label className="text-[9px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500 block">{t('admin.variantImageUrl')}</label>
                             <Input 
                               value={formData.variants.find((v: any) => v.color === metal.name)?.image || ''} 
                               onChange={(e) => handleVariantImageChange(metal.name, e.target.value)}
-                              className="rounded-none border-zinc-200 h-10 text-[11px]" 
+                              className="rounded-none border-zinc-200 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white h-10 text-[11px]" 
                               placeholder="https://..."
                             />
                          </div>
@@ -274,9 +274,9 @@ const AdminProducts: React.FC = () => {
                </div>
             </div>
 
-            <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200">
-              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingProduct(null); }} className="uppercase text-[10px] tracking-widest font-bold">{t('admin.cancel')}</Button>
-              <Button onClick={handleSave} className="bg-black text-white rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
+            <div className="flex justify-end gap-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+              <Button variant="ghost" onClick={() => { setIsAdding(false); setEditingProduct(null); }} className="uppercase text-[10px] tracking-widest font-bold dark:text-zinc-400 dark:hover:text-white">{t('admin.cancel')}</Button>
+              <Button onClick={handleSave} className="bg-black text-white dark:bg-white dark:text-black rounded-none px-12 py-6 text-[10px] uppercase tracking-widest font-bold flex gap-3">
                 <Save className="w-4 h-4" /> {t('admin.savePiece')}
               </Button>
             </div>
@@ -284,15 +284,15 @@ const AdminProducts: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="bg-white border border-zinc-100 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-sm overflow-hidden">
         <Table>
-          <TableHeader className="bg-zinc-50">
-            <TableRow className="border-zinc-100">
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8">{t('admin.image')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6">{t('admin.name')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.price')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center">{t('admin.stock')}</TableHead>
-              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8">{t('admin.actions')}</TableHead>
+          <TableHeader className="bg-zinc-50 dark:bg-zinc-900/80">
+            <TableRow className="border-zinc-100 dark:border-zinc-800">
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 px-8 dark:text-zinc-400">{t('admin.image')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 dark:text-zinc-400">{t('admin.name')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center dark:text-zinc-400">{t('admin.price')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-center dark:text-zinc-400">{t('admin.stock')}</TableHead>
+              <TableHead className="text-[10px] uppercase tracking-widest font-bold py-6 text-right px-8 dark:text-zinc-400">{t('admin.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import {
@@ -10,7 +10,9 @@ import {
   Image,
   LogOut,
   Menu,
-  Gift
+  Gift,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { Button } from '../components/ui/button';
@@ -21,6 +23,25 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { t, language, toggleLanguage } = useLanguage();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem('admin_theme') === 'dark';
+  });
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('admin_theme', next ? 'dark' : 'light');
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const navItems = [
     {
@@ -41,8 +62,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-white" dir={language === 'he' ? 'rtl' : 'ltr'}>
-      {/* Mobile Top Header with Sidebar Trigger & Language Switcher */}
+    <div className={`flex min-h-screen ${isDarkMode ? 'dark bg-zinc-950 text-white' : 'bg-white text-black'}`} dir={language === 'he' ? 'rtl' : 'ltr'}>
+      {/* Mobile Top Header with Sidebar Trigger & Controls */}
       <div className="lg:hidden fixed top-0 inset-x-0 h-16 bg-black border-b border-zinc-800 z-40 flex items-center justify-between px-4">
         <Sheet>
           <SheetTrigger asChild>
@@ -71,6 +92,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </div>
               <div className="p-4 border-t border-zinc-800 space-y-3">
                 <button
+                  onClick={toggleDarkMode}
+                  className="w-full flex items-center justify-center gap-2 border border-zinc-700 px-4 py-2 text-[10px] uppercase font-bold tracking-widest text-zinc-300 hover:text-white hover:border-white transition-all"
+                >
+                  {isDarkMode ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-zinc-300" />}
+                  {isDarkMode ? t('admin.lightMode') : t('admin.darkMode')}
+                </button>
+                <button
                   onClick={toggleLanguage}
                   className="w-full flex items-center justify-center gap-2 border border-zinc-700 px-4 py-2 text-[10px] uppercase font-bold tracking-widest text-zinc-300 hover:text-white hover:border-white transition-all"
                 >
@@ -92,12 +120,21 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           JOYA ADMIN
         </Link>
 
-        <button
-          onClick={toggleLanguage}
-          className="text-xs uppercase font-bold tracking-widest text-zinc-300 border border-zinc-700 px-3 py-1.5 hover:text-white hover:border-white transition-all"
-        >
-          {language === 'he' ? 'EN' : 'עברית'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleDarkMode}
+            className="p-1.5 border border-zinc-700 text-zinc-300 hover:text-white hover:border-white transition-all"
+            title={isDarkMode ? t('admin.lightMode') : t('admin.darkMode')}
+          >
+            {isDarkMode ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-zinc-300" />}
+          </button>
+          <button
+            onClick={toggleLanguage}
+            className="text-xs uppercase font-bold tracking-widest text-zinc-300 border border-zinc-700 px-3 py-1.5 hover:text-white hover:border-white transition-all"
+          >
+            {language === 'he' ? 'EN' : 'עברית'}
+          </button>
+        </div>
       </div>
 
       {/* Desktop Sidebar */}
@@ -120,7 +157,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               ))}
             </nav>
           </div>
-          <div className="p-6 border-t border-zinc-900 pb-10 space-y-4">
+          <div className="p-6 border-t border-zinc-900 pb-10 space-y-3">
+            <button
+              onClick={toggleDarkMode}
+              className="w-full flex items-center justify-center gap-3 border border-zinc-800 bg-zinc-950 px-4 py-3 text-[10px] uppercase font-bold tracking-[0.2em] text-zinc-300 hover:text-white hover:border-zinc-500 transition-all"
+            >
+              {isDarkMode ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-zinc-300" />}
+              {isDarkMode ? t('admin.lightMode') : t('admin.darkMode')}
+            </button>
             <button
               onClick={toggleLanguage}
               className="w-full flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-950 px-4 py-3 text-[10px] uppercase font-bold tracking-[0.2em] text-zinc-300 hover:text-white hover:border-zinc-500 transition-all"
@@ -140,7 +184,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
       {/* Main Content Area */}
       <div className={`flex flex-col flex-1 transition-all duration-300 ${language === 'he' ? 'lg:mr-64' : 'lg:ml-64'}`}>
-        <main className="flex-1 p-4 sm:p-8 lg:p-16 bg-white min-h-screen mt-16 lg:mt-0">
+        <main className={`flex-1 p-4 sm:p-8 lg:p-16 min-h-screen mt-16 lg:mt-0 transition-colors duration-300 ${isDarkMode ? 'bg-zinc-950 text-white' : 'bg-white text-black'}`}>
           <div className="max-w-screen-xl mx-auto w-full overflow-x-hidden">
             {children}
           </div>
