@@ -353,10 +353,11 @@ const Checkout: React.FC = () => {
                         onChange={(e) => setSurvey({...survey, source: e.target.value})}
                       >
                          <option value="">{language === 'he' ? 'בחר אפשרות' : 'Select Option'}</option>
+                         <option value="tiktok">TikTok</option>
                          <option value="instagram">Instagram</option>
                          <option value="facebook">Facebook</option>
-                         <option value="friends">{language === 'he' ? 'חברים' : 'Friends'}</option>
                          <option value="google">Google</option>
+                         <option value="friends">{language === 'he' ? 'חברים / המלצה' : 'Friends / Recommendation'}</option>
                       </select>
                     </div>
                     <div className="space-y-4">
