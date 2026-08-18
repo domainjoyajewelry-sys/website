@@ -61,7 +61,7 @@ const PiercingBooking: React.FC<{ trigger?: React.ReactNode }> = ({ trigger }) =
   };
 
   const openWhatsApp = () => {
-    const phoneNumber = "972512345678";
+    const phoneNumber = "972585077575";
     const selectedServiceLabel = language === 'he' 
       ? (services.find(s => s.fallbackEn === formData.service)?.fallbackHe || formData.service)
       : formData.service;

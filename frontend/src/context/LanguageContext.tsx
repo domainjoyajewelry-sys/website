@@ -305,8 +305,16 @@ const allTranslations: Translations = {
   },
   "info.contactTitle": { en: "Contact the House of JOYA", he: "צרו קשר עם בית JOYA" },
   "info.contactText": {
-    en: "Our concierges are available to assist you with any inquiries. Visit our flagship studio at Kiryon Krayot, or reach us via WhatsApp at +972 51-234-5678. You may also email us at concierge@joya.co.il for personal styling advice.",
-    he: "יועצי השירות שלנו זמינים לסייע לכם בכל שאלה. בקרו בסטודיו הדגל שלנו בקריון קריות, או צרו איתנו קשר בוואטסאפ בטלפון 051-234-5678. ניתן גם לשלוח לנו מייל לכתובת concierge@joya.co.il לייעוץ סטיילינג אישי."
+    en: "Our concierges are available to assist you with any inquiries. Visit our flagship studio at Krayion Mall, Kiryat Bialik (192 Akko Road), or reach us via WhatsApp & Phone at +972 58-507-7575.",
+    he: "צוות השירות והסטיילינג שלנו זמין לסייע לכם בכל שאלה. בקרו בסניף הדגל והפירסינג שלנו בקריון קרית ביאליק (דרך עכו 192), או צרו איתנו קשר בוואטסאפ ובטלפון 058-507-7575."
+  },
+  "store.address": {
+    en: "Kiryat Bialik, 192 Akko Road, Krayion Mall",
+    he: "קרית ביאליק, דרך עכו 192, קריון"
+  },
+  "store.phone": {
+    en: "+972 58-507-7575",
+    he: "+972 58-507-7575"
   },
   "global.backToStore": { en: "Back to Store", he: "חזרה לחנות" },
   "global.scroll": { en: "Scroll", he: "גללו" },

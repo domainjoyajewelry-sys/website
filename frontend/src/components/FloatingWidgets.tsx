@@ -60,7 +60,7 @@ const FloatingWidgets: React.FC = () => {
 
         {/* WhatsApp Button */}
         <a 
-          href="https://wa.me/972512345678" 
+          href="https://wa.me/972585077575" 
           target="_blank" 
           rel="noopener noreferrer"
           className="w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#20bd5a] transition-all hover:scale-110 flex items-center justify-center group active:scale-95"

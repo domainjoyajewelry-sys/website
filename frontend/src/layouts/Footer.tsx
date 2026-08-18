@@ -14,14 +14,27 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 lg:gap-8 mb-32">
           
           {/* Brand & Description */}
-          <div className="lg:col-span-2 space-y-10 rtl:text-right">
+          <div className="lg:col-span-2 space-y-8 rtl:text-right">
             <Link to="/" className="text-4xl font-serif font-bold uppercase tracking-[0.6em] text-black block">
               JOYA
             </Link>
             <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-400 leading-loose max-w-md font-body">
               {t('footer.brandDescription')}
             </p>
-            <div className="flex gap-8 justify-start">
+            
+            {/* Store Location & Phone Info */}
+            <div className="space-y-3 pt-2 text-[10px] uppercase tracking-widest font-serif border-t border-zinc-100">
+              <div className="flex items-center gap-3 text-black font-bold">
+                <MapPin className="w-4 h-4 text-black flex-shrink-0" />
+                <span>{language === 'he' ? 'קרית ביאליק, דרך עכו 192, קריון' : 'Kiryat Bialik, 192 Akko Road, Krayion Mall'}</span>
+              </div>
+              <div className="flex items-center gap-3 text-black font-bold">
+                <Phone className="w-4 h-4 text-black flex-shrink-0" />
+                <a href="tel:+972585077575" className="hover:underline">+972 58-507-7575</a>
+              </div>
+            </div>
+
+            <div className="flex gap-8 justify-start pt-2">
               <a href="#" className="text-zinc-300 hover:text-black transition-colors"><Instagram className="w-5 h-5" /></a>
               <a href="#" className="text-zinc-300 hover:text-black transition-colors"><Facebook className="w-5 h-5" /></a>
               <a href="#" className="text-zinc-300 hover:text-black transition-colors"><Twitter className="w-5 h-5" /></a>
@@ -103,7 +116,7 @@ const Footer: React.FC = () => {
               {t('footer.copyright')}
             </p>
             <a 
-              href="https://wa.me/972512345678" 
+              href="https://wa.me/972585077575" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-black transition-colors font-bold font-serif flex items-center gap-2"
