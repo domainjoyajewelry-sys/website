@@ -137,7 +137,7 @@ const Home: React.FC = () => {
       <section 
         ref={heroRef} 
         style={{ backgroundColor: activeBanner.bgColor || '#000000' }}
-        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-48 transition-colors duration-500"
+        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-56 sm:pt-64 transition-colors duration-500"
       >
         
         {/* Embedded Hero Navigation */}
@@ -160,13 +160,13 @@ const Home: React.FC = () => {
               </Link>
            </nav>
 
-           {/* Center: Logo */}
-           <div className="absolute left-1/2 top-10 transform -translate-x-1/2 pointer-events-auto">
+           {/* Center: Logo (1.5x Enlarged) */}
+           <div className="absolute left-1/2 top-6 sm:top-8 transform -translate-x-1/2 pointer-events-auto">
               <Link to="/">
                 <img 
                   src="/logo.png" 
                   alt="JOYA" 
-                  className={`h-20 sm:h-28 md:h-36 w-auto transition-all ${isHeroNavLight ? 'invert-0' : 'invert brightness-200'}`} 
+                  className={`h-28 sm:h-40 md:h-52 lg:h-56 w-auto max-w-[85vw] object-contain transition-all drop-shadow-md ${isHeroNavLight ? 'invert-0' : 'invert brightness-200'}`} 
                 />
               </Link>
            </div>
