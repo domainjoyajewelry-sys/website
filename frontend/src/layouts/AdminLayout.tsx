@@ -14,11 +14,13 @@ import {
   Sun,
   Moon,
   Calendar,
-  Truck
+  Truck,
+  Sparkles
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { Button } from '../components/ui/button';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -26,6 +28,7 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { t, language, toggleLanguage } = useLanguage();
+  const { logout } = useAuth();
   const { isDarkMode, toggleTheme: toggleDarkMode } = useTheme();
 
   const navItems = [
@@ -43,6 +46,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: t('admin.orders'), icon: ShoppingCart, link: '/admin/orders' },
     { name: language === 'he' ? 'תורים' : 'Bookings', icon: Calendar, link: '/admin/bookings' },
     { name: language === 'he' ? 'משלוחים' : 'Shipping', icon: Truck, link: '/admin/shipping' },
+    { name: language === 'he' ? 'מדריך עגילים' : 'Earring Lookbook', icon: Sparkles, link: '/admin/lookbook' },
     { name: t('admin.customers'), icon: Users, link: '/admin/customers' },
     { name: t('admin.banners'), icon: Image, link: '/admin/banners' },
     { name: t('admin.prizes'), icon: Gift, link: '/admin/prizes' },

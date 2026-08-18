@@ -8,6 +8,7 @@ import { Button } from '../components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../components/ui/sheet';
 import { ShoppingBag, Star, Shield, Clock, ArrowRight, ChevronRight, Play, LayoutGrid, Sparkles, Menu, User as UserIcon, Globe, Sun, Moon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import EarringLookbookSection from '../components/EarringLookbookSection';
 import { useQuery } from '@tanstack/react-query';
 import { getProducts, getAdBanners } from '../services/api';
 import PiercingBooking from '../components/PiercingBooking';
@@ -407,6 +408,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Shoppable Earring & Piercing Lookbook Hotspots */}
+      <EarringLookbookSection />
 
       {/* Discovery / Metal Selection - Interactive */}
       <section className="bg-zinc-50 py-40 overflow-hidden border-y border-zinc-100">

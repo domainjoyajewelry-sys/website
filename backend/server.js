@@ -58,6 +58,7 @@ app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/settings', require('./routes/settingsRoutes'));
+app.use('/api/lookbook', require('./routes/lookbookRoutes'));
 
 app.use(notFound);
 app.use(errorHandler);

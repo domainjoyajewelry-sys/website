@@ -10,6 +10,7 @@ import AdminCustomers from './components/AdminCustomers';
 import AdminPrizes from './components/AdminPrizes';
 import AdminBookings from './components/AdminBookings';
 import AdminShipping from './components/AdminShipping';
+import AdminLookbook from './components/AdminLookbook';
 
 const Admin: React.FC = () => {
   const { t } = useLanguage();
@@ -21,6 +22,7 @@ const Admin: React.FC = () => {
       <Route path="orders" element={<AdminOrders />} />
       <Route path="bookings" element={<AdminBookings />} />
       <Route path="shipping" element={<AdminShipping />} />
+      <Route path="lookbook" element={<AdminLookbook />} />
       <Route path="banners" element={<AdminBanners />} />
       <Route path="customers" element={<AdminCustomers />} />
       <Route path="categories" element={<AdminCategories />} />

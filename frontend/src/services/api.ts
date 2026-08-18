@@ -230,4 +230,15 @@ export const uploadImage = async (formData: FormData) => {
   return data;
 };
 
+// LOOKBOOK API
+export const getLookbook = async () => {
+  const { data } = await api.get('/lookbook');
+  return data;
+};
+
+export const saveLookbook = async (lookbookData: any) => {
+  const { data } = await api.post('/lookbook', lookbookData);
+  return data;
+};
+
 export default api;
