@@ -255,6 +255,12 @@ const allTranslations: Translations = {
   "booking.time": { en: "Preferred Time", he: "שעה מועדפת" },
   "booking.submit": { en: "Confirm Booking", he: "אשר הזמנה" },
   "booking.success": { en: "Thank you! We will contact you shortly to confirm your appointment.", he: "תודה! ניצור איתך קשר בהקדם לאישור התור." },
+  "booking.earLobe": { en: "Ear Lobe Piercing", he: "פירסינג תנוך האוזן" },
+  "booking.helix": { en: "Helix / Cartilage", he: "פירסינג הליקס / סחוס" },
+  "booking.tragus": { en: "Tragus Piercing", he: "פירסינג טראגוס" },
+  "booking.noseSeptum": { en: "Nose / Septum", he: "פירסינג אף / ספטום" },
+  "booking.navel": { en: "Navel Piercing", he: "פירסינג פופיק" },
+  "booking.consultation": { en: "Styling Consultation", he: "ייעוץ סטיילינג ופירסינג" },
   "info.aboutTitle": { en: "The JOYA Heritage", he: "סיפור המותג JOYA" },
   "info.aboutText": { 
     en: "Founded on the principles of excellence and timeless beauty, JOYA has been a leading name in luxury jewelry for over two decades. Each piece in our collection is a testament to our dedication to quality, sourced ethically and crafted by the world's finest artisans. From the brilliance of our diamonds to the warmth of our gold, JOYA is where art meets elegance.",

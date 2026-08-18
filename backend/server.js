@@ -54,6 +54,7 @@ app.use('/api/adbanners', adBannerRoutes);
 app.use('/api/giftcards', giftCardRoutes);
 app.use('/api/prizes', prizeRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/bookings', require('./routes/bookingRoutes'));
 
 app.use(notFound);
 app.use(errorHandler);
