@@ -9,7 +9,7 @@ const { getOnlineVisitorsCount } = require('../utils/visitorTracker');
 // @access  Private/Admin
 const getDashboardStats = asyncHandler(async (req, res) => {
   const totalRevenue = await Order.aggregate([
-    { $match: { isPaid: true } },
+    { $match: { status: { $ne: 'cancelled' } } },
     { $group: { _id: null, total: { $sum: '$totalPrice' } } },
   ]);
 
@@ -34,7 +34,7 @@ const getDashboardStats = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getSalesData = asyncHandler(async (req, res) => {
   const sales = await Order.aggregate([
-    { $match: { isPaid: true } },
+    { $match: { status: { $ne: 'cancelled' } } },
     {
       $group: {
         _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
